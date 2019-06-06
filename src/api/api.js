@@ -45,7 +45,7 @@ export const editDepartment = params => { return axios.get('/department',{ param
 
 export const getDepartment = params => { return axios.get('/department',{params: params });}//获取指定部门信息
 
-export const deletDepartmeny = params => { return axios.get('/department',{ params:params })}//删除部门
+export const deletDepartment = params => { return axios.get('/department',{ params:params })}//删除部门
 
 export const getShiftList = params => {return axios.get('/shift',{ params:params });}//获取排班记录
 
