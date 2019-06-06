@@ -2,12 +2,13 @@ import Login from './components/Login.vue'
 import NotFound from './components/404.vue'
 import Home from './components/Home.vue'
 import Main from './components/Main.vue'
-import Table from './components/nav1/Table.vue'
-import Form from './components/nav1/Form.vue'
-import user from './components/nav1/user.vue'
-import Page4 from './components/nav2/Page4.vue'
-import Page5 from './components/nav2/Page5.vue'
-import Page6 from './components/nav3/Page6.vue'
+import Table from './components/user/Table.vue'
+import leave from './components/leave/leave.vue'
+import user from './components/user/user.vue'
+import approval_leave from './components/leave/approval_leave.vue'
+import overtime_ist from './components/overtime/approval_overtime'
+import overtime from './components/overtime/overtime'
+import hours from './components/hours/hours'
 import echarts from './components/charts/echarts.vue'
 
 let routes = [
@@ -27,7 +28,7 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '用户信息相关',
+        name: '用户管理',
         iconCls: 'el-icon-message',//图标样式class
         children: [
             { path: '/main', component: Main, name: '主页', hidden: true },
@@ -38,21 +39,30 @@ let routes = [
     {
         path: '/',
         component: Home,
-        name: '导航二',
+        name: '请假',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/form', component: Form, name: '请假申请' },
-            { path: '/page5', component: Page5, name: '页面5' }
+            { path: '/leave', component: leave, name: '请假申请' },
+            { path: '/approval',component: approval_leave, name:'请假审批' },
         ]
     },
     {
         path: '/',
         component: Home,
-        name: '',
-        iconCls: 'fa fa-address-card',
-        leaf: true,//只有一个节点
+        name: '加班',
+        iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/page6', component: Page6, name: '导航三' }
+            { path: '/overtime_list', component: overtime_ist, name: '加班申请列表' },
+            { path:'/overtime', component: overtime, name:'申请加班'},
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '工时',
+        iconCls: 'fa fa-id-card-o',
+        children: [
+            { path: '/hours', component: hours, name: '工时记录' },
         ]
     },
     {

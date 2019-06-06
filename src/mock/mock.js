@@ -1,6 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { LoginUsers, Users } from './data/user';
+import { LoginUsers, Users, LeaveUsers } from './data/user';
 let _Users = Users;
 
 export default {
@@ -77,6 +77,27 @@ export default {
         }, 1000);
       });
     });
+
+    //获取请假列表（分页）
+    mock.onGet('/leave').reply(config => {
+      let {page, name} = config.params;
+      let mockUsers = LeaveUsers.filter(user => {
+        if (name && user.name.indexOf(name) == -1) return false;
+        return true;
+      });
+      let total = mockUsers.length;
+      mockUsers = mockUsers.filter((u, index) => index < 20 * page && index >= 20 * (page - 1));
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, {
+            total: total,
+            users: mockUsers
+          }]);
+        }, 1000);
+      });
+    });
+
+
 
     //删除用户
     mock.onGet('/user/remove').reply(config => {
