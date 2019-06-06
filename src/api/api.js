@@ -2,8 +2,6 @@ import axios from 'axios';
 
 let base = '';
 
-//url都要改!!!!!!我随便写的
-
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };//登陆
 
 export const getUserList = params => { return axios.get(`${base}/user/list`, { params: params }); };//获取用户列表

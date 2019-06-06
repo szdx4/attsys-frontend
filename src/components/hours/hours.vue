@@ -26,9 +26,6 @@
     export default {
         data() {
             return {
-                filters: {
-                    name: ''
-                },
 
                 total: 0,
                 page: 1,
@@ -42,10 +39,13 @@
         },
         methods: {
             //获取工时列表
+            //ok
             getList: function () {
-                let para = {
-                };
-                getHours(para).then((res) =>{   //向后端请求工时列表
+                this.loading = true;
+                //ok
+                getHours().then((res) => {
+                    this.hoursList = res.data.hoursList;
+                    this.loading = false;
                 });
             },
 
