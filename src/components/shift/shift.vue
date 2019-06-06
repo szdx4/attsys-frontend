@@ -49,6 +49,7 @@
                 },
 
                 total: 0,
+                addFormVisible: false,
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
@@ -71,6 +72,13 @@
             handleCurrentChange(val) {
                 this.page = val;
                 this.getList();
+            },
+            handleAdd: function () {
+                this.addFormVisible = true;
+                this.addForm = {
+                    name: '',
+                    manager: 1
+                };
             },
 
         },

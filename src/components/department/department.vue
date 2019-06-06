@@ -23,7 +23,7 @@
             </el-table-column>
             <el-table-column prop="name" label="部门名称" width="425" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="sex" label="部门主管" width="425" align="center" sortable>
+            <el-table-column prop="manager" label="部门主管" width="425" align="center" sortable>
             </el-table-column>
             <el-table-column label="操作" width="177">
                 <template scope="scope">
