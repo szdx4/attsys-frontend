@@ -85,6 +85,9 @@
 				<el-form-item label="姓名" prop="name">
 					<el-input v-model="addForm.name" auto-complete="off"></el-input>
 				</el-form-item>
+				<el-form-item label="密码" prop="password">
+					<el-input v-model="addForm.password" auto-complete="off"></el-input>
+				</el-form-item>
 				<el-form-item label="性别">
 					<el-radio-group v-model="addForm.sex">
 						<el-radio class="radio" :label="1">男</el-radio>
@@ -150,12 +153,18 @@
 				addLoading: false,
 				addFormRules: {
 					name: [
-						{ required: true, message: '请输入姓名', trigger: 'blur' }
+						{ required: true, message: '姓名不能为空', trigger: 'blur' },
+						{min: 2, max: 10, message: '姓名长度应大于2个字', trigger: 'blur'}
+					],
+					password:[
+						{ required: true, message: '密码不能为空', trigger: 'blur' },
+						{min: 4, max: 10, message: '密码长度应大于4位', trigger: 'blur'}
 					]
 				},
 				//新增界面数据
 				addForm: {
 					name: '',
+					password: 0,
 					sex: -1,
 					age: 0,
 					position: -1,
