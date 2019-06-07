@@ -10,6 +10,11 @@ import overtime_ist from './components/overtime/approval_overtime'
 import overtime from './components/overtime/overtime'
 import hours from './components/hours/hours'
 import echarts from './components/charts/echarts.vue'
+import department from './components/department/department'
+import face from './components/face/face'
+import shift from './components/shift/shift'
+import sign from './components/sign/sign'
+
 
 let routes = [
     {
@@ -29,7 +34,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '用户管理',
-        iconCls: 'el-icon-message',//图标样式class
+        iconCls: 'fa fa-user-circle',//图标样式class
         children: [
             { path: '/main', component: Main, name: '主页', hidden: true },
             { path: '/table', component: Table, name: '用户编辑' },//对一般职员隐藏
@@ -50,7 +55,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '加班',
-        iconCls: 'fa fa-id-card-o',
+        iconCls: 'fa fa-coffee',
         children: [
             { path: '/overtime_list', component: overtime_ist, name: '加班申请列表' },
             { path:'/overtime', component: overtime, name:'申请加班'},
@@ -60,11 +65,52 @@ let routes = [
         path: '/',
         component: Home,
         name: '工时',
-        iconCls: 'fa fa-id-card-o',
+        iconCls: 'fa fa-clock-o',
         children: [
             { path: '/hours', component: hours, name: '工时记录' },
         ]
     },
+
+    {
+        path: '/',
+        component: Home,
+        name: '部门管理',
+        iconCls: 'fa fa-clock-o',
+        children: [
+            { path: '/department', component: department, name: '部门编辑' },
+        ]
+    },
+
+    {
+        path: '/',
+        component: Home,
+        name: '人脸信息',
+        iconCls: 'fa fa-clock-o',
+        children: [
+            { path: '/face', component: face, name: '人脸信息管理' },
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '排班信息',
+        iconCls: 'fa fa-clock-o',
+        children: [
+            { path: '/shift', component: shift, name: '排班信息列表' },
+        ]
+    },
+
+
+    {
+        path: '/',
+        component: Home,
+        name: '签到',
+        iconCls: 'fa fa-clock-o',
+        children: [
+            { path: '/sign', component: sign, name: '人脸签到/二维码签到' },
+        ]
+    },
+
     {
         path: '/',
         component: Home,
@@ -74,6 +120,7 @@ let routes = [
             { path: '/echarts', component: echarts, name: 'echarts' }
         ]
     },
+
     {
         path: '*',
         hidden: true,

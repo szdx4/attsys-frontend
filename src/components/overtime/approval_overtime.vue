@@ -84,10 +84,10 @@
                 this.getList();
             },
 
-            statusEdit_pass(){
+            statusEdit_pass(){//请假通过，向后台发送
 
             },
-            statusEdit_reject(){
+            statusEdit_reject(){//请假不通过，向后台发送
 
             },
 
