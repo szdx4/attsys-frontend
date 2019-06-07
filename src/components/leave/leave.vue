@@ -3,6 +3,9 @@
 		<el-form-item label="申请人">
 			<el-input v-model="form.name"></el-input>
 		</el-form-item>
+        <el-form-item label="ID">
+            <el-input v-model="form.id"></el-input>
+        </el-form-item>
 		<el-form-item label="开始时间">
 			<el-col :span="11">
 				<el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="form.start_at" style="width: 100%;" @change_start="change_start"></el-date-picker>
@@ -32,6 +35,7 @@
 			return {
 				form: {
 					name: '',
+                    id: '',
 					region: '',
 					start_at: '',
 					end_at: '',
@@ -54,11 +58,11 @@
 			},
 
 			leaverequest(){
-				let user_id = 1
+				let user_id = this.form.id;
 				var leave_info = {
 
 				};
-				LeaveRequest(para).then((res) => {   //向后端发送请求
+				LeaveRequest(leave_info, user_id).then((res) => {   //向后端发送请求
 				});
 			}
 		}
