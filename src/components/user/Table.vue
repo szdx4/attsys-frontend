@@ -21,6 +21,8 @@
 			</el-table-column>
 			<el-table-column type="index" width="60">
 			</el-table-column>
+			<el-table-column prop="id" label="id" width="120" sortable>
+			</el-table-column>
 			<el-table-column prop="name" label="姓名" width="120" sortable>
 			</el-table-column>
 			<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
@@ -33,8 +35,8 @@
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+					<el-button size="small" @click="handleEdit(scope.$id, scope.row)">编辑</el-button>
+					<el-button type="danger" size="small" @click="handleDel(scope.$id, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>

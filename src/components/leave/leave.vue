@@ -60,9 +60,18 @@
 			leaverequest(){
 				let user_id = this.form.id;
 				var leave_info = {
-
+					start_at: this.form.start_at,
+					end_at: this.form.end_at,
+					remark: this.form.remark
 				};
-				LeaveRequest(leave_info, user_id).then((res) => {   //向后端发送请求
+				LeaveRequest(leave_info, user_id).then((res) => {
+					let { code, msg} = data;
+					if (code !== 201) {
+						this.$message({
+							message: msg,
+							type: 'error'
+						});
+					}
 				});
 			}
 		}
