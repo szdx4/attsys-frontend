@@ -23,17 +23,18 @@
       return {
         logining: false,
         ruleForm2: {
-          account: 'admin',
-          checkPass: '123456'
+          account: '',
+          checkPass: ''
         },
         rules2: {
           account: [
-            { required: true, message: '请输入账号', trigger: 'blur' },
-            //{ validator: validaePass }
+            { required: true, message: '账号不为空', trigger: 'blur' },
+            {min: 2, max: 10, message: '账号长度应大于2个字', trigger: 'blur'}
           ],
           checkPass: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            //{ validator: validaePass2 }
+            { required: true, message: '密码不为空', trigger: 'blur' },
+            {min: 4, max: 10, message: '密码长度应大于4位', trigger: 'blur'}
+
           ]
         },
         checked: true
