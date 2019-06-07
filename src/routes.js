@@ -9,7 +9,6 @@ import approval_leave from './components/leave/approval_leave.vue'
 import overtime_ist from './components/overtime/approval_overtime'
 import overtime from './components/overtime/overtime'
 import hours from './components/hours/hours'
-import echarts from './components/charts/echarts.vue'
 import department from './components/department/department'
 import face from './components/face/face'
 import shift from './components/shift/shift'
@@ -111,15 +110,6 @@ let routes = [
         ]
     },
 
-    {
-        path: '/',
-        component: Home,
-        name: 'Charts',
-        iconCls: 'fa fa-bar-chart',
-        children: [
-            { path: '/echarts', component: echarts, name: 'echarts' }
-        ]
-    },
 
     {
         path: '*',
