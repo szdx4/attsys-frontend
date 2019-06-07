@@ -127,12 +127,14 @@
 
             getdepartment(){
               let para ={};
-              getDepartment(para).then((res) =>{//向后端发送 获得指定部门信息的请求
+              getDepartment(para).then((res) =>{
+                  //向后端发送 获得指定部门信息的请求
 
               })
             },
 
-            getList() { //向后端请求部门列表
+            getList() {
+                //向后端请求部门列表
                 let para = {
                 };
                 this.listLoading = true;
