@@ -5,7 +5,7 @@
         <el-table :data="hoursList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="index" width="60">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="360" sortable>
+            <el-table-column prop="user_name" label="姓名" width="360" sortable>
             </el-table-column>
             <el-table-column prop="date" label="日期" width="360" sortable>
             </el-table-column>
@@ -44,7 +44,7 @@
                 this.loading = true;
                 //ok
                 getHours().then((res) => {
-                    this.hoursList = res.data.hoursList;
+                    this.hoursList = res.data;
                     this.loading = false;
                 });
             },
