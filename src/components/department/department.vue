@@ -19,7 +19,7 @@
         <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column type="index" width="60">
+            <el-table-column prop="id" width="60" label="id" align="center" sortable>
             </el-table-column>
             <el-table-column prop="name" label="部门名称" width="425" align="center" sortable>
             </el-table-column>
@@ -179,11 +179,6 @@
             },
             //编辑
             editSubmit: function () {
-                this.$refs.editForm.validate((valid) => {
-                    if (valid) {
-                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.editLoading = true;
-                            //NProgress.start();
                             let para = Object.assign({}, this.editForm);
                             editDepartment(para).then((res) => {//向后端发送编辑信息
 
@@ -191,13 +186,9 @@
                                     message: '提交成功',
                                     type: 'success'
                                 });
-                                this.$refs['editForm'].resetFields();
-                                this.editFormVisible = false;
-                                this.getList();
-                            });
+
                         });
-                    }
-                });
+
             },
             //新增
             addSubmit: function () {

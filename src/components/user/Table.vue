@@ -19,22 +19,20 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column type="index" width="60" >
+			<el-table-column prop="id" label="id"  min-width="150" align="center"sortable>
 			</el-table-column>
-			<el-table-column prop="id" label="工号" width="120" sortable>
+			<el-table-column prop="name" label="姓名"  min-width="150" align="center"sortable>
 			</el-table-column>
-			<el-table-column prop="name" label="姓名" width="120" sortable>
+			<el-table-column prop="role" label="职务"  min-width="150"align="center" :formatter="formatPosition" sortable>
 			</el-table-column>
-			<el-table-column prop="role" label="职务" width="100" :formatter="formatPosition" sortable>
+			<el-table-column prop="department" label="部门" min-width="150"align="center" sortable>
 			</el-table-column>
-			<el-table-column prop="department" label="部门" min-width="180" sortable>
+			<el-table-column prop="hours" label="工时"  min-width="150" align="center" sortable>
 			</el-table-column>
-			<el-table-column prop="hours" label="工时" width="180" align="center" sortable>
-			</el-table-column>
-			<el-table-column label="操作" width="150">
+			<el-table-column label="操作" width="150" align="center">
 				<template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+					<el-button size="small" @click="handleEdit( scope.row)">编辑</el-button>
+					<el-button type="danger" size="small" @click="handleDel( scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -178,7 +176,7 @@
 				});
 			},
 			//删除
-			handleDel: function (index, row) {
+			handleDel: function ( row) {
 				this.$confirm('确认删除该记录吗?', '提示', {
 					type: 'warning'
 				}).then(() => {
@@ -199,7 +197,7 @@
 				});
 			},
 			//显示编辑界面
-			handleEdit: function (index, row) {
+			handleEdit: function ( row) {
 				this.editFormVisible = true;
 				this.editForm = Object.assign({}, row);
 			},

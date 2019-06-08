@@ -22,7 +22,7 @@
                 </el-table-column>
                 <el-table-column prop="end_at" label="结束时间" width="180"  sortable>
                 </el-table-column>
-                <el-table-column prop="remark" label="完成状态" width="180" sortable>>
+                <el-table-column prop="remark" label="完成状态" width="180" sortable>
                 </el-table-column>
                 <el-table-column prop="status" label="状态" :formatter=formatStatus width="172"  sortable>
                 </el-table-column>

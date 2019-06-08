@@ -4,7 +4,7 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="姓名"></el-input>
+                    <el-input v-model="filters.name" placeholder="用户id"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button   type="primary" v-on:click="getfaceuser">查询</el-button>
@@ -16,18 +16,20 @@
         <el-table :data="facelist" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column type="index" width="60">
+            <el-table-column prop="id" label="序号" min-width="100">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="250" align="center" sortable>
+            <el-table-column prop="name" label="姓名" min-width="150" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="250" align="center" sortable  :formatter="formatStatus">
+            <el-table-column prop="user_id" label="工号" min-width="100">
             </el-table-column>
-            <el-table-column prop="status" label="人脸信息" width="277" align="center" sortable>
+            <el-table-column prop="status" label="状态" min-width="150" align="center" sortable  :formatter="formatStatus">
+            </el-table-column>
+            <el-table-column prop="status" label="人脸信息" min-width="200" align="center" sortable>
                 <template scope="scope">
-                <el-button size="small" width="180" align="center" sortable @click="showPicture(scope.row)">查看图片</el-button>
+                <el-button size="small" min-width="180" align="center" sortable @click="showPicture(scope.row)">查看图片</el-button>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="250">
+            <el-table-column label="操作" min-width="250" align="center">
                 <template scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">更新</el-button>
                     <el-button size="small" @click="handleApproval(scope.$index, scope.row)">审核</el-button>
@@ -85,6 +87,7 @@
                 filters: {
                     name: ''
                 },
+
                 facelist: [],
                 total: 0,
                 page: 1,
@@ -106,7 +109,7 @@
                 //编辑界面数据
                 editForm: {
                     status:'',
-                    face_id:''
+                    user_id:'',
                 },
 
                 addFormVisible: false,//新增界面是否显示
@@ -116,9 +119,10 @@
                         { required: true, message: '请选择状态', trigger: 'blur' }
                     ]
                 },
-                //新增界面数据
+                //审核界面数据
                 addForm: {
-                    status: 'wait'
+                    status: 'wait',
+                    face_id:'',
                 }
 
             }
