@@ -7,7 +7,7 @@
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
 				<el-form-item>
-					<el-button type="primary" v-on:click="getUsers">查询</el-button>
+					<el-button type="primary" v-on:click="getuser">查询</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="handleAdd">新增</el-button>
@@ -19,13 +19,13 @@
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" width="55">
 			</el-table-column>
-			<el-table-column type="index" width="60">
+			<el-table-column type="index" width="60" >
 			</el-table-column>
-			<el-table-column prop="id" label="id" width="120" sortable>
+			<el-table-column prop="id" label="工号" width="120" sortable>
 			</el-table-column>
 			<el-table-column prop="name" label="姓名" width="120" sortable>
 			</el-table-column>
-			<el-table-column prop="position" label="职务" width="100" :formatter="formatPosition" sortable>
+			<el-table-column prop="role" label="职务" width="100" :formatter="formatPosition" sortable>
 			</el-table-column>
 			<el-table-column prop="department" label="部门" min-width="180" sortable>
 			</el-table-column>
@@ -33,15 +33,14 @@
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
-					<el-button size="small" @click="handleEdit(scope.$id, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="handleDel(scope.$id, scope.row)">删除</el-button>
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
 			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
 			</el-pagination>
 		</el-col>
@@ -52,23 +51,15 @@
 				<el-form-item label="姓名" prop="name">
 					<el-input v-model="editForm.name" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="editForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="editForm.age" :min="0" :max="200"></el-input-number>
-				</el-form-item>
 				<el-form-item label="职务">
-					<el-radio-group v-model="editForm.position">
-						<el-radio class="radio" :label="1">经理</el-radio>
-						<el-radio class="radio" :label="0">职员</el-radio>
+					<el-radio-group v-model="editForm.role">
+						<el-radio label="master">经理</el-radio>
+						<el-radio label="manager">主管</el-radio>
+						<el-radio label="user">职员</el-radio>
 					</el-radio-group>
 				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="editForm.addr"></el-input>
+				<el-form-item label="工时">
+					<el-input v-model="editForm.hours" auto-complete="off"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -86,24 +77,10 @@
 				<el-form-item label="密码" prop="password">
 					<el-input v-model="addForm.password" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="性别">
-					<el-radio-group v-model="addForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
+				<el-form-item label="部门" prop="department">
+					<el-input v-model="addForm.department" auto-complete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="年龄">
-					<el-input-number v-model="addForm.age" :min="0" :max="200"></el-input-number>
-				</el-form-item>
-				<el-form-item label="职务">
-					<el-radio-group v-model="addForm.position">
-						<el-radio class="radio" :label="1">经理</el-radio>
-						<el-radio class="radio" :label="0">职员</el-radio>
-					</el-radio-group>
-				</el-form-item>
-				<el-form-item label="地址">
-					<el-input type="textarea" v-model="addForm.addr"></el-input>
-				</el-form-item>
+
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click.native="addFormVisible = false">取消</el-button>
@@ -116,7 +93,7 @@
 <script>
 	import util from '../../common/js/util'
 	//import NProgress from 'nprogress'
-	import { getUserListPage, removeUser, batchRemoveUser, editUser, addUser } from '../../api/api';
+	import { getUserListPage,getUser,removeUser,  editUser, addUser } from '../../api/api';
 
 	export default {
 		data() {
@@ -141,10 +118,8 @@
 				editForm: {
 					id: 0,
 					name: '',
-					sex: -1,
-					age: 0,
-					position: -1,
-					addr: ''
+					role: '',
+					hours:0,
 				},
 
 				addFormVisible: false,//新增界面是否显示
@@ -163,39 +138,43 @@
 				addForm: {
 					name: '',
 					password: 0,
-					sex: -1,
-					age: 0,
-					position: -1,
-					addr: ''
+					department:'',
 				}
 
 			}
 		},
 		methods: {
-			//性别显示转换
-			formatSex: function (row, column) {
-				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
-			},
 			formatPosition: function(row, column){
-				return row.position == 1 ? '经理' : row.position == 0 ? '职员' : '未知';
+				if(row.role=='manager')
+					role = '主管';
+				else if(row.role=='master')
+					role = '经理';
+				else role = '员工';
+				return role;
 			},
 			handleCurrentChange(val) {
 				this.page = val;
 				this.getUsers();
 			},
+
+			getuser(){//向后台发送请求，查询指定用户
+			let para = {};
+				getUser(para).then((res) =>{
+
+				});
+
+			},
+
+
 			//获取用户列表
 			getUsers() {
 				let para = {
-					page: this.page,
-					name: this.filters.name
+
 				};
-				this.listLoading = true;
+				//this.listLoading = true;
 				//NProgress.start();
 				getUserListPage(para).then((res) => {
-					this.total = res.data.total;
-					this.users = res.data.users;
-					this.listLoading = false;
-					//NProgress.done();
+
 				});
 			},
 			//删除
@@ -231,7 +210,7 @@
 					name: '',
 					sex: -1,
 					age: 0,
-					position: '',
+					role: '',
 					addr: ''
 				};
 			},
@@ -286,28 +265,6 @@
 			selsChange: function (sels) {
 				this.sels = sels;
 			},
-			//批量删除
-			batchRemove: function () {
-				var ids = this.sels.map(item => item.id).toString();
-				this.$confirm('确认删除选中记录吗？', '提示', {
-					type: 'warning'
-				}).then(() => {
-					this.listLoading = true;
-					//NProgress.start();
-					let para = { ids: ids };
-					batchRemoveUser(para).then((res) => {
-						this.listLoading = false;
-						//NProgress.done();
-						this.$message({
-							message: '删除成功',
-							type: 'success'
-						});
-						this.getUsers();
-					});
-				}).catch(() => {
-
-				});
-			}
 		},
 		mounted() {
 			this.getUsers();

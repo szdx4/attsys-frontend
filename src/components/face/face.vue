@@ -18,16 +18,16 @@
             </el-table-column>
             <el-table-column type="index" width="60">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180" align="center" sortable>
+            <el-table-column prop="name" label="姓名" width="250" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="180" align="center" sortable>
+            <el-table-column prop="status" label="状态" width="250" align="center" sortable  :formatter="formatStatus">
             </el-table-column>
-            <el-table-column prop="status" label="人脸信息" width="180" align="center" sortable>
+            <el-table-column prop="status" label="人脸信息" width="277" align="center" sortable>
                 <template scope="scope">
                 <el-button size="small" width="180" align="center" sortable @click="showPicture(scope.row)">查看图片</el-button>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="150">
+            <el-table-column label="操作" width="250">
                 <template scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">更新</el-button>
                     <el-button size="small" @click="handleApproval(scope.$index, scope.row)">审核</el-button>
@@ -165,6 +165,16 @@
             showPicture(row){
                     this.pictureFormVisible = true;
                     this.pictureForm = Object.assign({}, row);
+            },
+
+            formatStatus(row){
+                if (row.status=='wait')
+                    St = '等待审核';
+                else if(row.status=='available')
+                    St = '通过';
+                else (row.status=='discarded')
+                St = '丢弃';
+                return St;
             },
 
             imgUrl(){

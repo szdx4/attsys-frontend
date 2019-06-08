@@ -49,9 +49,6 @@
         <!--新增界面-->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-                <el-form-item label="部门名称" prop="name">
-                    <el-input v-model="addForm.name" auto-complete="off"></el-input>
-                </el-form-item>
                 <el-form-item label="开始时间">
                     <el-col :span="11">
                         <el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addForm.start_at" style="width: 100%;" ></el-date-picker>
@@ -62,10 +59,12 @@
                         <el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addForm.end_at" style="width: 100%;" ></el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-radio-group v-model="addForm.type">
-                    <el-radio-button label="normal">正常</el-radio-button>
-                    <el-radio-button label="allovertime">额外</el-radio-button>
-                </el-radio-group>
+                <el-form-item label="排班类型">
+                    <el-radio-group v-model="addForm.type" >
+                        <el-radio-button label="normal">正常</el-radio-button>
+                        <el-radio-button label="allovertime">额外</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="addFormVisible = false">取消</el-button>
@@ -86,10 +85,12 @@
                         <el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.end_at" style="width: 100%;" ></el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-radio-group v-model="addDepartmentForm.type">
+                <el-form-item label="排班类型">
+                <el-radio-group v-model="addDepartmentForm.type" >
                     <el-radio-button label="normal">正常</el-radio-button>
                     <el-radio-button label="allovertime">额外</el-radio-button>
                 </el-radio-group>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="addDepartmentFormVisible = false">取消</el-button>

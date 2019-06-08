@@ -14,9 +14,9 @@
                 </el-form>
             </el-col>
             <el-table :data="overtimeList" highlight-current-row v-loading="loading" style="width: 100%;">
-                <el-table-column type="index" width="60">
+                <el-table-column type="index" width="100" label="序号">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="180" sortable>
+                <el-table-column prop="name" label="姓名" width="150" sortable>
                 </el-table-column>
                 <el-table-column prop="start_at" label="开始时间" width="180"  sortable>
                 </el-table-column>
@@ -24,12 +24,11 @@
                 </el-table-column>
                 <el-table-column prop="remark" label="完成状态" width="180" sortable>>
                 </el-table-column>
-                <el-table-column prop="status" label="状态" width="180"  sortable>
+                <el-table-column prop="status" label="状态" :formatter=formatStatus width="172"  sortable>
                 </el-table-column>
                 <el-table-column label="操作" width="180" sortable>
                     <template scope="scope">
-                        <el-button size="small" @click="statusEdit_pass">通过</el-button>
-                        <el-button size="small" @click="statusEdit_reject">不通过</el-button>
+                        <el-button size="small" @click="handleApproval(scope.$index, scope.row)">审核</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -37,6 +36,15 @@
                 <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
                 </el-pagination>
             </el-col>
+
+            <el-dialog title="审核" v-model="editFormVisible" :close-on-click-modal="false">
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click.native="editFormVisible = false">取消</el-button>
+                    <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+                </div>
+            </el-dialog>
+
         </template>
 
     </section>
@@ -57,10 +65,15 @@
                 loading: false,
                 overtimeList: [
                 ],
+                editFormVisible:false,
+                editForm:{
+
+                },
+
             }
         },
         methods: {
-           //获取指定用户
+           //向后台发送请求，获取指定用户加班信息
             getUser(){
               let para ={
 
@@ -68,6 +81,10 @@
               getOvertimeUser(para).then((res)=>{
 
               });
+            },
+            handleApproval: function (index, row) {
+                this.editFormVisible = true;
+                this.editForm =  Object.assign({}, row);
             },
             //获取列表
             getList: function () {
@@ -83,13 +100,19 @@
                 this.page = val;
                 this.getList();
             },
-
-            statusEdit_pass(){//请假通过，向后台发送
-
+            formatStatus(row){
+                if (row.status=='wait')
+                    St = '等待审核';
+                else if(row.status=='pass')
+                    St = '通过';
+                else (row.status=='reject')
+                    St = '拒绝';
+                return St;
             },
-            statusEdit_reject(){//请假不通过，向后台发送
+            editSubmit: function () {//向后台发送审核信息
 
-            },
+            }
+
 
         },
         mounted() {

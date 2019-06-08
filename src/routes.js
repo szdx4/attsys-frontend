@@ -4,7 +4,6 @@ import Home from './components/Home.vue'
 import Main from './components/Main.vue'
 import Table from './components/user/Table.vue'
 import leave from './components/leave/leave.vue'
-import user from './components/user/user.vue'
 import approval_leave from './components/leave/approval_leave.vue'
 import overtime_ist from './components/overtime/approval_overtime'
 import overtime from './components/overtime/overtime'
@@ -37,7 +36,6 @@ let routes = [
         children: [
             { path: '/main', component: Main, name: '主页', hidden: true },
             { path: '/table', component: Table, name: '用户编辑' },//对一般职员隐藏
-            { path: '/user', component: user, name: '列表' },
         ]
     },
     {
