@@ -103,6 +103,8 @@ export const editFaceUser = (id, params) => { return axios.post(`${base}/face/us
 //审核人脸信息
 export const faceApproval = (id, params) => { return axios.put(`${base}/face/user/${id}`, { params: params });};
 
+export const getFaceList =  (id,params) => { return axios.get(`${base}/face`, { params: params });}
+
 
 //**************************************************签到管理**************************************************
 

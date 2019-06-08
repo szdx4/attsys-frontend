@@ -134,9 +134,6 @@
                //     this.listloading = false;
                // });
             },
-            reject_show(){
-                this.delivery = true;
-            },
             selsChange: function (sels) {
                 this.sels = sels;
             },
