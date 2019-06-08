@@ -172,7 +172,7 @@
                     }
                 });
             },
-            approvalSubmit:function(){/向后端发送审核信息
+            approvalSubmit:function(){//向后端发送审核信息
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {

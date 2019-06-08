@@ -8,12 +8,12 @@
         </el-form-item>
 		<el-form-item label="开始时间">
 			<el-col :span="11">
-				<el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="form.start_at" style="width: 100%;" @change_start="change_start"></el-date-picker>
+				<el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="form.start_at" style="width: 100%;" @change_start="change_start"></el-date-picker>
 			</el-col>
 		</el-form-item>
 		<el-form-item label="结束时间">
 			<el-col :span="11">
-				<el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="form.end_at" style="width: 100%;" @change_end="change_end"></el-date-picker>
+				<el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="form.end_at" style="width: 100%;" @change_end="change_end"></el-date-picker>
 			</el-col>
 		</el-form-item>
 
