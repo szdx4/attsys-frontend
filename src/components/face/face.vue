@@ -62,7 +62,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="addFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
+                <el-button type="primary" @click.native="approvalSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
     </section>
@@ -172,7 +172,27 @@
                     }
                 });
             },
-            //新增
+            approvalSubmit:function(){/向后端发送审核信息
+                this.$refs.addForm.validate((valid) => {
+                    if (valid) {
+                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            this.addLoading = true;
+                            let para = Object.assign({}, this.addForm);
+                            faceApproval(para).then((res) => {//向后端发送更新信息
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                this.$refs['addForm'].resetFields();
+                                this.addFormVisible = false;
+                                this.getList();
+                            });
+                        });
+                    }
+                });
+            },
+
+
             selsChange: function (sels) {
                 this.sels = sels;
             },

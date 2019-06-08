@@ -154,11 +154,11 @@
 				addFormRules: {
 					name: [
 						{ required: true, message: '姓名不能为空', trigger: 'blur' },
-						{min: 2, max: 10, message: '姓名长度应大于2个字', trigger: 'blur'}
+						{ min: 2, max: 10, message: '姓名长度应大于2个字', trigger: 'blur'}
 					],
 					password:[
 						{ required: true, message: '密码不能为空', trigger: 'blur' },
-						{min: 4, max: 10, message: '密码长度应大于4位', trigger: 'blur'}
+						{ min: 4, max: 10, message: '密码长度应大于4位', trigger: 'blur'}
 					]
 				},
 				//新增界面数据
