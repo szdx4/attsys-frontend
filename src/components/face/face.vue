@@ -23,12 +23,14 @@
             <el-table-column prop="status" label="状态" width="180" align="center" sortable>
             </el-table-column>
             <el-table-column prop="status" label="人脸信息" width="180" align="center" sortable>
-                <--!我是预计在这里加一个按钮，点击可以查看人脸图像，但是具体从后台收到base64编码之后怎么还原成图像，有待商榷-->
+                <template scope="scope">
+                <el-button size="small" width="180" align="center" sortable @click="showPicture(scope.row)">查看图片</el-button>
+                </template>
             </el-table-column>
             <el-table-column label="操作" width="150">
                 <template scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">更新</el-button>
-                    <el-button type="danger" size="small" @click="handleApproval(scope.$index, scope.row)">审核</el-button>
+                    <el-button size="small" @click="handleApproval(scope.$index, scope.row)">审核</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -51,12 +53,12 @@
         <!--审核界面-->
         <el-dialog title="审核" v-model="addFormVisible" :close-on-click-modal="false">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-                <el-form-item label="部门名称" prop="name">
+                <el-form-item label="状态选择" prop="name">
                     <el-radio-group v-model="addForm.status">
-                        <el-radio-button label="discarded">丢弃</el-radio-button>
-                        <el-radio-button label="wait">等待</el-radio-button>
-                        <el-radio-button label="available">通过</el-radio-button>
-                        <--!所以available翻译成啥合适呢（思考）-->
+                        <el-radio label="discarded">丢弃</el-radio>
+                        <el-radio label="wait">等待</el-radio>
+                        <el-radio label="available">通过</el-radio>
+                        <!--所以available翻译成啥合适呢（思考）-->
                     </el-radio-group>
                 </el-form-item>
             </el-form>
@@ -64,6 +66,12 @@
                 <el-button @click.native="addFormVisible = false">取消</el-button>
                 <el-button type="primary" @click.native="approvalSubmit" :loading="addLoading">提交</el-button>
             </div>
+        </el-dialog>
+
+        <el-dialog title="人脸" v-model="pictureFormVisible" :close-on-click-modal="false">
+            <el-form :model="pictureForm" ref="pictureForm" >
+                <img :src="pictureForm.info" alt="" id="imginit" align="center">
+            </el-form>
         </el-dialog>
     </section>
 </template>
@@ -82,7 +90,7 @@
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
-
+                pictureFormVisible:false,
                 editFormVisible: false,//编辑界面是否显示
                 editLoading: false,
                 editFormRules: {
@@ -90,6 +98,11 @@
                         { required: true, message: '请输入姓名', trigger: 'blur' }
                     ]
                 },
+
+                pictureForm:{
+                    info:'',
+                },
+
                 //编辑界面数据
                 editForm: {
                     status:'',
@@ -99,8 +112,8 @@
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
                 addFormRules: {
-                    name: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' }
+                    status: [
+                        { required: true, message: '请选择状态', trigger: 'blur' }
                     ]
                 },
                 //新增界面数据
@@ -127,7 +140,7 @@
             getList() { //向后端请求排班列表
                 let para = {
                 };
-                this.listLoading = true;
+                //this.listLoading = true;
                 //NProgress.start();
                 getFaceList(para).then((res) => {
 
@@ -146,11 +159,18 @@
             //显示新增界面
             handleAdd: function () {
                 this.addFormVisible = true;
-                this.addForm = {
-                    name: '',
-                    manager: 1
-                };
+                this.addForm = Object.assign({},row);
             },
+
+            showPicture(row){
+                    this.pictureFormVisible = true;
+                    this.pictureForm = Object.assign({}, row);
+            },
+
+            imgUrl(){
+              return this.pictureForm.info;
+            },
+
             //更新人脸信息
             editSubmit: function () {
                 this.$refs.editForm.validate((valid) => {
@@ -191,6 +211,7 @@
                     }
                 });
             },
+
 
 
             selsChange: function (sels) {

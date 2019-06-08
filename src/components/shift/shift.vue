@@ -164,8 +164,6 @@
             getList() { //向后端请求排班列表
                 let para = {
                 };
-                //this.listLoading = true;
-                //NProgress.start();
                 getShiftList(para).then((res) => {
 
                 });
