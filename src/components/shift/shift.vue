@@ -78,22 +78,22 @@
             <el-form :model="addDepartmentForm" label-width="80px" :rules="addDepartmentFormRules" ref="addForm">
                 <el-form-item label="开始时间">
                     <el-col :span="11">
-                        <el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addForm.start_at" style="width: 100%;" @change_start="change_start"></el-date-picker>
+                        <el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.start_at" style="width: 100%;" @change_start="change_start"></el-date-picker>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="结束时间">
                     <el-col :span="11">
-                        <el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addForm.end_at" style="width: 100%;" @change_end="change_end"></el-date-picker>
+                        <el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.end_at" style="width: 100%;" @change_end="change_end"></el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-radio-group v-model="addForm.type">
+                <el-radio-group v-model="addDepartmentForm.type">
                     <el-radio-button label="normal">正常</el-radio-button>
                     <el-radio-button label="allovertime">额外</el-radio-button>
                 </el-radio-group>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click.native="addFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
+                <el-button @click.native="addDepartmentFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="addDepartmentSubmit" :loading="addDepartmentloading">提交</el-button>
             </div>
         </el-dialog>
 
@@ -102,7 +102,7 @@
 
 <script>
     import { getDepartmentList, addDepartment, deletDepartment, editDepartment, getDepartment} from '../../api/api'
-    import { getShiftList, addShift, deletShift, editShift, getDepartmentShift} from "../../api/api";
+    import { getShiftList, addShift, deletShift, addDepartmentShift} from "../../api/api";
 
     export default {
         data() {
@@ -116,13 +116,6 @@
                 listLoading: false,
                 sels: [],//列表选中列
 
-                editFormVisible: false,//编辑界面是否显示
-                editLoading: false,
-                editFormRules: {
-                    name: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' }
-                    ]
-                },
                 //编辑界面数据
                 editForm: {
                     id: 0,
@@ -186,7 +179,7 @@
                     let para = {
 
                     };
-                    deletDepartment(para).then((res) => {
+                    deletShift(para).then((res) => {
                         //这里需要加参数传递
                         this.$message({
                             message: '删除成功',
@@ -198,11 +191,6 @@
 
                 });
             },
-            //显示编辑界面
-            handleEdit: function (index, row) {
-                this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
-            },
             //显示新增界面
             handleAdd: function () {
                 this.addFormVisible = true;
@@ -213,28 +201,6 @@
                 this.addDepartmentFormVisible = true;
             },
 
-            //编辑
-            editSubmit: function () {
-                this.$refs.editForm.validate((valid) => {
-                    if (valid) {
-                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.editLoading = true;
-                            //NProgress.start();
-                            let para = Object.assign({}, this.editForm);
-                            editDepartment(para).then((res) => {//向后端发送编辑信息
-
-                                this.$message({
-                                    message: '提交成功',
-                                    type: 'success'
-                                });
-                                this.$refs['editForm'].resetFields();
-                                this.editFormVisible = false;
-                                this.getList();
-                            });
-                        });
-                    }
-                });
-            },
             //新增
             addSubmit: function () {
                 this.$refs.addForm.validate((valid) => {
@@ -243,7 +209,7 @@
                             this.addLoading = true;
 
                             let para = Object.assign({}, this.addForm);
-                            addDepartment(para).then((res) => { //向后端发送新增部门信息
+                            addShift(para).then((res) => { //向后端发送新增部门信息
                                 this.addLoading = false;
 
                                 this.$message({
@@ -252,6 +218,28 @@
                                 });
                                 this.$refs['addForm'].resetFields();
                                 this.addFormVisible = false;
+                                this.getList();
+                            });
+                        });
+                    }
+                });
+            },
+            addDepartmentSubmit: function () {
+                this.$refs.addForm.validate((valid) => {
+                    if (valid) {
+                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            this.addDepartmentloading = true;
+
+                            let para = Object.assign({}, this.addDepartmentForm);
+                            addDepartmentShift(para).then((res) => { //向后端发送新增部门信息
+                                this.addLoading = false;
+
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                this.$refs['addDepartmentForm'].resetFields();
+                                this.addDepartmentFormVisible = false;
                                 this.getList();
                             });
                         });

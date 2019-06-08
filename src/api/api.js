@@ -88,8 +88,11 @@ export const getShiftList = params => {return axios.get(`${base}/shift`,{ params
 //添加排班
 export const addShift = (id, params) => { return axios.post(`${base}/shift/user/${id}`,{ params:params});};
 
-//获取部门排班
-export const getDepartmentShift = params => { return axios.get(`${base}/shift/department`,{ params: params});};
+//添加部门排班
+export const addDepartmentShift = params => { return axios.get(`${base}/shift/department`,{ params: params});};
+
+//删除排班
+export const deletShift = params => { return axios.post(`${base}/shift/${id}`,{ params: params});};
 
 
 //**************************************************人脸信息**************************************************
