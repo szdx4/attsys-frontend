@@ -45,7 +45,7 @@ export const getUserList = params => {
 // password: 密码
 // department: 部门
 export const addUser = params => {
-    return instance.post(`/user`, params ); // return id
+    return instance.post(`/user`, params, {headers: getHeaders()}); // return id
 };
 
 // 编辑用户
@@ -63,13 +63,6 @@ export const getUser = (id, params) => {
         headers: getHeaders(),
         params: params
     });
-    //  instance.get("test", {
-    //     headers: getHeaders(),
-    //     params: params
-    // })
-    //  instance.post("fsdsf", params)
-    //  instance.put("fdsfs", params)
-    //  instance.delete("/user/${id}")
 };
 
 // 移除特定用户

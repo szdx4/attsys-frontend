@@ -4,7 +4,7 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="姓名"></el-input>
+                    <el-input v-model="filters.id" placeholder="id"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" v-on:click="getuser">查询</el-button>
@@ -26,13 +26,13 @@
             </el-table-column>
             <el-table-column prop="role" label="职务" min-width="150" align="center" :formatter="formatPosition" sortable>
             </el-table-column>
-            <el-table-column prop="department" label="部门" min-width="150" align="center" sortable>
+            <el-table-column prop="department.id" label="部门" min-width="150" align="center" sortable>
             </el-table-column>
             <el-table-column prop="hours" label="工时" min-width="150" align="center" sortable>
             </el-table-column>
             <el-table-column label="操作" width="150" align="center">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit( scope.row)">编辑</el-button>
+                    <el-button size="small" @click="handleEdit(scope.row)">编辑</el-button>
                     <el-button type="danger" size="small" @click="handleDel( scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -98,7 +98,7 @@
         data() {
             return {
                 filters: {
-                    name: ''
+                    id: ''
                 },
                 users: [],
                 total: 0,
@@ -118,7 +118,8 @@
                     id: 0,
                     name: '',
                     role: '',
-                    hours: 0,
+                    department: 0,
+                    hours: 0
                 },
 
                 addFormVisible: false,//新增界面是否显示
@@ -154,12 +155,13 @@
                 this.page = val;
                 this.getUsers();
             },
-            //向后台发送请求，查询指定用户
             getuser() {
                 let para = {};
-                getUser(para).then((res) => {
-                    this.users = res.data
-
+                let user_id = parseInt(this.filters.id);
+                console.log(user_id);
+                getUser(user_id, para).then((res) => {
+                    console.log(res);
+                    this.users = res.data;
 
                 });
 
@@ -178,12 +180,11 @@
                 this.$confirm('确认删除该记录吗?', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.listLoading = true;
-                    //NProgress.start();
-                    let para = {id: row.id};
-                    removeUser(para).then((res) => {
-                        this.listLoading = false;
-                        //NProgress.done();
+                    // this.listLoading = true;
+                    let id = row.id;
+                    let para = {};
+                    removeUser(id, para).then((res) => {
+                        // this.listLoading = false;
                         this.$message({
                             message: '删除成功',
                             type: 'success'
@@ -215,13 +216,17 @@
                 this.$refs.editForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.editLoading = true;
-                            //NProgress.start();
-                            let para = Object.assign({}, this.editForm);
-                            //para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
-                            editUser(para).then((res) => {
-                                this.editLoading = false;
-                                //NProgress.done();
+                            // this.editLoading = true;
+                            let para = {
+                                name: this.editForm.name,
+                                department: this.editForm.department.id,
+                                role: this.editForm.role,
+                                hours: parseInt(this.editForm.hours)
+                            };
+                            let id = this.editForm.id;
+                            console.log(para);
+                            editUser(id, para).then((res) => {
+                                // this.editLoading = false;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
@@ -239,13 +244,15 @@
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.addLoading = true;
-                            //NProgress.start();
-                            let para = Object.assign({}, this.addForm);
-                            para.birth = (!para.birth || para.birth == '') ? '' : util.formatDate.format(new Date(para.birth), 'yyyy-MM-dd');
+                            // this.addLoading = true;
+                            let para = {
+                                name: this.addForm.name,
+                                password: this.addForm.password,
+                                department: parseInt(this.addForm.department)
+                            };
+                            console.log(para);
                             addUser(para).then((res) => {
-                                this.addLoading = false;
-                                //NProgress.done();
+                                // this.addLoading = false;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
