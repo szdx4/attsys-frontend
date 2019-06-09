@@ -147,7 +147,7 @@ export const LeaveRequest = (id, params) => {
 // 审核请假申请
 // status: 状态
 export const LeaveRequestApproval = (id, params) => {
-    return instance.put(`/leave/user/${id}`, params, {headers: getHeaders()});
+    return instance.put(`/leave/${id}`, params, {headers: getHeaders()});
 };
 
 // 销假

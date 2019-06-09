@@ -158,11 +158,15 @@
                 this.$refs.statusForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.editLoading = true;
-                            let id = sessionStorage
-                            let para =
-                            LeaveRequestApproval(para).then((res) => {
-                                this.editLoading = false;
+                            // this.editLoading = true;
+                            let id = this.statusForm.id;
+                            let para ={
+
+                                status: this.statusForm.status
+
+                            };
+                            LeaveRequestApproval(id, para).then((res) => {
+                                // this.editLoading = false;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'

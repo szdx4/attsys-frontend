@@ -63,7 +63,7 @@
             },
 
             leaverequest() {
-                let user_id = 1;
+                let user_id = localStorage.getItem('id');
                 let leave_info = {
                     start_at: this.form.start_at.toJSON(),
                     end_at: this.form.end_at.toJSON(),
@@ -78,7 +78,7 @@
                         });
                     }
                     else{
-                        this.message({
+                        this.$message({
                             message: '您的请假id是' + res.data.leave_id
                         })
                     }
