@@ -26,21 +26,17 @@ const getHeaders = () => {
 // **************************************************用户管理**************************************************
 
 // 登录
-// export const requestLogin = params => {
-//     return instance.post('/user/auth', params)
-// };
-
-//登录
 export const requestLogin = params => {
-    return axios.post(`/login`, params).then(res => res.data);
+    return instance.post('/user/auth', params)
 };
+
 
 // 获取用户列表
 // page: 分页
 export const getUserList = params => {
     return instance.get(`/user`, {
         headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
         },
         params: params

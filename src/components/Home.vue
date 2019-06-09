@@ -11,8 +11,6 @@
             </el-col>
             <el-col :span="4" class="userinfo">
                 <el-dropdown trigger="hover">
-                    <span class="el-dropdown-link userinfo-inner"><img
-                            :src="this.sysUserAvatar"/> {{sysUserName}}</span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>我的消息</el-dropdown-item>
                         <el-dropdown-item @click.native="sign">签到</el-dropdown-item>
@@ -123,8 +121,6 @@
                 sysName: '签到系统',
                 collapsed: false,
                 sysUserName: '',
-                sysUserAvatar: '',
-
                 signFormVisible: false,
                 signForm: {
                     qrcode: '',
@@ -214,9 +210,7 @@
         mounted() {
             var user = sessionStorage.getItem('user');
             if (user) {
-                user = JSON.parse(user);
-                this.sysUserName = user.name || '';
-                this.sysUserAvatar = user.avatar || '';
+                this.sysUserName = user || '';
             }
 
         }
@@ -225,7 +219,6 @@
 </script>
 
 <style scoped lang="scss">
-    //@import '~vars.scss';
 
     .container {
         position: absolute;

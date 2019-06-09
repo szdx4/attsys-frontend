@@ -64,8 +64,9 @@
                                 });
                             } else {
                                 console.log(res);
-                                localStorage.setItem('jwtToken', res.data);
+                                localStorage.setItem('token', res.data.token);
                                 this.$router.push({path: '/table'});
+                                sessionStorage.setItem('user', this.ruleForm2.account)
                             }
                         }).catch(err => {
                             console.log(err);

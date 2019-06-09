@@ -168,6 +168,8 @@
             getUsers() {
                 this.listLoading = true;
                 getUserList().then((res) => {
+                    this.users = res.data.data;
+                    this.listLoading = false;
 
                 });
             },
