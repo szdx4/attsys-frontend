@@ -2,9 +2,9 @@
     <section>
         <!--工具条-->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
+            <el-form :inline="true">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="姓名"></el-input>
+                    <el-input v-model="user_id" placeholder="用户id"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" v-on:click="getUser">查询</el-button>
@@ -19,7 +19,9 @@
             </el-table-column>
             <el-table-column prop="id" label="序号" align="center" min-width="60">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" align="center" min-width="120" sortable>
+            <el-table-column prop="user.name" label="姓名" align="center" min-width="120" sortable>
+            </el-table-column>
+            <el-table-column prop="user.id" label="工号" align="center" min-width="120" sortable>
             </el-table-column>
             <el-table-column prop="start_at" label="开始时间" align="center" min-width="180" sortable>
             </el-table-column>
@@ -44,21 +46,21 @@
 
         <el-dialog title="审核" v-model="statusFormVisible" :close-on-click-modal="false">
             <el-form :model="statusForm" label-width="80px" :rules="statusFormRules" ref="editForm">
-                <el-form-item label="姓名" prop="name">
-                    <el-input v-model="statusForm.name" auto-complete="off"></el-input>
+                <el-form-item label="工号" prop="id" align="left">
+                    <el-form-item :label="statusForm.user.id.toString()" auto-complete="off"></el-form-item>
+                </el-form-item>
+                <el-form-item label="姓名" prop="name" align="left">
+                    <el-form-item :label="statusForm.user.name" auto-complete="off"></el-form-item>
                 </el-form-item>
                 <el-form-item label="请假原因" prop="remark">
-                    <el-input v-model="statusForm.remark"></el-input>
+                    <el-form-item :label="statusForm.remark" auto-complete="off"></el-form-item>
                 </el-form-item>
-                <el-form-item label="审核">
-                    <el-radio-group v-model="statusForm.status">
-                        <el-radio class="radio" :label="'Pass'">通过</el-radio>
-                        <el-radio class="radio" :label="'Reject'" @change="change">不通过</el-radio>
-                        <el-radio class="radio" :label="'Wait'">暂不决定</el-radio>
+                <el-form-item label="审核" prop="status">
+                    <el-radio-group v-model="statusForm.status" >
+                        <el-radio class="radio" label="pass">通过</el-radio>
+                        <el-radio class="radio" label="reject">不通过</el-radio>
+                        <el-radio class="radio" label="wait">暂不决定</el-radio>
                     </el-radio-group>
-                </el-form-item>
-                <el-form-item label="审核意见" v-model="statusForm.delivery">
-                    <el-input></el-input>
                 </el-form-item>
             </el-form>
 
@@ -79,6 +81,7 @@
                 filters: {
                     name: ''
                 },
+                user_id:'',//查询用的Orz
 
                 total: 0,
                 page: 1,
@@ -86,26 +89,19 @@
                 sels: [],//列表选中列
                 editLoading: false,
                 leaveList: [
-                    {
-                        id: 6,
-                        name: '王X',
-                        user_id: 123,
-                        start_at: '2019-6-01 13:00',
-                        end_at: '2019-6-02 13:00',
-                        status: 'wait',
-                        remark: '身体原因'
-                    }
                 ],
                 statusFormVisible: false,
                 statusFormRules: {
-                    name: [
-                        {required: true, message: '请输入审核意见', trigger: 'blur'}
+                    status: [
+                        { required: true, message: '请选择审核意见', trigger: 'blur'}
                     ]
                 },
                 statusForm: {
                     id: 0,
-                    name: '',
-                    user_id: '',
+                    user:{
+                        id: 123,
+                        name:'王X'
+                    },
                     start_at: '',
                     end_at: '',
                     remark: 'Wait',
@@ -118,7 +114,7 @@
             //获取指定用户请假信息
             getUser() {
                 let para = {
-                    name: this.filters.name
+
                 }
                 getLeaveUser(para).then((res) => {
 
@@ -135,7 +131,7 @@
                 else return '未知状态';
             },
 
-            //获取请假列表
+            //向后台获取请假列表
             getList: function () {
                 let para = {
                     page: this.page,
@@ -158,9 +154,6 @@
             statusEdit(index, row) {
                 this.statusFormVisible = true;
                 this.statusForm = Object.assign({}, row);
-            },
-            change() {
-                this.statusForm.delivery = true
             },
 
             editSubmit: function () {

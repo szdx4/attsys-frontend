@@ -1,12 +1,6 @@
 <template>
     <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit"
              style="margin:20px;width:60%;min-width:600px;">
-        <el-form-item label="申请人">
-            <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        <el-form-item label="ID">
-            <el-input v-model="form.id"></el-input>
-        </el-form-item>
         <el-form-item label="开始时间">
             <el-col :span="11">
                 <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
@@ -39,15 +33,9 @@
         data() {
             return {
                 form: {
-                    name: '',
-                    id: '',
-                    region: '',
                     start_at: '',
                     end_at: '',
-                    resource: '',
-                    desc: '',
                     remark: '',
-                    status: 'Wait'
                 }
             }
         },

@@ -1,12 +1,13 @@
 <template>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
         <el-form :inline="true" :model="filters">
+            <el-button type="primary" v-on:click="openCam">打开摄像头</el-button>
             <el-form-item>
                 <video id="video" width="500px" height="500px" autoplay="autoplay"></video>
                 <canvas id="canvas" width="500px" height="500px"></canvas>
                 <!--                <el-button type="primary" v-on:click="getMedia">开启摄像头</el-button>-->
+                <el-button type="primary" v-on:click="">使用照片</el-button><!--上传--->
                 <el-button type="primary" v-on:click="takePhoto">拍照</el-button>
-                <el-button type="primary" v-on:click="takePhoto">使用照片</el-button>
             </el-form-item>
         </el-form>
     </el-col>
@@ -46,9 +47,6 @@
 
         },
 
-        mounted() {
-            this.openCam();
-        }
 
     }
 
