@@ -18,9 +18,9 @@
             </el-table-column>
             <el-table-column prop="id" label="序号" min-width="100">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" min-width="150" align="center" sortable>
+            <el-table-column prop="user.name" label="姓名" min-width="150" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="user_id" label="工号" min-width="100">
+            <el-table-column prop="user.id" label="工号" min-width="100">
             </el-table-column>
             <el-table-column prop="status" label="状态" min-width="150" align="center" sortable  :formatter="formatStatus">
             </el-table-column>
@@ -42,29 +42,21 @@
             </el-pagination>
         </el-col>
 
-        <!--更新界面-->
-        <el-dialog title="更新" v-model="editFormVisible" :close-on-click-modal="false">
-            <!--目前没弄明白更新人脸信息是干嘛-->
-            <div slot="footer" class="dialog-footer">
-                <el-button @click.native="editFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
-            </div>
-        </el-dialog>
-
         <!--审核界面-->
-        <el-dialog title="审核" v-model="addFormVisible" :close-on-click-modal="false">
-            <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
+        <el-dialog title="审核" v-model="approvalFormVisible" :close-on-click-modal="false">
+            <el-form :model="approvalForm" label-width="80px" :rules="addFormRules" ref="approvalForm">
                 <el-form-item label="状态选择" prop="name">
-                    <el-radio-group v-model="addForm.status">
+                    <el-radio-group v-model="approvalForm.status">
                         <el-radio label="discarded">丢弃</el-radio>
                         <el-radio label="wait">等待</el-radio>
                         <el-radio label="available">通过</el-radio>
                         <!--所以available翻译成啥合适呢（思考）-->
+                        <!--想想会不会有因为长得太丑被拒绝的呢233333-->
                     </el-radio-group>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click.native="addFormVisible = false">取消</el-button>
+                <el-button @click.native="approvalFormVisible = false">取消</el-button>
                 <el-button type="primary" @click.native="approvalSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
@@ -87,7 +79,8 @@
                     name: ''
                 },
 
-                facelist: [],
+                facelist: [
+                ],
                 total: 0,
                 page: 1,
                 listLoading: false,
@@ -95,23 +88,14 @@
                 pictureFormVisible:false,
                 editFormVisible: false,//编辑界面是否显示
                 editLoading: false,
-                editFormRules: {
-                    name: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' }
-                    ]
-                },
 
                 pictureForm:{
                     info:'',
                 },
 
                 //编辑界面数据
-                editForm: {
-                    status:'',
-                    user_id:'',
-                },
 
-                addFormVisible: false,//新增界面是否显示
+                approvalFormVisible: false,//审核界面是否显示
                 addLoading: false,
                 addFormRules: {
                     status: [
@@ -119,9 +103,13 @@
                     ]
                 },
                 //审核界面数据
-                addForm: {
+                approvalForm: {
                     status: 'wait',
                     face_id:'',
+                    user:{
+                        id: 0,
+                        name:'',
+                    },
                 }
 
             }
@@ -151,8 +139,8 @@
             },
             //删除
             handleApproval: function (index, row) {
-                this.addFormVisible = true;
-                this.addForm =  Object.assign({}, row);
+                this.approvalFormVisible = true;
+                this.approvalForm =  Object.assign({}, row);
             },
             //显示编辑更新界面
             handleEdit: function (index, row) {
@@ -161,8 +149,8 @@
             },
             //显示新增界面
             handleAdd: function () {
-                this.addFormVisible = true;
-                this.addForm = Object.assign({},row);
+                this.approvalFormVisible = true;
+                this.approvalForm = Object.assign({},row);
             },
 
             showPicture(row){
@@ -206,18 +194,18 @@
                 });
             },
             approvalSubmit:function(){//向后端发送审核信息
-                this.$refs.addForm.validate((valid) => {
+                this.$refs.approvalForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.addLoading = true;
-                            let para = Object.assign({}, this.addForm);
-                            faceApproval(para).then((res) => {//向后端发送更新信息
+                            let para = Object.assign({}, this.approvalForm);
+                            faceApproval(para).then((res) => {//向后端发送审核信息
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
                                 });
-                                this.$refs['addForm'].resetFields();
-                                this.addFormVisible = false;
+                                this.$refs['approvalForm'].resetFields();
+                                this.approvalFormVisible = false;
                                 this.getList();
                             });
                         });

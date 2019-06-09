@@ -88,7 +88,7 @@
                 editLoading: false,
                 editFormRules: {
                     name: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' }
+                        { required: true, message: '请输入部门名称', trigger: 'blur' }
                     ]
                 },
                 //具体信息界面数据
@@ -106,7 +106,7 @@
                 addLoading: false,
                 addFormRules: {
                     name: [
-                        { required: true, message: '请输入姓名', trigger: 'blur' }
+                        { required: true, message: '请输入部门名称', trigger: 'blur' }
                     ]
                 },
                 //新增界面数据
