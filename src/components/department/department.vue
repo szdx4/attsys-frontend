@@ -1,13 +1,5 @@
 <template>
     <section>
-        <!--工具条-->
-        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
-                <el-form-item>
-                    <el-button type="primary" @click="handleAdd">新增</el-button>
-                </el-form-item>
-            </el-form>
-        </el-col>
 
         <!--列表-->
         <el-table :data="departments" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
@@ -17,17 +9,22 @@
             </el-table-column>
             <el-table-column prop="name" label="部门名称" min-width="250" align="center" sortable>
             </el-table-column>
+            <el-table-column prop="detail" label="详细信息" min-width="250" align="center" sortable>
+                <template scope="scope">
+                    <el-button size="small" @click="handleDetail(scope.row)">点击查看</el-button>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="150" align="center" sortable>
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button size="small" @click="handle(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                    <el-button size="small" @click="handleEdit( scope.row)">编辑</el-button>
+                    <el-button type="danger" size="small" @click="handleDel(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
+            <el-button type="primary" @click="handleAdd">新增部门</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
             </el-pagination>
         </el-col>
@@ -43,6 +40,17 @@
                 <el-button @click.native="editFormVisible = false">取消</el-button>
                 <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
             </div>
+        </el-dialog>
+        <!--详细信息界面-->
+        <el-dialog title="编辑" v-model="detailFormVisible" :close-on-click-modal="false">
+            <el-form :model="detailForm" label-width="80px" :rules="detailForm" ref="editForm">
+                <el-form-item label="部门id:" prop="name">
+                    <el-form-item  :label="detailForm.id"></el-form-item>
+                </el-form-item>
+                <el-form-item label="部门名称: " prop="name">
+                    <el-form-item  :label="detailForm.name"></el-form-item>
+                </el-form-item>
+            </el-form>
         </el-dialog>
 
         <!--新增界面-->
@@ -69,7 +77,8 @@
                 filters: {
                     name: ''
                 },
-                departments:[],
+                departments:[
+                ],
                 total: 0,
                 page: 1,
                 listLoading: false,
@@ -82,9 +91,15 @@
                         { required: true, message: '请输入姓名', trigger: 'blur' }
                     ]
                 },
-                //编辑界面数据
+                //具体信息界面数据
                 editForm: {
-
+                    id: 0,
+                    name:'',
+                },
+                detailFormVisible: false,
+                detailForm:{
+                    id:0,
+                    name:'',
                 },
 
                 addFormVisible: false,//新增界面是否显示
@@ -105,7 +120,7 @@
 
             handleCurrentChange(val) {
                 this.page = val;
-                this.getUsers();
+                this.getList();
             },
 
             getdepartment(){
@@ -120,14 +135,14 @@
                 //向后端请求部门列表
                 let para = {
                 };
-                this.listLoading = true;
+               // this.listLoading = true;
                 //NProgress.start();
                 getDepartmentList(para).then((res) => {
 
                 });
             },
             //删除
-            handleDel: function (index, row) {//向后端发送删除信息
+            handleDel: function ( row) {//向后端发送删除信息 获取id的话直接row.id
                 this.$confirm('确认删除该记录吗?', '提示', {
                     type: 'warning'
                 }).then(() => {
@@ -147,8 +162,16 @@
 
                 });
             },
+
+            handleDetail:function(row){
+              this.detailFormVisible=true;
+              this.detailForm = Object.assign({},row);
+            },
+
+
+
             //显示编辑界面
-            handleEdit: function (index, row) {
+            handleEdit: function (row) {
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
             },
