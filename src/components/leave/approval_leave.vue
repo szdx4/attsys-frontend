@@ -79,7 +79,7 @@
         data() {
             return {
                 filters: {
-                    name: ''
+                    id: ''
                 },
                 user_id:'',//查询用的Orz
 
@@ -114,10 +114,10 @@
             //获取指定用户请假信息
             getUser() {
                 let para = {
-
-                }
-                getLeaveUser(para).then((res) => {
-
+                };
+                let id = this.user_id;
+                getLeaveUser(id, para).then((res) => {
+                    this.leaveList = res.data.data;
                 });
             },
 
@@ -134,15 +134,13 @@
             //向后台获取请假列表
             getList: function () {
                 let para = {
-                    page: this.page,
-                    name: this.filters.name
                 };
-                this.loading = true;
-                // getLeaveListPage(para).then((res) => {
-                //     this.total = res.data.total;
-                //     this.leaveList = res.data.leaveList;
-                //     this.listloading = false;
-                // });
+                // this.loading = true;
+                getLeaveListPage(para).then((res) => {
+                    // this.listloading = false;
+                    this.total = res.data.total;
+                    this.leaveList = res.data.data;
+                });
             },
             selsChange: function (sels) {
                 this.sels = sels;
@@ -161,7 +159,8 @@
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.editLoading = true;
-                            let para = Object.assign({}, this.statusForm);
+                            let id = sessionStorage
+                            let para =
                             LeaveRequestApproval(para).then((res) => {
                                 this.editLoading = false;
                                 this.$message({
