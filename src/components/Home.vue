@@ -31,7 +31,8 @@
 							<template slot="title">
 								<i :class="item.iconCls"></i>{{item.name}}
 							</template>
-							<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+							<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}
+							</el-menu-item>
 						</el-submenu>
 						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
 					</template>
@@ -40,15 +41,20 @@
 				<ul class="el-menu el-menu-vertical-demo collapsed" v-show="collapsed" ref="menuCollapsed">
 					<li v-for="(item,index) in $router.options.routes" v-if="!item.hidden" class="el-submenu item">
 						<template v-if="!item.leaf">
-							<div class="el-submenu__title" style="padding-left: 20px;" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)"><i :class="item.iconCls"></i></div>
+							<div class="el-submenu__title" style="padding-left: 20px;" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
+								<i :class="item.iconCls">
+							</i></div>
 							<ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
-								<li v-for="child in item.children" v-if="!child.hidden" :key="child.path" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==child.path?'is-active':''" @click="$router.push(child.path)">{{child.name}}</li>
+								<li v-for="child in item.children" v-if="!child.hidden" :key="child.path" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==child.path?'is-active':''" @click="$router.push(child.path)">
+									{{child.name}}</li>
 							</ul>
 						</template>
 						<template v-else>
 							<li class="el-submenu">
 								<div class="el-submenu__title el-menu-item" style="padding-left: 20px;height: 56px;line-height: 56px;padding: 0 20px;" :class="$route.path==item.children[0].path?'is-active':''" @click="$router.push(item.children[0].path)"><i :class="item.iconCls"></i></div>
 							</li>
+						</template>
+					</li>
 				</ul>
 			</aside>
 			<section class="content-container">
@@ -70,25 +76,6 @@
 			</section>
 		</el-col>
 	</el-row>
-	<el-dialog title="签到" v-model="signFormVisible" :close-on-click-modal="false">
-		<el-form :model="signForm" label-width="80px" ref="addForm">
-			<el-form-item label="结束时间">
-				<el-col :span="11">
-					<el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addForm.end_at" style="width: 100%;" ></el-date-picker>
-				</el-col>
-			</el-form-item>
-			<el-form-item label="排班类型">
-				<el-radio-group v-model="addForm.type" >
-					<el-radio-button label="normal">正常</el-radio-button>
-					<el-radio-button label="allovertime">额外</el-radio-button>
-				</el-radio-group>
-			</el-form-item>
-		</el-form>
-		<div slot="footer" class="dialog-footer">
-			<el-button @click.native="addFormVisible = false">取消</el-button>
-			<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
-		</div>
-	</el-dialog>
 </template>
 
 <script>
@@ -176,7 +163,7 @@
 </script>
 
 <style scoped lang="scss">
-	@import 'scss_vars';
+	//@import '~vars.scss';
 
 	.container {
 		position: absolute;
@@ -186,7 +173,7 @@
 		.header {
 			height: 60px;
 			line-height: 60px;
-			background: $color-primary;
+			background: #20a0ff;
 			color:#fff;
 			.userinfo {
 				text-align: right;
