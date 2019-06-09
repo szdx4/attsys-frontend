@@ -52,14 +52,14 @@
 							</ul>
 						</template>
 						<template v-else>
-						<ul>
+							<ul>
 							<li class="el-submenu">
 								<div class="el-submenu__title el-menu-item" style="padding-left: 20px;height: 56px;line-height: 56px;padding: 0 20px;" :class="$route.path==item.children[0].path?'is-active':''" @click="$router.push(item.children[0].path)">
 									<i :class="item.iconCls">
 									</i>
 								</div>
 							</li>
-						</ul>
+							</ul>
 						</template>
 					</li>
 				</ul>
