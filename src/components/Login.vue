@@ -19,6 +19,7 @@
 
 <script>
     import {requestLogin} from '../api/api';
+    let Base64 = require('js-base64').Base64;
 
     export default {
         data() {
@@ -39,7 +40,7 @@
 
                     ]
                 },
-                checked: true
+                checked: true,
             };
         },
         methods: {
@@ -52,21 +53,31 @@
                     if (valid) {
                         //_this.$router.replace('/table');
                         this.logining = true;
-                        //NProgress.start();
-                        var loginParams = {username: this.ruleForm2.account, password: this.ruleForm2.checkPass};
-                        requestLogin(loginParams).then(data => {
+                        requestLogin({
+                            name: this.ruleForm2.account,
+                            password: this.ruleForm2.checkPass
+                        }).then(res => {
                             this.logining = false;
-                            //NProgress.done();
-                            let {msg, code, user} = data;
-                            if (code !== 200) {
+                            if (res.status !== 200) {
                                 this.$message({
-                                    message: msg,
+                                    message: '用户名或密码错误',
                                     type: 'error'
                                 });
                             } else {
-                                sessionStorage.setItem('user', JSON.stringify(user));
+                                console.log(res);
+                                localStorage.setItem('token', res.data.token);
+                                let middle_token = res.data.token.split('.')[1];
+                                console.log(middle_token);
+                                let pre_json = Base64.decode(middle_token);
+                                console.log(pre_json);
+                                let json = JSON.parse(pre_json);
+                                localStorage.setItem('id', json.id);
+
                                 this.$router.push({path: '/table'});
+                                sessionStorage.setItem('user', this.ruleForm2.account)
                             }
+                        }).catch(err => {
+                            console.log(err);
                         });
                     } else {
                         console.log('error submit!!');

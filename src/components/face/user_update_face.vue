@@ -18,7 +18,8 @@
         data() {
             return {
                 name: "user_update_face",
-                imageData:''//base64编码后的人脸照片
+                imageData:'',
+                video:'',
             };
         },
         methods: {
@@ -33,12 +34,11 @@
                     video.srcObject = MediaStream;
                     video.play();
                 });
+                this.video = video;
             },
-            closeCam() {
-
-            },
-            update(){//更新人脸信息 this.imageData为base64编码后的图片信息
-
+            update(){
+                let video = document.getElementById("video");
+                video.closeCam();
             },
 
             takePhoto() {

@@ -71,6 +71,7 @@
 
 <script>
     import {getFaceUser, editFaceUser, faceApproval, getFaceList } from  "../../api/api";
+    let Base64 = require('js-base64').Base64;
 
     export default {
         data() {
@@ -133,6 +134,7 @@
                 };
                 //this.listLoading = true;
                 getFaceList(para).then((res) => {
+                    this.facelist = res.data.data;
 
                 });
             },
@@ -166,35 +168,17 @@
             imgUrl(){
               return this.pictureForm.info;
             },
-
-            //更新人脸信息
-            editSubmit: function () {
-                this.$refs.editForm.validate((valid) => {
-                    if (valid) {
-                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.editLoading = true;
-                            //NProgress.start();
-                            let para = Object.assign({}, this.editForm);
-                            editFaceUser(para).then((res) => {//向后端发送更新信息
-                                this.$message({
-                                    message: '提交成功',
-                                    type: 'success'
-                                });
-                                this.$refs['editForm'].resetFields();
-                                this.editFormVisible = false;
-                                this.getList();
-                            });
-                        });
-                    }
-                });
-            },
             approvalSubmit:function(){//向后端发送审核信息
                 this.$refs.approvalForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.addLoading = true;
-                            let para = Object.assign({}, this.approvalForm);
-                            faceApproval(para).then((res) => {//向后端发送审核信息
+                            // this.addLoading = true;
+                            let id = this.approvalForm.user.id;
+                            let para =
+                                {
+                                };
+
+                            faceApproval(id, para).then((res) => {//向后端发送审核信息
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'

@@ -12,7 +12,7 @@ import face from './components/face/face'
 import update from './components/face/user_update_face'
 import shift from './components/shift/shift'
 import sign from './components/sign/sign'
-
+import msg from './components/message/message'
 
 let routes = [
     {
@@ -101,8 +101,17 @@ let routes = [
     {
         path: '/sign',
         component: sign,
+        hidden: true,
         name: '签到',
-        iconCls: 'fa fa-clock-o',
+    },
+    {
+      path:'/m',
+      component: Home,
+        hidden: true,
+        name:'',
+        children:[
+            {path:'/msg', component: msg, name:'消息列表'}
+        ]
     },
 
 

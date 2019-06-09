@@ -92,8 +92,14 @@
         methods: {
 
             getUser() {
-                let para = {};
-                getOvertimeUser(para).then((res) => {//向后台发送请求，获取指定用户加班信息 this.user_id
+
+                let id = this.user_id;
+                let para = {
+
+                };
+                getOvertimeUser(id, para).then((res) => {
+                    //向后台发送请求，获取指定用户加班信息 this.user_id
+                    this.overtimeList = res.data.data;
 
                 });
             },
@@ -103,13 +109,13 @@
             },
             //获取列表
             getList: function () {
-                // let para = {
-                //     name: this.filters.name
-                // };
+                let para = {
+                };
                 // this.loading = true;
-                // //NProgress.start();
-                // getOvertimeList(para).then((res) => {   //向后端请求列表
-                // });
+                getOvertimeList(para).then((res) => {
+                    //向后端请求列表
+                    this.overtimeList = res.data.data;
+                });
             },
             handleCurrentChange(val) {
                 this.page = val;
@@ -134,7 +140,24 @@
                 return '拒绝';
                 else return '未知状态';
             },
-            editSubmit: function () {//向后台发送审核信息
+            editSubmit: function () {
+                //向后台发送审核信息
+                let id = this.editForm.id;
+                let para = {
+                    status: this.editForm.status
+                };
+                OvertimeApproval(id, para).then(res =>
+                {
+                    this.$message({
+                        message: '审批成功',
+                        type: 'success'
+                    });
+                    this.$refs['editForm'].resetFields();
+                    this.editFormVisible = false;
+                    this.getList();
+                })
+
+
 
             }
 

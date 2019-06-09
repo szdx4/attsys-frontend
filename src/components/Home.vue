@@ -14,14 +14,7 @@
                     <span class="el-dropdown-link userinfo-inner"><img
                             :src="this.sysUserAvatar"/> {{sysUserName}}</span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item >
-                            我的消息
-                            <tipnotes :redval="msg">
-                                <template  scope='redtemp'>
-                                    <i class="redtip bg-danger" v-show="redtemp.text>0">{{redtemp.text}}</i>
-                                </template>
-                            </tipnotes>
-                        </el-dropdown-item>
+                        <el-dropdown-item>我的消息</el-dropdown-item>
                         <el-dropdown-item @click.native="jumpSign">签到</el-dropdown-item>
                         <el-dropdown-item>设置</el-dropdown-item>
                         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
@@ -118,7 +111,6 @@
 
                 signFormVisible: false,
                 qrcode:'',
-                msg:'',//从后台获取的消息
 
                 sign_id:'',
 
@@ -312,18 +304,6 @@
             .logo-collapse-width {
                 width: 60px
             }
-            .redtip{
-                border-radius: 50%;
-                font-style: normal;
-                color: #fff;
-                display: inline-block;
-                width: 1.2em;
-                height: 1.2em;
-                text-align: center;
-                line-height: 1.2em;
-                font-size: 0.8em;
-            }
-
 
             .tools {
                 padding: 0px 23px;

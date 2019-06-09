@@ -77,7 +77,7 @@
         data() {
             return {
                 filters: {
-                    name: ''
+                    id: ''
                 },
                 departments: [],
                 total: 0,
@@ -126,8 +126,9 @@
 
             getdepartment() {
                 let para = {};
-                getDepartment(para).then((res) => {
-                    //向后端发送 获得指定部门信息的请求
+                let id = this.filters.id;
+                getDepartment(id, para).then((res) => {
+                    this.departments = res.data.data;
 
                 })
             },
@@ -135,10 +136,8 @@
             getList() {
                 //向后端请求部门列表
                 let para = {};
-                // this.listLoading = true;
-                //NProgress.start();
                 getDepartmentList(para).then((res) => {
-
+                    this.departments = res.data.data;
                 });
             },
             //删除
@@ -147,18 +146,17 @@
                     type: 'warning'
                 }).then(() => {
                     this.listLoading = true;
+                    let id = row.id;
                     let para = {};
-                    deletDepartment(para).then((res) => {
-                        //这里需要加参数传递
+                    deletDepartment(id, para).then((res) => {
+                        this.listLoading = false;
                         this.$message({
                             message: '删除成功',
                             type: 'success'
                         });
                         this.getList();
                     });
-                }).catch(() => {
-
-                });
+                })
             },
 
             handleDetail: function (row) {
@@ -182,13 +180,19 @@
             },
             //编辑
             editSubmit: function () {
-                let para = Object.assign({}, this.editForm);
-                editDepartment(para).then((res) => {//向后端发送编辑信息
-
+                let para =  {
+                    name: this.editForm.name
+                };
+                let id = this.editForm.id;
+                console.log(para);
+                editDepartment(id, para).then((res) => {
                     this.$message({
                         message: '提交成功',
                         type: 'success'
                     });
+                    this.$refs['editForm'].resetFields();
+                    this.editFormVisible = false;
+                    this.getList();
 
                 });
 
@@ -198,12 +202,13 @@
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.addLoading = true;
+                            // this.addLoading = true;
 
-                            let para = Object.assign({}, this.addForm);
+                            let para = {
+                                name: this.addForm.name
+                            };
                             addDepartment(para).then((res) => { //向后端发送新增部门信息
-                                this.addLoading = false;
-
+                                // this.addLoading = false;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'

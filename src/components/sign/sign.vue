@@ -2,6 +2,7 @@
     <div class="container clearfix">
             <div class="img-lists" slot="placeholder">
                 <el-button type="primary" v-on:click="openCam">打开摄像头</el-button>
+                <el-button type="primary" v-on:click="takePhoto">拍照</el-button>
                 <video id="video" width="500px" height="500px" autoplay="autoplay"></video>
             </div>
         <div class="img-lists">
@@ -21,7 +22,8 @@
         data() {
             return {
                 name: "user_update_face",
-                imageData:'' //base64格式的图片
+                imageData:'', //base64格式的图片,
+                mediaStreamTrack:{},
             };
         },
         methods: {
@@ -35,14 +37,13 @@
                 promise.then(function (MediaStream) {
                     video.srcObject = MediaStream;
                     video.play();
+                    console.log(video);
                 });
-            },
-            closeCam() {
+
 
             },
             sign(){//向后台发送人脸签到信息 signFace imageData为base64编码后的图片
-
-
+                //this.mediaStreamTrack.stop();
             },
 
             takePhoto() {
@@ -51,6 +52,7 @@
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, 500, 500);
                 this.imageData = canvas.toDataURL();
+                video.pause();
             },
 
 

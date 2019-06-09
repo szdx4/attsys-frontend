@@ -63,19 +63,24 @@
             },
 
             leaverequest() {
-                let user_id = this.form.id;
-                var leave_info = {
-                    start_at: this.form.start_at,
-                    end_at: this.form.end_at,
+                let user_id = localStorage.getItem('id');
+                let leave_info = {
+                    start_at: this.form.start_at.toJSON(),
+                    end_at: this.form.end_at.toJSON(),
                     remark: this.form.remark
                 };
-                LeaveRequest(leave_info, user_id).then((res) => {
-                    let {code, msg} = data;
-                    if (code !== 201) {
+                console.log(leave_info);
+                LeaveRequest(user_id, leave_info).then((res) => {
+                    if (res.status !== 201) {
                         this.$message({
-                            message: msg,
+                            message: '错误！',
                             type: 'error'
                         });
+                    }
+                    else{
+                        this.$message({
+                            message: '您的请假id是' + res.data.leave_id
+                        })
                     }
                 });
             }

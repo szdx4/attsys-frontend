@@ -184,3 +184,11 @@ export const signFace = (id, params) => {
     return axios.post(`${base}/sign/face/user/${id}`, {params: params});
 };
 
+//**************************************************消息管理**************************************************
+
+export const getMsgList = (id,params) =>{
+    return axios.get(`${base}/message`, {params: params});
+};
+export const getMsg = (id,params) =>{
+    return axios.get(`${base}/message/${id}`, {params: params});
+};
