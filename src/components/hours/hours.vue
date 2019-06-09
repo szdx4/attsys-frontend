@@ -41,13 +41,11 @@
         },
         methods: {
             //获取工时列表
-            //ok
             getList() {
-                this.loading = true;
-                //ok
+                this.listLoading = true;
                 getHours().then((res) => {
                     this.hoursList = res.data;
-                    this.loading = false;
+                    this.listLoading = false;
                 });
             },
 

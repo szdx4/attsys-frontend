@@ -52,21 +52,23 @@
                     if (valid) {
                         //_this.$router.replace('/table');
                         this.logining = true;
-                        //NProgress.start();
-                        var loginParams = {username: this.ruleForm2.account, password: this.ruleForm2.checkPass};
-                        requestLogin(loginParams).then(data => {
+                        requestLogin({
+                            name: this.ruleForm2.account,
+                            password: this.ruleForm2.checkPass
+                        }).then(res => {
                             this.logining = false;
-                            //NProgress.done();
-                            let {msg, code, user} = data;
-                            if (code !== 200) {
+                            if (res.status !== 200) {
                                 this.$message({
-                                    message: msg,
+                                    message: '用户名或密码错误',
                                     type: 'error'
                                 });
                             } else {
-                                sessionStorage.setItem('user', JSON.stringify(user));
+                                console.log(res);
+                                localStorage.setItem('jwtToken', res.data);
                                 this.$router.push({path: '/table'});
                             }
+                        }).catch(err => {
+                            console.log(err);
                         });
                     } else {
                         console.log('error submit!!');

@@ -92,7 +92,7 @@
 
 <script>
     import util from '../../common/js/util'
-    import {getUserListPage, getUser, removeUser, editUser, addUser} from '../../api/api';
+    import {getUserList, getUser, removeUser, editUser, addUser} from '../../api/api';
 
     export default {
         data() {
@@ -154,23 +154,20 @@
                 this.page = val;
                 this.getUsers();
             },
-
-            getuser() {//向后台发送请求，查询指定用户
+            //向后台发送请求，查询指定用户
+            getuser() {
                 let para = {};
                 getUser(para).then((res) => {
+                    this.users = res.data
 
 
                 });
 
             },
-
-
             //获取用户列表
             getUsers() {
-                let para = {};
-                //this.listLoading = true;
-                //NProgress.start();
-                getUserListPage(para).then((res) => {
+                this.listLoading = true;
+                getUserList().then((res) => {
 
                 });
             },
