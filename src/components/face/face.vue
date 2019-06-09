@@ -31,7 +31,6 @@
             </el-table-column>
             <el-table-column label="操作" min-width="250" align="center">
                 <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">更新</el-button>
                     <el-button size="small" @click="handleApproval(scope.$index, scope.row)">审核</el-button>
                 </template>
             </el-table-column>

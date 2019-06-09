@@ -14,7 +14,7 @@
 					<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar" /> {{sysUserName}}</span>
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item>我的消息</el-dropdown-item>
-						<el-dropdown-item @click="sign">签到</el-dropdown-item>
+						<el-dropdown-item @click.native="sign">签到</el-dropdown-item>
 						<el-dropdown-item>设置</el-dropdown-item>
 						<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
 					</el-dropdown-menu>
@@ -25,7 +25,7 @@
 			<aside :class="collapsed?'menu-collapsed':'menu-expanded'">
 				<!--导航菜单-->
 				<el-menu :default-active="$route.path" class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
-					 unique-opened router v-show="!collapsed">
+						 unique-opened router v-show="!collapsed">
 					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
 							<template slot="title">
@@ -42,17 +42,22 @@
 					<li v-for="(item,index) in $router.options.routes" v-if="!item.hidden" class="el-submenu item">
 						<template v-if="!item.leaf">
 							<div class="el-submenu__title" style="padding-left: 20px;" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
-								<i :class="item.iconCls">
-							</i></div>
+								<i :class="item.iconCls"></i>
+							</div>
 							<ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">
-								<li v-for="child in item.children" v-if="!child.hidden" :key="child.path" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==child.path?'is-active':''" @click="$router.push(child.path)">
-									{{child.name}}</li>
+								<li v-for="child in item.children" v-if="!child.hidden" :key="child.path" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==child.path?'is-active':''" @click="$router.push(child.path)">{{child.name}}
+								</li>
 							</ul>
 						</template>
 						<template v-else>
-							<li class="el-submenu">
-								<div class="el-submenu__title el-menu-item" style="padding-left: 20px;height: 56px;line-height: 56px;padding: 0 20px;" :class="$route.path==item.children[0].path?'is-active':''" @click="$router.push(item.children[0].path)"><i :class="item.iconCls"></i></div>
-							</li>
+							<ul>
+								<li class="el-submenu">
+									<div class="el-submenu__title el-menu-item" style="padding-left: 20px;height: 56px;line-height: 56px;padding: 0 20px;" :class="$route.path==item.children[0].path?'is-active':''" @click="$router.push(item.children[0].path)">
+										<i :class="item.iconCls">
+										</i>
+									</div>
+								</li>
+							</ul>
 						</template>
 					</li>
 				</ul>
@@ -73,9 +78,27 @@
 						</transition>
 					</el-col>
 				</div>
+				<el-dialog title="签到" v-model="signFormVisible" :close-on-click-modal="false">
+					<div style="width:90%; margin:0 auto; overflow:auto; _display:inline-block;" v-model="signForm">
+						<div style="width:200px; float:right" >
+							<img :src="signForm.qrcode" alt="" align="center">
+						</div>
+						<div style=" margin-right:210px;" >
+							<video id="video" autoplay=""style='width:640px;height:480px'></video>
+							     <button id="photo">拍照</button>
+							     <canvas id="canvas" width="640" height="480"></canvas>
+						</div>
+					</div>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="signFormVisible = false">取消</el-button>
+						<el-button type="primary" @click="signSubmit">提交</el-button>
+					</div>
+				</el-dialog>
 			</section>
 		</el-col>
 	</el-row>
+
+
 </template>
 
 <script>
@@ -121,8 +144,33 @@
 			handleselect: function (a, b) {
 			},
 
-			sign:function(){
+			signSubmit:function(){
 				//先向后台请求签到状态
+
+			},
+
+			getMedia(){//获取摄像头
+
+			},
+
+			getPhoto(){//拍照
+
+			},
+
+
+			sign:function(){
+			this.signFormVisible = true;
+			this.signForm={
+					qrcode:'',
+							face:'',
+							sign_id:'',
+				}
+			},
+			getSignqrcode(){
+				let para = {};
+				getSignQrcode(para).then((res) =>{//向后端请求二维码，每1min重新获取一次
+
+			});
 
 			},
 
