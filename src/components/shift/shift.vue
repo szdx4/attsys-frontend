@@ -1,47 +1,34 @@
 <template>
     <section>
-        <!--工具条-->
-        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" :model="filters">
-                <el-form-item>
-                    <el-input v-model="filters.name" placeholder="部门名称"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" v-on:click="getdepartment">查询</el-button>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="handleAdd">添加排班信息</el-button>
-                    <el-button type="primary" @click="handleAddDepartment">添加部门排班</el-button>
-                </el-form-item>
-            </el-form>
-        </el-col>
 
         <!--列表-->
         <el-table :data="shiftList" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
                   style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column type="index" width="60">
+            <el-table-column prop="id" label="序号" align="center" min-width="60">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180" align="center" sortable>
+            <el-table-column prop="name" label="姓名" min-width="100" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="start_at" label="开始时间" width="200" align="center" sortable>
+            <el-table-column prop="start_at" label="开始时间" min-width="200" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="end_at" label="结束时间" width="200" align="center" sortable>
+            <el-table-column prop="end_at" label="结束时间" min-width="200" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="type" label="类型" width="180" align="center" sortable>
+            <el-table-column prop="type" label="类型" min-width="100" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="180" align="center" sortable>
+            <el-table-column prop="status" label="状态" min-width="180" align="center" sortable>
             </el-table-column>
             <el-table-column label="操作" width="150">
                 <template scope="scope">
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+                    <el-button type="danger" size="small" @click="handleDel(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
+                <el-button type="primary" @click="handleAdd">添加指定员工排班</el-button>
+                <el-button type="primary" @click="handleAddDepartment">添加部门排班</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -51,21 +38,24 @@
         <!--新增界面-->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-                <el-form-item label="开始时间">
+               <el-form-item label="员工id" prop="id">
+                   <el-input v-model="addForm.user.id"></el-input>
+               </el-form-item>
+                <el-form-item label="开始时间" prop="start_at">
                     <el-col :span="11">
                         <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
                                         format="yyyy-MM-dd HH:mm" v-model="addForm.start_at"
                                         style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="结束时间">
+                <el-form-item label="结束时间" prop="end_at">
                     <el-col :span="11">
                         <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
                                         format="yyyy-MM-dd HH:mm" v-model="addForm.end_at"
                                         style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="排班类型">
+                <el-form-item label="排班类型" prop="type">
                     <el-radio-group v-model="addForm.type">
                         <el-radio-button label="normal">正常</el-radio-button>
                         <el-radio-button label="allovertime">额外</el-radio-button>
@@ -81,21 +71,24 @@
         <!--新增部门排班界面-->
         <el-dialog title="新增" v-model="addDepartmentFormVisible" :close-on-click-modal="false">
             <el-form :model="addDepartmentForm" label-width="80px" :rules="addDepartmentFormRules" ref="addForm">
-                <el-form-item label="开始时间">
+                <el-form-item label="部门id" prop="id">
+                    <el-input v-model="addDepartmentForm.department_id"></el-input>
+                </el-form-item>
+                <el-form-item label="开始时间" prop="start_at">
                     <el-col :span="11">
                         <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
                                         format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.start_at"
                                         style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="结束时间">
+                <el-form-item label="结束时间" prop="end_at">
                     <el-col :span="11">
                         <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
                                         format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.end_at"
                                         style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
-                <el-form-item label="排班类型">
+                <el-form-item label="排班类型" prop="type">
                     <el-radio-group v-model="addDepartmentForm.type">
                         <el-radio-button label="normal">正常</el-radio-button>
                         <el-radio-button label="allovertime">额外</el-radio-button>
@@ -137,26 +130,67 @@
 
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
-                addFormRules: {},
+                addFormRules: {
+                    id :[
+                { required: true, message: '请选择审核意见', trigger: 'blur'}
+            ],
+                    start_at:[
+                        { required: true, message:'请选择开始时间', trigger:'blur'}
+                    ],
+                    end_at:[{
+                         required: true, message:'请选择结束时间', trigger:'blur'
+                    }],
+                    type:[{
+                        required: true, message:'请选择排班类型', trigger:'blur'
+                    }]
+                },
                 //新增界面数据
                 addForm: {
                     start_at: '',
                     end_at: '',
                     type: '',
+                    user:{
+                        id: '',
+                        name:'',
+                    },
                 },
 
                 addDepartmentFormVisible: false,
                 addDepartmentloading: false,
-                addDepartmentFormRules: {},
+                addDepartmentFormRules: {
+                    id :[
+                        { required: true, message: '请选择审核意见', trigger: 'blur'}
+                    ],
+                    start_at:[
+                        { required: true, message:'请选择开始时间', trigger:'blur'}
+                    ],
+                    end_at:[{
+                        required: true, message:'请选择结束时间', trigger:'blur'
+                    }],
+                    type:[{
+                        required: true, message:'请选择排班类型', trigger:'blur'
+                    }]
+                },
                 addDepartmentForm: {
                     start_at: '',
                     end_at: '',
                     type: '',
+                    department_id:'',
                 },
 
             }
         },
         methods: {
+            typeformatter(row){
+                if(row.type=='normal')
+                    return'正常';
+                else if(row.type=='allovertime')
+                    return'额外';
+                else return '未知类型';
+            },
+            statusformatter(){
+
+            },
 
             handleCurrentChange(val) {
                 this.page = val;
@@ -177,7 +211,7 @@
                 });
             },
             //删除
-            handleDel: function (index, row) {//向后端发送删除信息
+            handleDel: function (row) {//向后端发送删除信息 row.id
                 this.$confirm('确认删除该记录吗?', '提示', {
                     type: 'warning'
                 }).then(() => {
