@@ -4,28 +4,23 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="部门名称"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" v-on:click="getdepartment">查询</el-button>
-                </el-form-item>
-                <el-form-item>
                     <el-button type="primary" @click="handleAdd">新增</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
 
         <!--列表-->
-        <el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="departments" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column prop="id" width="60" label="id" align="center" sortable>
+            <el-table-column prop="id" min-width="60" label="id" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="name" label="部门名称" width="425" align="center" sortable>
+            <el-table-column prop="name" label="部门名称" min-width="250" align="center" sortable>
             </el-table-column>
-            <el-table-column label="操作" width="177">
+            <el-table-column label="操作" width="150" align="center" sortable>
                 <template scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small" @click="handle(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -43,9 +38,6 @@
                 <el-form-item label="部门名称" prop="name">
                     <el-input v-model="editForm.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="部门主管id">
-                    <el-input type="textarea" v-model="editForm.manager"></el-input>
-                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="editFormVisible = false">取消</el-button>
@@ -58,9 +50,6 @@
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="部门名称" prop="name">
                     <el-input v-model="addForm.name" auto-complete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="部门主管id">
-                    <el-input type="textarea" v-model="addForm.addr"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -81,7 +70,6 @@
                     name: ''
                 },
                 departments:[],
-                users: [],
                 total: 0,
                 page: 1,
                 listLoading: false,
@@ -96,9 +84,7 @@
                 },
                 //编辑界面数据
                 editForm: {
-                    id: 0,
-                    name: '',
-                    manager: 1
+
                 },
 
                 addFormVisible: false,//新增界面是否显示
@@ -111,7 +97,6 @@
                 //新增界面数据
                 addForm: {
                     name: '',
-                    manager: 1
                 }
 
             }

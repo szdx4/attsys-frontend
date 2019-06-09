@@ -10,6 +10,7 @@ import overtime from './components/overtime/overtime'
 import hours from './components/hours/hours'
 import department from './components/department/department'
 import face from './components/face/face'
+import update from './components/face/user_update_face'
 import shift from './components/shift/shift'
 import sign from './components/sign/sign'
 
