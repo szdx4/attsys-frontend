@@ -267,8 +267,8 @@ export const addDepartmentShift = params => {
 };
 
 // 删除排班
-export const deletShift = params => {
-    return instance.post(`/shift/${id}`, {
+export const deletShift = (id, params) => {
+    return instance.delete(`/shift/${id}`, {
         headers: getHeaders(),
         params: params
     });

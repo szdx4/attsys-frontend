@@ -8,7 +8,7 @@
             </el-table-column>
             <el-table-column prop="id" label="序号" align="center" min-width="60">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" min-width="100" align="center" sortable>
+            <el-table-column prop="user.name" label="姓名" min-width="100" align="center" sortable>
             </el-table-column>
             <el-table-column prop="start_at" label="开始时间" min-width="200" align="center" :formatter="formatStart_at" sortable>
             </el-table-column>
@@ -196,7 +196,6 @@
                 this.page = val;
                 this.getUsers();
             },
-
             getdepartment() {
                 let para = {};
                 getDepartment(para).then((res) => {//向后端发送 获得指定部门排班的请求
@@ -215,6 +214,7 @@
             getList() { //向后端请求排班列表
                 let para = {};
                 getShiftList(para).then((res) => {
+                    this.shiftList = res.data.data;
 
                 });
             },
@@ -223,10 +223,12 @@
                 this.$confirm('确认删除该记录吗?', '提示', {
                     type: 'warning'
                 }).then(() => {
-                    this.listLoading = true;
-                    let para = {};
-                    deletShift(para).then((res) => {
-                        //这里需要加参数传递
+                    // this.listLoading = true;
+                    let id = row.id;
+                    let para = {
+
+                    };
+                    deletShift(id, para).then((res) => {
                         this.$message({
                             message: '删除成功',
                             type: 'success'
@@ -252,11 +254,17 @@
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.addLoading = true;
+                            // this.addLoading = true;
+                            let id = this.addForm.user.id;
+                            let para = {
+                                start_at: this.addForm.start_at.toJSON(),
+                                end_at: this.addForm.end_at.toJSON(),
+                                type: this.addForm.type
 
-                            let para = Object.assign({}, this.addForm);
-                            addShift(para).then((res) => { //向后端发送新增部门信息
-                                this.addLoading = false;
+                            };
+                            addShift(id, para).then((res) => {
+                                //向后端发送新增部门信息
+                                // this.addLoading = false;
 
                                 this.$message({
                                     message: '提交成功',
@@ -274,11 +282,17 @@
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            this.addDepartmentloading = true;
+                            // this.addDepartmentloading = true;
+                            let id = this.addDepartmentForm.department_id
 
-                            let para = Object.assign({}, this.addDepartmentForm);
-                            addDepartmentShift(para).then((res) => { //向后端发送新增部门信息
-                                this.addLoading = false;
+                            let para = {
+                                start_at: this.addDepartmentForm.start_at.toJSON(),
+                                end_at: this.addDepartmentForm.end_at.toJSON(),
+                                type: this.addDepartmentForm.type
+
+                            };
+                            addDepartmentShift(id, para).then((res) => {
+                                //向后端发送新增部门信息
 
                                 this.$message({
                                     message: '提交成功',
