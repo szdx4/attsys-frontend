@@ -18,13 +18,13 @@
                 </el-table-column>
                 <el-table-column prop="name" label="姓名" width="150" sortable>
                 </el-table-column>
-                <el-table-column prop="start_at" label="开始时间" width="180"  sortable>
+                <el-table-column prop="start_at" label="开始时间" width="180" sortable>
                 </el-table-column>
-                <el-table-column prop="end_at" label="结束时间" width="180"  sortable>
+                <el-table-column prop="end_at" label="结束时间" width="180" sortable>
                 </el-table-column>
                 <el-table-column prop="remark" label="完成状态" width="180" sortable>
                 </el-table-column>
-                <el-table-column prop="status" label="状态" :formatter=formatStatus width="172"  sortable>
+                <el-table-column prop="status" label="状态" :formatter=formatStatus width="172" sortable>
                 </el-table-column>
                 <el-table-column label="操作" width="180" sortable>
                     <template scope="scope">
@@ -33,7 +33,8 @@
                 </el-table-column>
             </el-table>
             <el-col :span="24" class="toolbar">
-                <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+                <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
+                               :total="total" style="float:right;">
                 </el-pagination>
             </el-col>
 
@@ -50,7 +51,7 @@
     </section>
 </template>
 <script>
-    import { getOvertimeUser,OvertimeApproval ,getOvertimeList } from '../../api/api';
+    import {getOvertimeUser, OvertimeApproval, getOvertimeList} from '../../api/api';
     //import NProgress from 'nprogress'
     export default {
         data() {
@@ -63,28 +64,23 @@
                 listLoading: false,
                 sels: [],//列表选中列
                 loading: false,
-                overtimeList: [
-                ],
-                editFormVisible:false,
-                editForm:{
-
-                },
+                overtimeList: [],
+                editFormVisible: false,
+                editForm: {},
 
             }
         },
         methods: {
-           //向后台发送请求，获取指定用户加班信息
-            getUser(){
-              let para ={
+            //向后台发送请求，获取指定用户加班信息
+            getUser() {
+                let para = {};
+                getOvertimeUser(para).then((res) => {
 
-              }  ;
-              getOvertimeUser(para).then((res)=>{
-
-              });
+                });
             },
             handleApproval: function (index, row) {
                 this.editFormVisible = true;
-                this.editForm =  Object.assign({}, row);
+                this.editForm = Object.assign({}, row);
             },
             //获取列表
             getList: function () {
@@ -100,13 +96,13 @@
                 this.page = val;
                 this.getList();
             },
-            formatStatus(row){
-                if (row.status=='wait')
-                    return'等待审核';
-                else if(row.status=='pass')
-                    return'通过';
-                else (row.status=='reject')
-                    return '拒绝';
+            formatStatus(row) {
+                if (row.status == 'wait')
+                    return '等待审核';
+                else if (row.status == 'pass')
+                    return '通过';
+                else (row.status == 'reject')
+                return '拒绝';
             },
             editSubmit: function () {//向后台发送审核信息
 
