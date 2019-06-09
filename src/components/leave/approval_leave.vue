@@ -23,9 +23,9 @@
             </el-table-column>
             <el-table-column prop="user.id" label="工号" align="center" min-width="120" sortable>
             </el-table-column>
-            <el-table-column prop="start_at" label="开始时间" align="center" min-width="180" sortable>
+            <el-table-column prop="start_at" label="开始时间" align="center" min-width="180" :formatter="formatStart_at" sortable>
             </el-table-column>
-            <el-table-column prop="end_at" label="结束时间" align="center" min-width="180" sortable>
+            <el-table-column prop="end_at" label="结束时间" align="center" min-width="180" :formatter="formatEnd_at" sortable>
             </el-table-column>
             <el-table-column prop="status" label="状态" align="center" :formatter="statusFormatter" min-width="100"
                              sortable>
@@ -119,6 +119,14 @@
                 getLeaveUser(id, para).then((res) => {
                     this.leaveList = res.data.data;
                 });
+            },
+            formatStart_at(row){
+                var t = new Date(row.start_at);
+                return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
+            },
+            formatEnd_at(row){
+                var t = new Date(row.end_at);
+                return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
 
             statusFormatter(row) {

@@ -10,9 +10,9 @@
             </el-table-column>
             <el-table-column prop="name" label="姓名" min-width="100" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="start_at" label="开始时间" min-width="200" align="center" sortable>
+            <el-table-column prop="start_at" label="开始时间" min-width="200" align="center" :formatter="formatStart_at" sortable>
             </el-table-column>
-            <el-table-column prop="end_at" label="结束时间" min-width="200" align="center" sortable>
+            <el-table-column prop="end_at" label="结束时间" min-width="200" align="center" :formatter="formatEnd_at" sortable>
             </el-table-column>
             <el-table-column prop="type" label="类型" min-width="100" align="center" sortable>
             </el-table-column>
@@ -202,6 +202,14 @@
                 getDepartment(para).then((res) => {//向后端发送 获得指定部门排班的请求
 
                 })
+            },
+            formatStart_at(row){
+                var t = new Date(row.start_at);
+                return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
+            },
+            formatEnd_at(row){
+                var t = new Date(row.end_at);
+                return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
 
             getList() { //向后端请求排班列表

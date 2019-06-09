@@ -99,13 +99,10 @@ let routes = [
 
 
     {
-        path: '/',
-        component: Home,
+        path: '/sign',
+        component: sign,
         name: '签到',
         iconCls: 'fa fa-clock-o',
-        children: [
-            {path: '/sign', component: sign, name: '人脸签到/二维码签到'},
-        ]
     },
 
 

@@ -15,7 +15,7 @@
                             :src="this.sysUserAvatar"/> {{sysUserName}}</span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item>我的消息</el-dropdown-item>
-                        <el-dropdown-item @click.native="sign">签到</el-dropdown-item>
+                        <el-dropdown-item @click.native="jumpSign">签到</el-dropdown-item>
                         <el-dropdown-item>设置</el-dropdown-item>
                         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -91,22 +91,6 @@
                         </transition>
                     </el-col>
                 </div>
-                <el-dialog title="签到" v-model="signFormVisible" :close-on-click-modal="false">
-                    <div style="width:90%; margin:0 auto; overflow:auto; _display:inline-block;" v-model="signForm">
-                        <div style="width:200px; float:right">
-                            <img :src="signForm.qrcode" alt="" align="center">
-                        </div>
-                        <div style=" margin-right:210px;">
-                            <video id="video" autoplay="" style='width:640px;height:480px'></video>
-                            <button id="photo">拍照</button>
-                            <canvas id="canvas" width="640" height="480"></canvas>
-                        </div>
-                    </div>
-                    <div slot="footer" class="dialog-footer">
-                        <el-button @click="signFormVisible = false">取消</el-button>
-                        <el-button type="primary" @click="signSubmit">提交</el-button>
-                    </div>
-                </el-dialog>
             </section>
         </el-col>
     </el-row>
@@ -126,11 +110,9 @@
                 sysUserAvatar: '',
 
                 signFormVisible: false,
-                signForm: {
-                    qrcode: '',
-                    face: '',
-                    sign_id: '',
-                },
+                qrcode:'',
+
+                sign_id:'',
 
 
                 form: {
@@ -149,6 +131,27 @@
             onSubmit() {
                 console.log('submit!');
             },
+            jumpSign:function(){
+                //加一个函数获取sign_id
+                var signStatus;
+                if(this.sign_id=='') signStatus = true;
+                else signStatus=false;
+                if(!signStatus){
+                    this.$message({
+                        message: '您已签到',
+                    });
+                }
+                else {
+                    this.$router.push({name:'签到',params:{
+                    qrcode:this.qrcode,
+                    }});
+                }
+            },
+            getSign_id(){//向后台请求sign_id getSignStatus
+
+            },
+
+
             handleopen() {
                 //console.log('handleopen');
             },
@@ -163,12 +166,24 @@
 
             },
 
-            getMedia() {//获取摄像头
-
+            openCam() {//获取摄像头
+                let constraints = {
+                    video: {width: 500, height: 500},
+                    audio: true
+                };
+                let video = document.getElementById("video");
+                let promise = navigator.mediaDevices.getUserMedia(constraints);
+                promise.then(function (MediaStream) {
+                    video.srcObject = MediaStream;
+                    video.play();
+                });
             },
 
-            getPhoto() {//拍照
-
+            takePhoto() {//拍照
+                let video = document.getElementById("video");
+                let canvas = document.getElementById("canvas");
+                let ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, 500, 500);
             },
 
 
@@ -226,6 +241,9 @@
 
 <style scoped lang="scss">
     //@import '~vars.scss';
+    .customWidth{
+        width:80%;
+    }
 
     .container {
         position: absolute;
