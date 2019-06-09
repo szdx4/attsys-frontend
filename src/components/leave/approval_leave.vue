@@ -50,8 +50,8 @@
                 <el-form-item label="请假原因" prop="remark">
                     <el-input v-model="statusForm.remark"></el-input>
                 </el-form-item>
-                <el-form-item label="审核">
-                    <el-radio-group v-model="statusForm.status">
+                <el-form-item label="审核" prop="status">
+                    <el-radio-group v-model="statusForm.status" >
                         <el-radio class="radio" :label="'Pass'">通过</el-radio>
                         <el-radio class="radio" :label="'Reject'" @change="change">不通过</el-radio>
                         <el-radio class="radio" :label="'Wait'">暂不决定</el-radio>
@@ -98,8 +98,8 @@
                 ],
                 statusFormVisible: false,
                 statusFormRules: {
-                    name: [
-                        {required: true, message: '请输入审核意见', trigger: 'blur'}
+                    status: [
+                        { required: true, message: '请选择审核意见', trigger: 'blur'}
                     ]
                 },
                 statusForm: {

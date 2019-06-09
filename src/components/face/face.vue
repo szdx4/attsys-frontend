@@ -31,7 +31,7 @@
             </el-table-column>
             <el-table-column label="操作" min-width="250" align="center">
                 <template scope="scope">
-                    <el-button size="small" @click="handleApproval(scope.$index, scope.row)">审核</el-button>
+                    <el-button size="small" @click="handleApproval(scope.row)">审核</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -44,8 +44,8 @@
 
         <!--审核界面-->
         <el-dialog title="审核" v-model="approvalFormVisible" :close-on-click-modal="false">
-            <el-form :model="approvalForm" label-width="80px" :rules="addFormRules" ref="approvalForm">
-                <el-form-item label="状态选择" prop="name">
+            <el-form :model="approvalForm" label-width="80px" :rules="approvalFormRules" ref="approvalForm">
+                <el-form-item label="状态选择" prop="status">
                     <el-radio-group v-model="approvalForm.status">
                         <el-radio label="discarded">丢弃</el-radio>
                         <el-radio label="wait">等待</el-radio>
@@ -79,7 +79,9 @@
                     id: '',
                 },
 
-                facelist: [
+                facelist: [{
+                    status:'wait',
+                },
                 ],
                 total: 0,
                 page: 1,
@@ -97,14 +99,14 @@
 
                 approvalFormVisible: false,//审核界面是否显示
                 addLoading: false,
-                addFormRules: {
+                approvalFormRules: {
                     status: [
                         { required: true, message: '请选择状态', trigger: 'blur' }
                     ]
                 },
                 //审核界面数据
                 approvalForm: {
-                    status: 'wait',
+                    status: '',
                     face_id:'',
                     user:{
                         id: 0,
@@ -136,8 +138,8 @@
 
                 });
             },
-            //删除
-            handleApproval: function (index, row) {
+            //显示审核页面
+            handleApproval: function (row) {
                 this.approvalFormVisible = true;
                 this.approvalForm =  Object.assign({}, row);
             },
@@ -146,11 +148,7 @@
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
             },
-            //显示新增界面
-            handleAdd: function () {
-                this.approvalFormVisible = true;
-                this.approvalForm = Object.assign({},row);
-            },
+
 
             showPicture(row){
                     this.pictureFormVisible = true;
