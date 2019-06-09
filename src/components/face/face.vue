@@ -79,9 +79,7 @@
                     id: '',
                 },
 
-                facelist: [{
-                    status:'wait',
-                },
+                facelist: [
                 ],
                 total: 0,
                 page: 1,
