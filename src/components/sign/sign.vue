@@ -51,7 +51,6 @@
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, 500, 500);
                 this.imageData = canvas.toDataURL();
-                console.log(this.imageData);
             },
 
 

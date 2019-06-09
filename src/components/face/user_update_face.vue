@@ -6,7 +6,7 @@
                 <video id="video" width="500px" height="500px" autoplay="autoplay"></video>
                 <canvas id="canvas" width="500px" height="500px"></canvas>
                 <!--                <el-button type="primary" v-on:click="getMedia">开启摄像头</el-button>-->
-                <el-button type="primary" v-on:click="">使用照片</el-button><!--上传--->
+                <el-button type="primary" v-on:click="update">使用照片</el-button><!--上传--->
                 <el-button type="primary" v-on:click="takePhoto">拍照</el-button>
             </el-form-item>
         </el-form>
@@ -18,6 +18,7 @@
         data() {
             return {
                 name: "user_update_face",
+                imageData:''//base64编码后的人脸照片
             };
         },
         methods: {
@@ -36,12 +37,16 @@
             closeCam() {
 
             },
+            update(){//更新人脸信息 this.imageData为base64编码后的图片信息
+
+            },
 
             takePhoto() {
                 let video = document.getElementById("video");
                 let canvas = document.getElementById("canvas");
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, 500, 500);
+                this.imageData = canvas.toDataURL();
             },
 
 
