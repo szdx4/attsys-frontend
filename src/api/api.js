@@ -77,6 +77,20 @@ export const getDepartment = (id, params) => { return axios.get(`${base}/departm
 export const deletDepartment = (id, params) => { return axios.delete(`${base}/department/${id}`,{ params:params })};
 
 
+//**************************************************人脸信息**************************************************
+
+//获取指定用户可用的人脸信息
+export const getFaceUser = (id, params) => { return axios.get(`${base}/face/user/${id}`,{ params: params});};
+
+//更新指定用户人脸信息
+export const editFaceUser = (id, params) => { return axios.post(`${base}/face/user/${id}`,{ params: params});};
+
+//审核人脸信息
+export const faceApproval = (id, params) => { return axios.put(`${base}/face/user/${id}`, { params: params });};
+
+export const getFaceList =  (id,params) => { return axios.get(`${base}/face`, { params: params });}
+
+
 //**************************************************排班管理**************************************************
 
 //获取排班列表
@@ -90,20 +104,6 @@ export const addDepartmentShift = params => { return axios.get(`${base}/shift/de
 
 //删除排班
 export const deletShift = params => { return axios.post(`${base}/shift/${id}`,{ params: params});};
-
-
-//**************************************************人脸信息**************************************************
-
-//获取指定用户可用的人脸信息
-export const getFaceUser = (id, params) => { return axios.get(`${base}/face/user/${id}`,{ params: params});};
-
-//更新指定用户人脸信息
-export const editFaceUser = (id, params) => { return axios.post(`${base}/face/user/${id}`,{ params: params});};
-
-//审核人脸信息
-export const faceApproval = (id, params) => { return axios.put(`${base}/face/user/${id}`, { params: params });};
-
-export const getFaceList =  (id,params) => { return axios.get(`${base}/face`, { params: params });}
 
 
 //**************************************************签到管理**************************************************
