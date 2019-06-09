@@ -20,9 +20,9 @@
                 </el-table-column>
                 <el-table-column prop="user.id"  align="center" label="工号" min-width="150" sortable>
                 </el-table-column>
-                <el-table-column prop="start_at" align="center"  label="开始时间" min-width="180" sortable>
+                <el-table-column prop="start_at" align="center"  label="开始时间" min-width="180" sortable :formatter="formatStart_at">
                 </el-table-column>
-                <el-table-column prop="end_at" align="center"  label="结束时间" min-width="180" sortable>
+                <el-table-column prop="end_at" align="center"  label="结束时间" min-width="180" sortable :formatter="formatEnd_at">
                 </el-table-column>
                 <el-table-column prop="remark" align="center"  label="完成状态" min-width="120" sortable>
                 </el-table-column>
@@ -115,6 +115,16 @@
                 this.page = val;
                 this.getList();
             },
+
+            formatStart_at(row){
+                var t = new Date(row.start_at);
+                return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
+            },
+            formatEnd_at(row){
+                var t = new Date(row.end_at);
+                return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
+            },
+
             formatStatus(row) {
                 if (row.status == 'wait')
                     return '等待审核';
