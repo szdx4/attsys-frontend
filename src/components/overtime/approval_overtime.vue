@@ -102,12 +102,11 @@
             },
             formatStatus(row){
                 if (row.status=='wait')
-                    St = '等待审核';
+                    return'等待审核';
                 else if(row.status=='pass')
-                    St = '通过';
+                    return'通过';
                 else (row.status=='reject')
-                    St = '拒绝';
-                return St;
+                    return '拒绝';
             },
             editSubmit: function () {//向后台发送审核信息
 

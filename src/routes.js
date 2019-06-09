@@ -72,7 +72,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '部门管理',
-        iconCls: 'fa fa-clock-o',
+        iconCls: 'fa fa-microchip',
         children: [
             { path: '/department', component: department, name: '部门编辑' },
         ]
@@ -82,7 +82,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '人脸信息',
-        iconCls: 'fa fa-clock-o',
+        iconCls: 'fa fa-camera',
         children: [
             { path: '/face', component: face, name: '人脸信息管理' },
         ]
@@ -91,7 +91,7 @@ let routes = [
         path: '/',
         component: Home,
         name: '排班信息',
-        iconCls: 'fa fa-clock-o',
+        iconCls: 'fa fa-pie-chart',
         children: [
             { path: '/shift', component: shift, name: '排班信息列表' },
         ]

@@ -173,12 +173,12 @@
 
             formatStatus(row){
                 if (row.status=='wait')
-                    St = '等待审核';
+                    return'等待审核';
                 else if(row.status=='available')
-                    St = '通过';
-                else (row.status=='discarded')
-                St = '丢弃';
-                return St;
+                    return'通过';
+                else if(row.status=='discarded')
+                return '丢弃';
+                else return '未知状态';
             },
 
             imgUrl(){

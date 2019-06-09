@@ -144,11 +144,10 @@
 		methods: {
 			formatPosition: function(row, column){
 				if(row.role=='manager')
-					role = '主管';
+					return '主管';
 				else if(row.role=='master')
-					role = '经理';
-				else role = '员工';
-				return role;
+					return '经理';
+				else  return '员工';
 			},
 			handleCurrentChange(val) {
 				this.page = val;
