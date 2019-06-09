@@ -1,16 +1,20 @@
 <template>
-    <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
+    <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit"
+             style="margin:20px;width:60%;min-width:600px;">
         <el-form-item label="申请人">
             <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="开始时间">
             <el-col :span="11">
-                <el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="form.start_at" style="width: 100%;" @change_start="change_start"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm"
+                                v-model="form.start_at" style="width: 100%;"
+                                @change_start="change_start"></el-date-picker>
             </el-col>
         </el-form-item>
         <el-form-item label="结束时间">
             <el-col :span="11">
-                <el-date-picker type="date"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="form.end_at" style="width: 100%;" @change_end="change_end"></el-date-picker>
+                <el-date-picker type="date" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm"
+                                v-model="form.end_at" style="width: 100%;" @change_end="change_end"></el-date-picker>
             </el-col>
         </el-form-item>
 
@@ -25,7 +29,8 @@
 </template>
 
 <script>
-    import { OvertimeRequest } from '../../api/api';
+    import {OvertimeRequest} from '../../api/api';
+
     export default {
         data() {
             return {
@@ -36,8 +41,8 @@
                     end_at: '',
                     resource: '',
                     desc: '',
-                    remark:'',
-                    status:'Wait'
+                    remark: '',
+                    status: 'Wait'
                 }
             }
         },
@@ -45,18 +50,16 @@
             onSubmit() {
                 console.log('submit!');
             },
-            change_start(val){
+            change_start(val) {
                 this.form.start_at = val;
             },
-            change_end(val){
+            change_end(val) {
                 this.form.end_at = val;
             },
-            overtimerequest(){
-                let para = {
-
-                };
+            overtimerequest() {
+                let para = {};
                 OvertimeRequest(para).then((res) => {   //向后端发送请求
-                     });
+                });
 
             }
         }

@@ -7,7 +7,7 @@
                     <el-input v-model="filters.name" placeholder="部门名称"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button   type="primary" v-on:click="getdepartment">查询</el-button>
+                    <el-button type="primary" v-on:click="getdepartment">查询</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="handleAdd">添加排班信息</el-button>
@@ -17,7 +17,8 @@
         </el-col>
 
         <!--列表-->
-        <el-table :data="shiftList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="shiftList" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
+                  style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column type="index" width="60">
@@ -41,7 +42,8 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
+                           :total="total" style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -51,16 +53,20 @@
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
                 <el-form-item label="开始时间">
                     <el-col :span="11">
-                        <el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addForm.start_at" style="width: 100%;" ></el-date-picker>
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="addForm.start_at"
+                                        style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="结束时间">
                     <el-col :span="11">
-                        <el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addForm.end_at" style="width: 100%;" ></el-date-picker>
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="addForm.end_at"
+                                        style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="排班类型">
-                    <el-radio-group v-model="addForm.type" >
+                    <el-radio-group v-model="addForm.type">
                         <el-radio-button label="normal">正常</el-radio-button>
                         <el-radio-button label="allovertime">额外</el-radio-button>
                     </el-radio-group>
@@ -77,24 +83,29 @@
             <el-form :model="addDepartmentForm" label-width="80px" :rules="addDepartmentFormRules" ref="addForm">
                 <el-form-item label="开始时间">
                     <el-col :span="11">
-                        <el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.start_at" style="width: 100%;" ></el-date-picker>
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.start_at"
+                                        style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="结束时间">
                     <el-col :span="11">
-                        <el-date-picker type="datetime"  placeholder="选择日期" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.end_at" style="width: 100%;" ></el-date-picker>
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.end_at"
+                                        style="width: 100%;"></el-date-picker>
                     </el-col>
                 </el-form-item>
                 <el-form-item label="排班类型">
-                <el-radio-group v-model="addDepartmentForm.type" >
-                    <el-radio-button label="normal">正常</el-radio-button>
-                    <el-radio-button label="allovertime">额外</el-radio-button>
-                </el-radio-group>
+                    <el-radio-group v-model="addDepartmentForm.type">
+                        <el-radio-button label="normal">正常</el-radio-button>
+                        <el-radio-button label="allovertime">额外</el-radio-button>
+                    </el-radio-group>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="addDepartmentFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="addDepartmentSubmit" :loading="addDepartmentloading">提交</el-button>
+                <el-button type="primary" @click.native="addDepartmentSubmit" :loading="addDepartmentloading">提交
+                </el-button>
             </div>
         </el-dialog>
 
@@ -102,8 +113,8 @@
 </template>
 
 <script>
-    import { getDepartmentList, addDepartment, deletDepartment, editDepartment, getDepartment} from '../../api/api'
-    import { getShiftList, addShift, deletShift, addDepartmentShift} from "../../api/api";
+    import {getDepartmentList, addDepartment, deletDepartment, editDepartment, getDepartment} from '../../api/api'
+    import {getShiftList, addShift, deletShift, addDepartmentShift} from "../../api/api";
 
     export default {
         data() {
@@ -111,7 +122,7 @@
                 filters: {
                     name: ''
                 },
-                shiftList:[],
+                shiftList: [],
                 total: 0,
                 page: 1,
                 listLoading: false,
@@ -126,24 +137,21 @@
 
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
-                addFormRules: {
-                },
+                addFormRules: {},
                 //新增界面数据
                 addForm: {
-                    start_at:'',
-                    end_at:'',
-                    type:'',
+                    start_at: '',
+                    end_at: '',
+                    type: '',
                 },
 
-                addDepartmentFormVisible:false,
+                addDepartmentFormVisible: false,
                 addDepartmentloading: false,
-                addDepartmentFormRules:{
-
-                },
-                addDepartmentForm:{
-                    start_at:'',
-                    end_at:'',
-                    type:'',
+                addDepartmentFormRules: {},
+                addDepartmentForm: {
+                    start_at: '',
+                    end_at: '',
+                    type: '',
                 },
 
             }
@@ -155,16 +163,15 @@
                 this.getUsers();
             },
 
-            getdepartment(){
-                let para ={};
-                getDepartment(para).then((res) =>{//向后端发送 获得指定部门排班的请求
+            getdepartment() {
+                let para = {};
+                getDepartment(para).then((res) => {//向后端发送 获得指定部门排班的请求
 
                 })
             },
 
             getList() { //向后端请求排班列表
-                let para = {
-                };
+                let para = {};
                 getShiftList(para).then((res) => {
 
                 });
@@ -175,9 +182,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.listLoading = true;
-                    let para = {
-
-                    };
+                    let para = {};
                     deletShift(para).then((res) => {
                         //这里需要加参数传递
                         this.$message({
@@ -196,7 +201,7 @@
 
             },
 
-            handleAddDepartment:function(){
+            handleAddDepartment: function () {
                 this.addDepartmentFormVisible = true;
             },
 

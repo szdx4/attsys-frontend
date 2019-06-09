@@ -132,7 +132,6 @@
                 let para = {
                 };
                 //this.listLoading = true;
-                //NProgress.start();
                 getFaceList(para).then((res) => {
 
                 });

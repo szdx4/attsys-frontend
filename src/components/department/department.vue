@@ -2,7 +2,8 @@
     <section>
 
         <!--列表-->
-        <el-table :data="departments" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="departments" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
+                  style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="id" min-width="60" label="id" align="center" sortable>
@@ -25,7 +26,8 @@
         <!--工具条-->
         <el-col :span="24" class="toolbar">
             <el-button type="primary" @click="handleAdd">新增部门</el-button>
-            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
+                           :total="total" style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -45,10 +47,10 @@
         <el-dialog title="编辑" v-model="detailFormVisible" :close-on-click-modal="false">
             <el-form :model="detailForm" label-width="80px" :rules="detailForm" ref="editForm">
                 <el-form-item label="部门id:" prop="name">
-                    <el-form-item  :label="detailForm.id"></el-form-item>
+                    <el-form-item :label="detailForm.id"></el-form-item>
                 </el-form-item>
                 <el-form-item label="部门名称: " prop="name">
-                    <el-form-item  :label="detailForm.name"></el-form-item>
+                    <el-form-item :label="detailForm.name"></el-form-item>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -69,7 +71,7 @@
 </template>
 
 <script>
-    import { getDepartmentList, addDepartment, deletDepartment, editDepartment, getDepartment} from '../../api/api'
+    import {getDepartmentList, addDepartment, deletDepartment, editDepartment, getDepartment} from '../../api/api'
 
     export default {
         data() {
@@ -77,8 +79,7 @@
                 filters: {
                     name: ''
                 },
-                departments:[
-                ],
+                departments: [],
                 total: 0,
                 page: 1,
                 listLoading: false,
@@ -88,25 +89,25 @@
                 editLoading: false,
                 editFormRules: {
                     name: [
-                        { required: true, message: '请输入部门名称', trigger: 'blur' }
+                        {required: true, message: '请输入部门名称', trigger: 'blur'}
                     ]
                 },
                 //具体信息界面数据
                 editForm: {
                     id: 0,
-                    name:'',
+                    name: '',
                 },
                 detailFormVisible: false,
-                detailForm:{
-                    id:0,
-                    name:'',
+                detailForm: {
+                    id: 0,
+                    name: '',
                 },
 
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
                 addFormRules: {
                     name: [
-                        { required: true, message: '请输入部门名称', trigger: 'blur' }
+                        {required: true, message: '请输入部门名称', trigger: 'blur'}
                     ]
                 },
                 //新增界面数据
@@ -123,33 +124,30 @@
                 this.getList();
             },
 
-            getdepartment(){
-              let para ={};
-              getDepartment(para).then((res) =>{
-                  //向后端发送 获得指定部门信息的请求
+            getdepartment() {
+                let para = {};
+                getDepartment(para).then((res) => {
+                    //向后端发送 获得指定部门信息的请求
 
-              })
+                })
             },
 
             getList() {
                 //向后端请求部门列表
-                let para = {
-                };
-               // this.listLoading = true;
+                let para = {};
+                // this.listLoading = true;
                 //NProgress.start();
                 getDepartmentList(para).then((res) => {
 
                 });
             },
             //删除
-            handleDel: function ( row) {//向后端发送删除信息 获取id的话直接row.id
+            handleDel: function (row) {//向后端发送删除信息 获取id的话直接row.id
                 this.$confirm('确认删除该记录吗?', '提示', {
                     type: 'warning'
                 }).then(() => {
                     this.listLoading = true;
-                    let para = {
-
-                    };
+                    let para = {};
                     deletDepartment(para).then((res) => {
                         //这里需要加参数传递
                         this.$message({
@@ -163,11 +161,10 @@
                 });
             },
 
-            handleDetail:function(row){
-              this.detailFormVisible=true;
-              this.detailForm = Object.assign({},row);
+            handleDetail: function (row) {
+                this.detailFormVisible = true;
+                this.detailForm = Object.assign({}, row);
             },
-
 
 
             //显示编辑界面
@@ -185,15 +182,15 @@
             },
             //编辑
             editSubmit: function () {
-                            let para = Object.assign({}, this.editForm);
-                            editDepartment(para).then((res) => {//向后端发送编辑信息
+                let para = Object.assign({}, this.editForm);
+                editDepartment(para).then((res) => {//向后端发送编辑信息
 
-                                this.$message({
-                                    message: '提交成功',
-                                    type: 'success'
-                                });
+                    this.$message({
+                        message: '提交成功',
+                        type: 'success'
+                    });
 
-                        });
+                });
 
             },
             //新增

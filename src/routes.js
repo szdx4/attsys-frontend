@@ -35,8 +35,8 @@ let routes = [
         name: '用户管理',
         iconCls: 'fa fa-user-circle',//图标样式class
         children: [
-            { path: '/main', component: Main, name: '主页', hidden: true },
-            { path: '/table', component: Table, name: '用户编辑' },//对一般职员隐藏
+            {path: '/main', component: Main, name: '主页', hidden: true},
+            {path: '/table', component: Table, name: '用户编辑'},//对一般职员隐藏
         ]
     },
     {
@@ -45,8 +45,8 @@ let routes = [
         name: '请假',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/leave', component: leave, name: '请假申请' },
-            { path: '/approval',component: approval_leave, name:'请假审批' },
+            {path: '/leave', component: leave, name: '请假申请'},
+            {path: '/approval', component: approval_leave, name: '请假审批'},
         ]
     },
     {
@@ -55,8 +55,8 @@ let routes = [
         name: '加班',
         iconCls: 'fa fa-coffee',
         children: [
-            { path: '/overtime_list', component: overtime_ist, name: '加班申请列表' },
-            { path:'/overtime', component: overtime, name:'申请加班'},
+            {path: '/overtime_list', component: overtime_ist, name: '加班申请列表'},
+            {path: '/overtime', component: overtime, name: '申请加班'},
         ]
     },
     {
@@ -65,7 +65,7 @@ let routes = [
         name: '工时',
         iconCls: 'fa fa-clock-o',
         children: [
-            { path: '/hours', component: hours, name: '工时记录' },
+            {path: '/hours', component: hours, name: '工时记录'},
         ]
     },
 
@@ -75,7 +75,7 @@ let routes = [
         name: '部门管理',
         iconCls: 'fa fa-microchip',
         children: [
-            { path: '/department', component: department, name: '部门编辑' },
+            {path: '/department', component: department, name: '部门编辑'},
         ]
     },
 
@@ -85,8 +85,8 @@ let routes = [
         name: '人脸信息',
         iconCls: 'fa fa-camera',
         children: [
-            { path: '/face', component: face, name: '人脸信息管理' },
-            { path:'/face_update', component:update,name:'更新人脸信息'}
+            {path: '/face', component: face, name: '人脸信息管理'},
+            {path: '/face_update', component: update, name: '更新人脸信息'}
         ]
     },
     {
@@ -95,7 +95,7 @@ let routes = [
         name: '排班信息',
         iconCls: 'fa fa-pie-chart',
         children: [
-            { path: '/shift', component: shift, name: '排班信息列表' },
+            {path: '/shift', component: shift, name: '排班信息列表'},
         ]
     },
 
@@ -106,7 +106,7 @@ let routes = [
         name: '签到',
         iconCls: 'fa fa-clock-o',
         children: [
-            { path: '/sign', component: sign, name: '人脸签到/二维码签到' },
+            {path: '/sign', component: sign, name: '人脸签到/二维码签到'},
         ]
     },
 
@@ -114,7 +114,7 @@ let routes = [
     {
         path: '*',
         hidden: true,
-        redirect: { path: '/404' }
+        redirect: {path: '/404'}
     }
 ];
 

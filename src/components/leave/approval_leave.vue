@@ -13,7 +13,8 @@
         </el-col>
 
         <!--列表-->
-        <el-table :data="leaveList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="leaveList" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
+                  style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="id" label="序号" align="center" min-width="60">
@@ -24,7 +25,8 @@
             </el-table-column>
             <el-table-column prop="end_at" label="结束时间" align="center" min-width="180" sortable>
             </el-table-column>
-            <el-table-column prop="status" label="状态" align="center" :formatter="statusFormatter" min-width="100" sortable>
+            <el-table-column prop="status" label="状态" align="center" :formatter="statusFormatter" min-width="100"
+                             sortable>
             </el-table-column>
             <el-table-column label="操作" align="center" min-width="100">
                 <template scope="scope">
@@ -35,7 +37,8 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
+                           :total="total" style="float:right;">
             </el-pagination>
         </el-col>
 
@@ -50,12 +53,12 @@
                 <el-form-item label="审核">
                     <el-radio-group v-model="statusForm.status">
                         <el-radio class="radio" :label="'Pass'">通过</el-radio>
-                        <el-radio class="radio" :label="'Reject'"@change="change">不通过</el-radio>
-                        <el-radio class="radio" :label="'Wait'" >暂不决定</el-radio>
+                        <el-radio class="radio" :label="'Reject'" @change="change">不通过</el-radio>
+                        <el-radio class="radio" :label="'Wait'">暂不决定</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="审核意见" v-model="statusForm.delivery">
-                    <el-input ></el-input>
+                    <el-input></el-input>
                 </el-form-item>
             </el-form>
 
@@ -68,7 +71,7 @@
 </template>
 <script>
     import util from '../../common/js/util'
-    import { getLeaveUser, getLeaveListPage, LeaveRequestApproval } from '../../api/api';
+    import {getLeaveUser, getLeaveListPage, LeaveRequestApproval} from '../../api/api';
 
     export default {
         data() {
@@ -94,18 +97,18 @@
                     }
                 ],
                 statusFormVisible: false,
-                statusFormRules:{
+                statusFormRules: {
                     name: [
-                        { required: true, message: '请输入审核意见', trigger: 'blur' }
+                        {required: true, message: '请输入审核意见', trigger: 'blur'}
                     ]
                 },
                 statusForm: {
                     id: 0,
                     name: '',
-                    user_id:'',
-                    start_at:'' ,
-                    end_at:'',
-                    remark:'Wait',
+                    user_id: '',
+                    start_at: '',
+                    end_at: '',
+                    remark: 'Wait',
                     status: '',
                     delivery: false
                 },
@@ -113,22 +116,22 @@
         },
         methods: {
             //获取指定用户请假信息
-            getUser(){
-              let para ={
-                  name:this.filters.name
-              }
-              getLeaveUser(para).then((res) =>{
+            getUser() {
+                let para = {
+                    name: this.filters.name
+                }
+                getLeaveUser(para).then((res) => {
 
-              });
+                });
             },
 
-            statusFormatter(row){
+            statusFormatter(row) {
                 if (row.status == 'wait')
                     return '等待审核';
-                else if(row.status == 'pass')
+                else if (row.status == 'pass')
                     return '已通过';
-                else if(row.status == 'reject')
-                return '不通过';
+                else if (row.status == 'reject')
+                    return '不通过';
                 else return '未知状态';
             },
 
@@ -139,11 +142,11 @@
                     name: this.filters.name
                 };
                 this.loading = true;
-               // getLeaveListPage(para).then((res) => {
-               //     this.total = res.data.total;
-               //     this.leaveList = res.data.leaveList;
-               //     this.listloading = false;
-               // });
+                // getLeaveListPage(para).then((res) => {
+                //     this.total = res.data.total;
+                //     this.leaveList = res.data.leaveList;
+                //     this.listloading = false;
+                // });
             },
             selsChange: function (sels) {
                 this.sels = sels;
@@ -152,11 +155,11 @@
                 this.page = val;
                 this.getList();
             },
-            statusEdit(index, row){
-                this.statusFormVisible=true;
+            statusEdit(index, row) {
+                this.statusFormVisible = true;
                 this.statusForm = Object.assign({}, row);
             },
-            change(){
+            change() {
                 this.statusForm.delivery = true
             },
 

@@ -2,7 +2,8 @@
     <section>
 
         <!--列表-->
-        <el-table :data="hoursList" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="hoursList" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
+                  style="width: 100%;">
             <el-table-column type="index" width="60">
             </el-table-column>
             <el-table-column prop="user_name" label="姓名" width="360" sortable>
@@ -15,14 +16,16 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
+                           :total="total" style="float:right;">
             </el-pagination>
         </el-col>
 
     </section>
 </template>
 <script>
-    import { getHours } from '../../api/api'
+    import {getHours} from '../../api/api'
+
     export default {
         data() {
             return {
@@ -31,8 +34,7 @@
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
-                hoursList: [
-                ],
+                hoursList: [],
 
 
             }
@@ -40,7 +42,7 @@
         methods: {
             //获取工时列表
             //ok
-            getList: function () {
+            getList() {
                 this.loading = true;
                 //ok
                 getHours().then((res) => {
