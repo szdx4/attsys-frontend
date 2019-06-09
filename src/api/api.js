@@ -4,7 +4,7 @@ let base = '';
 
 //**************************************************用户管理**************************************************
 
-//登陆
+//登录
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
 //获取指定用户
