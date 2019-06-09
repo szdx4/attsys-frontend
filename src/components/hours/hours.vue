@@ -23,11 +23,11 @@
                   style="width: 100%;">
             <el-table-column prop="id" label="id" min-width="60" sortable>
             </el-table-column>
-            <el-table-column prop="user_name" label="姓名" align="center" min-width="150" sortable>
+            <el-table-column prop="user.name" label="姓名" align="center" min-width="150" sortable>
             </el-table-column>
-            <el-table-column prop="user_name" label="工号" align="center" min-width="150" sortable>
+            <el-table-column prop="user.id" label="工号" align="center" min-width="150" sortable>
             </el-table-column>
-            <el-table-column prop="date" label="日期" align="center" min-width="200"  sortable>
+            <el-table-column prop="date" label="日期" align="center" min-width="200" :formatter="dateformatter" sortable>
             </el-table-column>
             <el-table-column prop="hours" label="工作时长" align="center" min-width="180" sortable>
             </el-table-column>
@@ -58,6 +58,9 @@
                 end_at:'',
 
                 hoursList: [
+                    {
+                    date:'2019-06-09T14:41:58+08:00'
+                    }
                 ],
 
 
@@ -73,6 +76,11 @@
                     this.hoursList = res.data;
                     this.loading = false;
                 });
+            },
+            dateformatter(row){
+               var t = new Date(row.date);
+               return t.toLocaleDateString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
+
             },
             getUser(){
                 var start_at = this.start_at;

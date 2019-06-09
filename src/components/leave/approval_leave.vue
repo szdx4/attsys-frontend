@@ -45,7 +45,7 @@
         </el-col>
 
         <el-dialog title="审核" v-model="statusFormVisible" :close-on-click-modal="false">
-            <el-form :model="statusForm" label-width="80px" :rules="statusFormRules" ref="editForm">
+            <el-form :model="statusForm" label-width="80px" :rules="statusFormRules" ref="statusForm">
                 <el-form-item label="工号" prop="id" align="left">
                     <el-form-item :label="statusForm.user.id.toString()" auto-complete="off"></el-form-item>
                 </el-form-item>

@@ -1,14 +1,14 @@
 <template>
     <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit"
-             style="margin:20px;width:60%;min-width:600px;">
-        <el-form-item label="开始时间">
+             style="margin:20px;width:60%;min-width:600px;" :rules="rules">
+        <el-form-item label="开始时间" prop="start_at">
             <el-col :span="11">
                 <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
                                 format="yyyy-MM-dd HH:mm" v-model="form.start_at" style="width: 100%;"
                                 @change_start="change_start"></el-date-picker>
             </el-col>
         </el-form-item>
-        <el-form-item label="结束时间">
+        <el-form-item label="结束时间" prop="end_at">
             <el-col :span="11">
                 <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
                                 format="yyyy-MM-dd HH:mm" v-model="form.end_at" style="width: 100%;"
@@ -16,7 +16,7 @@
             </el-col>
         </el-form-item>
 
-        <el-form-item label="请假原因">
+        <el-form-item label="请假原因" prop="remark">
             <el-input type="textarea" v-model="form.remark"></el-input>
         </el-form-item>
         <el-form-item>
@@ -36,6 +36,18 @@
                     start_at: '',
                     end_at: '',
                     remark: '',
+                },
+                rules:{
+                    start_at:[
+                        { required: true, message: '请选择开始时间', trigger: 'blur'}
+                    ],
+                    end_at:[
+                        { required: true, message: '请选择结束时间', trigger: 'blur'}
+                    ],
+                    remark:[
+                        { required: true, message: '请填写请假原因', trigger: 'blur'}
+                    ]
+
                 }
             }
         },

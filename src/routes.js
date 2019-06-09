@@ -6,7 +6,6 @@ import Table from './components/user/Table.vue'
 import leave from './components/leave/leave.vue'
 import approval_leave from './components/leave/approval_leave.vue'
 import overtime_ist from './components/overtime/approval_overtime'
-import overtime from './components/overtime/overtime'
 import hours from './components/hours/hours'
 import department from './components/department/department'
 import face from './components/face/face'
@@ -56,7 +55,6 @@ let routes = [
         iconCls: 'fa fa-coffee',
         children: [
             {path: '/overtime_list', component: overtime_ist, name: '加班申请列表'},
-            {path: '/overtime', component: overtime, name: '申请加班'},
         ]
     },
     {
