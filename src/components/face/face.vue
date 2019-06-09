@@ -4,7 +4,7 @@
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
             <el-form :inline="true" :model="filters">
                 <el-form-item>
-                    <el-input v-model="filters.name" placeholder="用户id"></el-input>
+                    <el-input v-model="filters.id" placeholder="用户id"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button   type="primary" v-on:click="getfaceuser">查询</el-button>
@@ -76,7 +76,7 @@
         data() {
             return {
                 filters: {
-                    name: ''
+                    id: '',
                 },
 
                 facelist: [
@@ -118,7 +118,7 @@
 
             handleCurrentChange(val) {
                 this.page = val;
-                this.getUsers();
+                this.getList();
             },
 
             getfaceuser(){
