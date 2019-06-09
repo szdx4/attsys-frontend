@@ -25,7 +25,7 @@
             </el-table-column>
             <el-table-column prop="user_name" label="姓名" align="center" min-width="150" sortable>
             </el-table-column>
-            <el-table-column prop="user_name" label="工号" align="center" min-width="150" sortable>
+            <el-table-column prop="user_id" label="工号" align="center" min-width="150" sortable>
             </el-table-column>
             <el-table-column prop="date" label="日期" align="center" min-width="200"  sortable>
             </el-table-column>
