@@ -6,7 +6,7 @@
             </div>
         <div class="img-lists">
             <el-button type="primary" v-on:click="takePhoto">拍照</el-button>
-            <el-button type="primary" v-on:click="">使用照片</el-button><!--上传--->
+            <el-button type="primary" v-on:click="sign">使用照片</el-button><!--上传--->
             <canvas id="canvas" width="500px" height="500px"></canvas>
         </div>
             <div class="img-qr" slot="placeholder">
@@ -16,10 +16,12 @@
 </template>
 
 <script>
+    import{signFace} from '../../api/api'
     export default {
         data() {
             return {
                 name: "user_update_face",
+                imageData:'' //base64格式的图片
             };
         },
         methods: {
@@ -38,12 +40,18 @@
             closeCam() {
 
             },
+            sign(){//向后台发送人脸签到信息 signFace imageData为base64编码后的图片
+
+
+            },
 
             takePhoto() {
                 let video = document.getElementById("video");
                 let canvas = document.getElementById("canvas");
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, 500, 500);
+                this.imageData = canvas.toDataURL();
+                console.log(this.imageData);
             },
 
 
