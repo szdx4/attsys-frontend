@@ -86,6 +86,7 @@ let routes = [
         iconCls: 'fa fa-camera',
         children: [
             { path: '/face', component: face, name: '人脸信息管理' },
+            { path:'/face_update', component:update,name:'更新人脸信息'}
         ]
     },
     {
