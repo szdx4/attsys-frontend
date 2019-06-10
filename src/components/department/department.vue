@@ -45,7 +45,7 @@
         </el-dialog>
         <!--详细信息界面-->
         <el-dialog title="编辑" v-model="detailFormVisible" :close-on-click-modal="false">
-            <el-form :model="detailForm" label-width="80px" :rules="detailForm" ref="editForm">
+            <el-form :model="detailForm" label-width="80px" ref="editForm">
                 <el-form-item label="部门id:" prop="name">
                     <el-form-item :label="detailForm.id"></el-form-item>
                 </el-form-item>

@@ -24,6 +24,7 @@
         <!--工具条-->
         <el-col :span="24" class="toolbar">
             <el-button type="primary" v-on:click="unreadMsg">只显示未读消息</el-button>
+            <el-button type="primary" v-on:click="getlist">显示全部消息</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -53,15 +54,15 @@
                     id:0,
                     from:{
                         id:1,//用户id
-                        name:'drs',
+                        name:'',
                     },
                     to:{
                         id:666,//
-                        name:'a',
+                        name:'',
                     },
-                    title:'test',
+                    title:'',
                     status:'',//unread /read
-                    content:'wtf??',
+                    content:'',
                 },
                 msg:{
                     id:0,
@@ -75,9 +76,9 @@
                     },
                     title:'',
                     status:'',//unread /read
-                },//从后台获取的消息
+                },
 
-                msgList: [{} ],
+                msgList: [ ],
 
                 total:0,
                 page:1,
@@ -107,6 +108,15 @@
                 //this.listLoading = true;
             },
             unreadMsg(){
+                var len=this.msgList.length;
+                var j=0;
+                var newMsgList =  new Array();
+                for(var i=0;i<len;i++){
+                 if(this.msgList[i].status=='unread')
+                     newMsgList[j++]=this.msgList[i];
+                 return newMsgList;
+                }
+
 
             },
 
