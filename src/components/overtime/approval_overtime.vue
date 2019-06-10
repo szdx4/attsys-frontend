@@ -121,6 +121,9 @@
                 this.page = val;
                 this.getList();
             },
+            selsChange: function (sels) {
+                this.sels = sels;
+            },
 
             formatStart_at(row){
                 var t = new Date(row.start_at);

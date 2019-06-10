@@ -1,74 +1,45 @@
 <template>
     <section>
-        <!--工具条-->
-        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true">
-                <el-form-item>
-                    <el-input v-model="msg.id" placeholder="消息id"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" v-on:click="getMsg">查询</el-button>
-                </el-form-item>
-            </el-form>
-        </el-col>
 
         <!--列表-->
-        <el-table :data="leaveList" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
+        <el-table :data="msgList" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
                   style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="id" label="序号" align="center" min-width="60">
             </el-table-column>
-            <el-table-column prop="user.name" label="发送用户" align="center" min-width="120" sortable>
+            <el-table-column prop="from.name" label="发送用户" align="center" min-width="120" sortable>
             </el-table-column>
-            <el-table-column prop="user.id" label="工号" align="center" min-width="120" sortable>
+            <el-table-column prop="title" label="标题" align="center" min-width="180" sortable>
             </el-table-column>
-            <el-table-column prop="start_at" label="开始时间" align="center" min-width="180" :formatter="formatStart_at" sortable>
+            <el-table-column prop="status" label="状态" align="center" min-width="180" >
             </el-table-column>
-            <el-table-column prop="end_at" label="结束时间" align="center" min-width="180" :formatter="formatEnd_at" sortable>
-            </el-table-column>
-            <el-table-column prop="status" label="状态" align="center" :formatter="statusFormatter" min-width="100"
-                             sortable>
-            </el-table-column>
-            <el-table-column label="操作" align="center" min-width="100">
+            <el-table-column label="查看具体内容" align="center" min-width="150">
                 <template scope="scope">
-                    <el-button size="small" @click="statusEdit(scope.$index, scope.row)">审核</el-button>
+                    <el-button size="small" @click="handle(scope.row)">点击查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
+            <el-button type="primary" v-on:click="unreadMsg">只显示未读消息</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
         </el-col>
 
-        <el-dialog title="审核" v-model="statusFormVisible" :close-on-click-modal="false">
-            <el-form :model="statusForm" label-width="80px" :rules="statusFormRules" ref="statusForm">
-                <el-form-item label="工号" prop="id" align="left">
-                    <el-form-item :label="statusForm.user.id.toString()" auto-complete="off"></el-form-item>
-                </el-form-item>
-                <el-form-item label="姓名" prop="name" align="left">
-                    <el-form-item :label="statusForm.user.name" auto-complete="off"></el-form-item>
-                </el-form-item>
-                <el-form-item label="请假原因" prop="remark">
-                    <el-form-item :label="statusForm.remark" auto-complete="off"></el-form-item>
-                </el-form-item>
-                <el-form-item label="审核" prop="status">
-                    <el-radio-group v-model="statusForm.status" >
-                        <el-radio class="radio" label="pass">通过</el-radio>
-                        <el-radio class="radio" label="reject">不通过</el-radio>
-                        <el-radio class="radio" label="wait">暂不决定</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-            </el-form>
-
-            <div slot="footer" class="dialog-footer">
-                <el-button @click.native="statusFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
-            </div>
+        <el-dialog title="消息" v-model="contentFormVisible" :close-on-click-modal="false" @close="closeDialog">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix" >
+                    <span style="font-size: 15px"> {{ contentForm.title }}</span>
+                    <el-button style="float: right; padding: 3px 0" type="text">回复</el-button>
+                </div>
+                <div>{{ contentForm.content }}</div>
+            </el-card>
         </el-dialog>
+
+
     </section>
 </template>
 <script type="text/ecmascript-6">
@@ -77,6 +48,21 @@
     export default {
         data() {
             return {
+                contentFormVisible:false,
+                contentForm:{
+                    id:0,
+                    from:{
+                        id:1,//用户id
+                        name:'drs',
+                    },
+                    to:{
+                        id:666,//
+                        name:'a',
+                    },
+                    title:'test',
+                    status:'',//unread /read
+                    content:'wtf??',
+                },
                 msg:{
                     id:0,
                     from:{
@@ -90,15 +76,43 @@
                     title:'',
                     status:'',//unread /read
                 },//从后台获取的消息
-                total:'',
+
+                msgList: [{} ],
+
+                total:0,
                 page:1,
+                listLoading:false,
 
             }
         },
         methods:{
-          getMsg(){
+            handleCurrentChange(val) {
+                this.page = val;
+                this.getList();
+            },
+            handle(row){
+                this.contentFormVisible = true;
+                this.contentForm=Object.assign({}, row);
+               // getMsg();//向后台发送请求，获取指定消息赋值给contentForm
 
-          }  ,
+            },
+            selsChange: function (sels) {
+                this.sels = sels;
+            },
+            closeDialog(){
+                this.getlist();
+            },
+
+            getlist(){//向后台请求消息列表 getMsgList
+                //this.listLoading = true;
+            },
+            unreadMsg(){
+
+            },
+
         },
+        mounted() {
+            this.getlist();
+        }
     }
 </script>

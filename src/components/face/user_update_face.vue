@@ -19,7 +19,6 @@
             return {
                 name: "user_update_face",
                 imageData:'',
-                video:'',
             };
         },
         methods: {
@@ -34,11 +33,11 @@
                     video.srcObject = MediaStream;
                     video.play();
                 });
-                this.video = video;
+
             },
             update(){
                 let video = document.getElementById("video");
-                video.closeCam();
+
             },
 
             takePhoto() {
