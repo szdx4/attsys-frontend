@@ -12,7 +12,8 @@
             <el-col :span="4" class="userinfo">
                 <el-dropdown trigger="hover">
                     <span class="el-dropdown-link userinfo-inner"><img
-                            :src="this.sysUserAvatar"/> {{sysUserName}}</span>
+                            :src=this.pic>
+                        {{sysUserName}}</span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="jumpMsg">我的消息</el-dropdown-item>
                         <el-dropdown-item @click.native="jumpSign">签到</el-dropdown-item>
@@ -100,6 +101,7 @@
 
 <script>
     import {getSignStatus, getSignQrcode, signQrcode, signFace} from '../api/api';
+    import {pic} from './user/picture'
 
     export default {
         data() {
@@ -113,6 +115,7 @@
                 qrcode:'',
 
                 sign_id:'',
+                pic:pic,
 
 
                 form: {
