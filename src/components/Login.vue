@@ -75,7 +75,8 @@
 
                                 this.$router.push({path: '/main'});
                                 localStorage.setItem('expired_at', json.expired_at);
-                                sessionStorage.setItem('user', this.ruleForm2.account)
+                                localStorage.setItem('name', this.ruleForm2.account);
+                                localStorage.setItem('password',this.ruleForm2.checkPass);
                             }
                         }).catch(err => {
                             console.log(err);

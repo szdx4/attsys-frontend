@@ -1,4 +1,5 @@
 <template>
+    <section>
     <el-row class="container">
         <el-col :span="24" class="header">
             <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
@@ -19,6 +20,7 @@
                         <el-dropdown-item @click.native="jumpSign">签到</el-dropdown-item>
                         <el-dropdown-item>设置</el-dropdown-item>
                         <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+                        <el-dropdown-item @click.native="handleEdit">修改密码</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
@@ -95,6 +97,22 @@
             </section>
         </el-col>
     </el-row>
+    <el-dialog title="修改密码" v-model="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" ref="editForm">
+            <el-form-item label="旧密码" prop="old_password">
+                <el-input  auto-complete="off" v-model="editForm.old_password" ></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" porp="new_password">
+                <el-input v-model="editForm.new_password" auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
+    </section>
 
 
 </template>
@@ -110,12 +128,17 @@
                 collapsed: false,
                 sysUserName: '',
                 sysUserAvatar: '',
+                editFormVisible:false,
 
                 signFormVisible: false,
                 qrcode: '',
 
                 sign_id: '',
                 pic: pic,
+                editForm:{
+                    old_password: '',
+                    new_password:'',
+                },
 
 
                 form: {
@@ -158,6 +181,9 @@
 
             getSign_id() {//向后台请求sign_id getSignStatus
 
+            },
+            handleEdit(){
+                this.editFormVisible=true;
             },
 
 

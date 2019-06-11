@@ -157,11 +157,11 @@
             },
 
             statusFormatter(row) {
-                if (row.status == 'wait')
+                if (row.status === 'wait')
                     return '等待审核';
-                else if (row.status == 'pass')
+                else if (row.status === 'pass')
                     return '已通过';
-                else if (row.status == 'reject')
+                else if (row.status === 'reject')
                     return '不通过';
                 else return '未知状态';
             },
