@@ -41,7 +41,6 @@
             this.verify();
         }
 
-
     }
 
 </script>

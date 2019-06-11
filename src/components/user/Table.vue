@@ -40,7 +40,6 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-                <el-button type="primary" @click="handleBatchAdd">批量增加用户</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -88,26 +87,12 @@
                 <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
-        <!--批量增加-->
-        <el-dialog title="批量增加" v-model="batchAddVisible" :close-on-click-modal="false">
-            <el-form :model="batchAddForm" label-width="80px"  ref="batchAddForm">
-                <el-upload :auto-upload="false" action="" :on-change="batchAdd" accept=".csv">
-                    <el-button type="primary"  slot="trigger">选择文件</el-button>
-                </el-upload>
-
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click.native="addFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="addSubmit" >提交</el-button>
-            </div>
-        </el-dialog>
     </section>
 </template>
 
 <script>
     import util from '../../common/js/util'
-    import {getUserList, getUser, removeUser, editUser, addUser, batchAddUser} from '../../api/api';
-    import { Base64 } from 'js-base64';
+    import {getUserList, getUser, removeUser, editUser, addUser} from '../../api/api';
 
     export default {
         data() {
@@ -191,9 +176,9 @@
 
             },
             formatPosition: function (row, column) {
-                if (row.role == 'manager')
+                if (row.role === 'manager')
                     return '主管';
-                else if (row.role == 'master')
+                else if (row.role === 'master')
                     return '经理';
                 else return '员工';
             },
@@ -203,16 +188,18 @@
             },
             getuser() {
                 if (this.filters.id === '')
-                    this.getUsers()
+                    this.getUsers();
                 else {
                     let para = {};
                     let user_id = parseInt(this.filters.id);
-                    console.log(user_id);
+                    this.listLoading = true;
                     getUser(user_id, para).then((res) => {
-                        console.log(res);
-                        this.users = res.data;
-
+                        this.listLoading = false;
+                        let data = [0,];
+                        data[0] = res.data.data;
+                        this.users = data
                     });
+                    this.listLoading = false;
                 }
 
             },
@@ -311,6 +298,17 @@
                                 this.addFormVisible = false;
                                 this.getUsers();
                             });
+                            console.log(res);
+                            if (res.data.status === 400) {
+                                console.log("error");
+                                this.$message({
+                                    message: '提交错误，请重试！',
+                                    type: 'error'
+                                });
+                                this.$refs['addForm'].resetFields();
+                                this.addFormVisible = false;
+                                this.getUsers();
+                            }
                         });
                     }
                 });

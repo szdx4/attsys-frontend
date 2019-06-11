@@ -45,7 +45,8 @@ export const getUserList = params => {
 // password: 密码
 // department: 部门
 export const addUser = params => {
-    return instance.post(`/user`, params, {headers: getHeaders()}); // return id
+    return instance.post(`/user`, params, {headers: getHeaders()});
+    // return id
 };
 
 // 编辑用户
