@@ -124,7 +124,10 @@
 
             getfaceuser(){
                 let para ={};
-                getFaceUser(para).then((res) =>{//向后端发送 获得指定用户人脸信息
+                let id = this.filters.id;
+
+                getFaceUser(id, para).then((res) =>{//向后端发送 获得指定用户人脸信息
+                    this.facelist = res.data.data;
 
                 })
             },
@@ -176,6 +179,7 @@
                             let id = this.approvalForm.user.id;
                             let para =
                                 {
+                                    status: this.approvalForm.status
                                 };
 
                             faceApproval(id, para).then((res) => {//向后端发送审核信息
