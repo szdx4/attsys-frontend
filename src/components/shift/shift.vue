@@ -132,7 +132,7 @@
                 addLoading: false,
                 addFormRules: {
                     worker_id :[
-                {required: true, type:'number', message: '请填写用户id', trigger: 'blur'},
+                {type:'number', message: '请填写用户id', trigger: 'blur'},
                 ],
                     start_at:[
                         { type:'date', required: true, message:'请选择开始时间', trigger:'change'}
