@@ -35,7 +35,7 @@
                                 <i :class="item.iconCls"></i>{{item.name}}
                             </template>
                             <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path"
-                                          v-if="!child.hidden" >{{child.name}}
+                                          v-if="!child.hidden">{{child.name}}
                             </el-menu-item>
                         </el-submenu>
                         <el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i
@@ -112,10 +112,10 @@
                 sysUserAvatar: '',
 
                 signFormVisible: false,
-                qrcode:'',
+                qrcode: '',
 
-                sign_id:'',
-                pic:pic,
+                sign_id: '',
+                pic: pic,
 
 
                 form: {
@@ -134,28 +134,29 @@
             onSubmit() {
                 console.log('submit!');
             },
-            jumpSign:function(){
+            jumpSign: function () {
                 //加一个函数获取sign_id
                 var signStatus;
-                if(this.sign_id=='') signStatus = true;
-                else signStatus=false;
-                if(!signStatus){
+                if (this.sign_id == '') signStatus = true;
+                else signStatus = false;
+                if (!signStatus) {
                     this.$message({
                         message: '您已签到',
                     });
-                }
-                else {
-                    this.$router.push({name:'签到',params:{
-                    qrcode:this.qrcode,
-                    }});
+                } else {
+                    this.$router.push({
+                        name: '签到', params: {
+                            qrcode: this.qrcode,
+                        }
+                    });
                 }
             },
 
-            jumpMsg(){
+            jumpMsg() {
                 this.$router.push('/msg')
             },
 
-            getSign_id(){//向后台请求sign_id getSignStatus
+            getSign_id() {//向后台请求sign_id getSignStatus
 
             },
 
@@ -214,11 +215,15 @@
 
             //退出登录
             logout: function () {
-                var _this = this;
+                let _this = this;
                 this.$confirm('确认退出吗?', '提示', {
                     //type: 'warning'
                 }).then(() => {
                     sessionStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('id');
+                    localStorage.removeItem('role');
+                    localStorage.removeItem('expired_at');
                     _this.$router.push('/login');
                 }).catch(() => {
 
@@ -226,6 +231,7 @@
 
 
             },
+
             //折叠导航栏
             collapse: function () {
                 this.collapsed = !this.collapsed;
@@ -249,8 +255,8 @@
 
 <style scoped lang="scss">
     //@import '~vars.scss';
-    .customWidth{
-        width:80%;
+    .customWidth {
+        width: 80%;
     }
 
     .container {

@@ -15,6 +15,17 @@ Vue.use(Vuex);
 
 var addRouFlag = false;
 
+// export function verify() {
+//     let token = localStorage.getItem('token');
+//     if (token !== '') {
+//
+//     }
+//     else{
+//
+//     }
+//
+// }
+
 new Vue({
     router,
     store,
