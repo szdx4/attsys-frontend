@@ -189,7 +189,7 @@ export const OvertimeRequest = (id, params) => {
 // 审核加班申请
 // status: 状态
 export const OvertimeApproval = (id, params) => {
-    return instance.put(`/overtime/user/${id}`, params, {headers: getHeaders()});
+    return instance.put(`/overtime/${id}`, params, {headers: getHeaders()});
 };
 
 

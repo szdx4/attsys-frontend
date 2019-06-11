@@ -82,6 +82,7 @@
                 editLoading: false,
                 editFormVisible: false,
                 editForm: {
+                    id: 0,
                     status: '',
                 },
                 rules: {
