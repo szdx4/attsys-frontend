@@ -18,6 +18,55 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
+export const common_router = [
+    {
+        path: '/login',
+        component: Login,
+        name: '',
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: NotFound,
+        name: '',
+        hidden: true
+    },
+
+    {
+        path: '*',
+        hidden: true,
+        redirect: {path: '/404'}
+    },
+    {
+        path: '/sign',
+        component: sign,
+        hidden: true,
+        name: '签到',
+        roles:['user','master']
+    },
+    {
+        path:'/m',
+        component: Home,
+        hidden: true,
+        name:'',
+        roles:['user','master'],
+        children:[
+            {path:'/msg',roles:['user','master'], component: msg, name:'消息列表'}
+        ]
+    },
+    {
+        path:'/',
+        hidden:true,
+        name:'',
+        component:Home,
+        children:[
+            {path:'/main',component: Main ,name:'主页'}
+        ]
+    },
+
+];
+
+
 export const routes_master = [
     {
         path: '/login',
@@ -222,7 +271,7 @@ export const routes_user = [
 //this.$router.addRoutes(routes);
 var role=localStorage.getItem("role")
 console.log('role  '+role)
-var routes = (role==='master')? routes_master : routes_user
+export const  routes = (role==='master')? routes_master : routes_user
 export default new Router({
-routes:routes
+routes:common_router
 })

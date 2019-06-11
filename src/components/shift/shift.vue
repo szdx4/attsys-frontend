@@ -38,8 +38,8 @@
         <!--新增界面-->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-               <el-form-item label="员工id" prop="id">
-                   <el-input v-model="addForm.user.id"></el-input>
+               <el-form-item label="员工id" prop="worker_id">
+                   <el-input v-model="addForm.user.id" ></el-input>
                </el-form-item>
                 <el-form-item label="开始时间" prop="start_at">
                     <el-col :span="11">
@@ -131,17 +131,17 @@
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
                 addFormRules: {
-                    id :[
-                { required: true, message: '请填写用户id', trigger: 'blur'}
-            ],
+                    worker_id :[
+                {required: true, type:'number', message: '请填写用户id', trigger: 'blur'},
+                ],
                     start_at:[
-                        { required: true, message:'请选择开始时间', trigger:'blur'}
+                        { type:'date', required: true, message:'请选择开始时间', trigger:'change'}
                     ],
                     end_at:[{
-                         required: true, message:'请选择结束时间', trigger:'blur'
+                        type:'date',   required: true, message:'请选择结束时间', trigger:'blur'
                     }],
                     type:[{
-                        required: true, message:'请选择排班类型', trigger:'blur'
+                         required: true, message:'请选择排班类型', trigger:'blur'
                     }]
                 },
                 //新增界面数据
@@ -159,7 +159,7 @@
                 addDepartmentloading: false,
                 addDepartmentFormRules: {
                     id :[
-                        { required: true, message: '请填写部门id', trigger: 'blur'}
+                        { required: true, message: '请填写部门id',}
                     ],
                     start_at:[
                         { required: true, message:'请选择开始时间', trigger:'blur'}

@@ -19,6 +19,7 @@
 
 <script>
     import {requestLogin} from '../api/api';
+
     let Base64 = require('js-base64').Base64;
 
     export default {
@@ -70,6 +71,7 @@
                                 let json = JSON.parse(pre_json);
                                 localStorage.setItem('id', json.id);
                                 localStorage.setItem('role',json.role);
+
                                 this.$router.push({path: '/main'});
                                 sessionStorage.setItem('user', this.ruleForm2.account)
                             }
