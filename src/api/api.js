@@ -226,7 +226,7 @@ export const editFaceUser = (id, params) => {
 
 // 审核人脸信息
 export const faceApproval = (id, params) => {
-    return instance.put(`/face/user/${id}`, {
+    return instance.put(`/face/${id}`, {
         headers: getHeaders(),
         params: params
     });

@@ -7,13 +7,14 @@
                     <el-input v-model="filters.id" placeholder="用户id"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button   type="primary" v-on:click="getfaceuser">查询</el-button>
+                    <el-button type="primary" v-on:click="getfaceuser">查询</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
 
         <!--列表-->
-        <el-table :data="facelist" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+        <el-table :data="facelist" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
+                  style="width: 100%;">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="id" label="序号" min-width="100">
@@ -22,11 +23,13 @@
             </el-table-column>
             <el-table-column prop="user.id" label="工号" min-width="100">
             </el-table-column>
-            <el-table-column prop="status" label="状态" min-width="150" align="center" sortable  :formatter="formatStatus">
+            <el-table-column prop="status" label="状态" min-width="150" align="center" sortable :formatter="formatStatus">
             </el-table-column>
             <el-table-column prop="status" label="人脸信息" min-width="200" align="center" sortable>
                 <template scope="scope">
-                <el-button size="small" min-width="180" align="center" sortable @click="showPicture(scope.row)">查看图片</el-button>
+                    <el-button size="small" min-width="180" align="center" sortable @click="showPicture(scope.row)">
+                        查看图片
+                    </el-button>
                 </template>
             </el-table-column>
             <el-table-column label="操作" min-width="250" align="center">
@@ -38,31 +41,13 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20" :total="total" style="float:right;">
+            <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
+                           :total="total" style="float:right;">
             </el-pagination>
         </el-col>
 
-        <!--审核界面-->
-        <el-dialog title="审核" v-model="approvalFormVisible" :close-on-click-modal="false">
-            <el-form :model="approvalForm" label-width="80px" :rules="approvalFormRules" ref="approvalForm">
-                <el-form-item label="状态选择" prop="status">
-                    <el-radio-group v-model="approvalForm.status">
-                        <el-radio label="discarded">丢弃</el-radio>
-                        <el-radio label="wait">等待</el-radio>
-                        <el-radio label="available">通过</el-radio>
-                        <!--所以available翻译成啥合适呢（思考）-->
-                        <!--想想会不会有因为长得太丑被拒绝的呢233333-->
-                    </el-radio-group>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click.native="approvalFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="approvalSubmit" :loading="addLoading">提交</el-button>
-            </div>
-        </el-dialog>
-
         <el-dialog title="人脸" v-model="pictureFormVisible" :close-on-click-modal="false">
-            <el-form :model="pictureForm" ref="pictureForm" >
+            <el-form :model="pictureForm" ref="pictureForm">
                 <img :src="pictureForm.info" alt="" id="imginit" align="center">
             </el-form>
         </el-dialog>
@@ -70,7 +55,8 @@
 </template>
 
 <script>
-    import {getFaceUser, editFaceUser, faceApproval, getFaceList } from  "../../api/api";
+    import {getFaceUser, editFaceUser, faceApproval, getFaceList} from "../../api/api";
+
     let Base64 = require('js-base64').Base64;
 
     export default {
@@ -80,18 +66,17 @@
                     id: '',
                 },
 
-                facelist: [
-                ],
+                facelist: [],
                 total: 0,
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
-                pictureFormVisible:false,
+                pictureFormVisible: false,
                 editFormVisible: false,//编辑界面是否显示
                 editLoading: false,
 
-                pictureForm:{
-                    info:'',
+                pictureForm: {
+                    info: '',
                 },
 
                 //编辑界面数据
@@ -100,16 +85,16 @@
                 addLoading: false,
                 approvalFormRules: {
                     status: [
-                        { required: true, message: '请选择状态', trigger: 'blur' }
+                        {required: true, message: '请选择状态', trigger: 'blur'}
                     ]
                 },
                 //审核界面数据
                 approvalForm: {
                     status: '',
-                    face_id:'',
-                    user:{
+                    face_id: '',
+                    user: {
                         id: 0,
-                        name:'',
+                        name: '',
                     },
                 }
 
@@ -122,16 +107,19 @@
                 this.getList();
             },
 
-            getfaceuser(){
-                let para ={};
-                getFaceUser(para).then((res) =>{//向后端发送 获得指定用户人脸信息
+            getfaceuser() {
+                let para = {};
+                let id = this.filters.id;
+
+                getFaceUser(id, para).then((res) => {
+                    //向后端发送 获得指定用户人脸信息
+                    this.facelist = res.data.data;
 
                 })
             },
 
             getList() { //向后端请求排班列表
-                let para = {
-                };
+                let para = {};
                 //this.listLoading = true;
                 getFaceList(para).then((res) => {
                     this.facelist = res.data.data;
@@ -140,8 +128,9 @@
             },
             //显示审核页面
             handleApproval: function (row) {
-                this.approvalFormVisible = true;
-                this.approvalForm =  Object.assign({}, row);
+                this.approvalForm = Object.assign({}, row);
+                console.log("hahahha");
+                this.approvalSubmit();
             },
             //显示编辑更新界面
             handleEdit: function (index, row) {
@@ -150,49 +139,29 @@
             },
 
 
-            showPicture(row){
-                    this.pictureFormVisible = true;
-                    this.pictureForm = Object.assign({}, row);
+            showPicture(row) {
+                this.pictureFormVisible = true;
+                this.pictureForm = Object.assign({}, row);
             },
 
-            formatStatus(row){
-                if (row.status=='wait')
-                    return'等待审核';
-                else if(row.status=='available')
-                    return'通过';
-                else if(row.status=='discarded')
-                return '丢弃';
-                else return '未知状态';
+            imgUrl() {
+                return this.pictureForm.info;
             },
+            approvalSubmit: function () {
+                //向后端发送审核信息
+                let id = this.approvalForm.id;
+                let para = {};
 
-            imgUrl(){
-              return this.pictureForm.info;
+                faceApproval(id, para).then((res) => {
+                    //向后端发送审核信息
+                    this.$message({
+                        message: '提交成功',
+                        type: 'success'
+                    });
+                    this.$refs['approvalForm'].resetFields();
+                    this.getList();
+                })
             },
-            approvalSubmit:function(){//向后端发送审核信息
-                this.$refs.approvalForm.validate((valid) => {
-                    if (valid) {
-                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            // this.addLoading = true;
-                            let id = this.approvalForm.user.id;
-                            let para =
-                                {
-                                };
-
-                            faceApproval(id, para).then((res) => {//向后端发送审核信息
-                                this.$message({
-                                    message: '提交成功',
-                                    type: 'success'
-                                });
-                                this.$refs['approvalForm'].resetFields();
-                                this.approvalFormVisible = false;
-                                this.getList();
-                            });
-                        });
-                    }
-                });
-            },
-
-
 
             selsChange: function (sels) {
                 this.sels = sels;
