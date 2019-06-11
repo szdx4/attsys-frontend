@@ -79,7 +79,10 @@
                         message: '更新成功',
                         type: 'success'
                     });
-                    this.$router.push({path: '/main'});
+                    this.$router.push({path: '/face'});
+                    this.$router.go(0);
+
+
                 })
 
 
