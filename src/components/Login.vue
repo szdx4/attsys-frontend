@@ -64,16 +64,13 @@
                                     type: 'error'
                                 });
                             } else {
-                                console.log(res);
                                 localStorage.setItem('token', res.data.token);
                                 let middle_token = res.data.token.split('.')[1];
-                                console.log(middle_token);
                                 let pre_json = Base64.decode(middle_token);
-                                console.log(pre_json);
                                 let json = JSON.parse(pre_json);
                                 localStorage.setItem('id', json.id);
-
-                                this.$router.push({path: '/table'});
+                                localStorage.setItem('role',json.role);
+                                this.$router.push({path: '/main'});
                                 sessionStorage.setItem('user', this.ruleForm2.account)
                             }
                         }).catch(err => {

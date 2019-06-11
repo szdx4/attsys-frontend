@@ -13,8 +13,12 @@ import update from './components/face/user_update_face'
 import shift from './components/shift/shift'
 import sign from './components/sign/sign'
 import msg from './components/message/message'
+import Vue from 'vue'
+import Router from 'vue-router'
 
-let routes = [
+Vue.use(Router);
+
+export const routes_master = [
     {
         path: '/login',
         component: Login,
@@ -27,25 +31,67 @@ let routes = [
         name: '',
         hidden: true
     },
-    //{ path: '/main', component: Main },
+
+    {
+        path: '*',
+        hidden: true,
+        redirect: {path: '/404'}
+    },
     {
         path: '/',
         component: Home,
         name: '用户管理',
+        roles:['master'],
         iconCls: 'fa fa-user-circle',//图标样式class
         children: [
-            {path: '/main', component: Main, name: '主页', hidden: true},
             {path: '/table', component: Table, name: '用户编辑'},//对一般职员隐藏
+        ]
+    },
+    {
+        path: '/sign',
+        component: sign,
+        hidden: true,
+        name: '签到',
+        roles:['user','master']
+    },
+    {
+        path:'/m',
+        component: Home,
+        hidden: true,
+        name:'',
+        roles:['user','master'],
+        children:[
+            {path:'/msg',roles:['user','master'], component: msg, name:'消息列表'}
+        ]
+    },
+    {
+        path:'/',
+        hidden:true,
+        name:'',
+        component:Home,
+        children:[
+            {path:'/main',component: Main ,name:'主页'}
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '用户管理',
+        roles:['master'],
+        iconCls: 'fa fa-user-circle',//图标样式class
+        children: [
+            {path: '/table', roles:['master'], component: Table, name: '用户编辑'},//对一般职员隐藏
         ]
     },
     {
         path: '/',
         component: Home,
         name: '请假',
+        roles:['master','user'],
         iconCls: 'fa fa-id-card-o',
         children: [
-            {path: '/leave', component: leave, name: '请假申请'},
-            {path: '/approval', component: approval_leave, name: '请假审批'},
+            {path: '/leave', component: leave, name: '请假申请' , roles:['user'],},
+            {path: '/approval', component: approval_leave, name: '请假审批', roles:['master'],},
         ]
     },
     {
@@ -53,17 +99,19 @@ let routes = [
         component: Home,
         name: '加班',
         iconCls: 'fa fa-coffee',
+        roles:['master','user'],
         children: [
-            {path: '/overtime_list', component: overtime_ist, name: '加班申请列表'},
+            {path: '/overtime_list', component: overtime_ist, roles:['master'],name: '加班申请列表' , },
         ]
     },
     {
         path: '/',
         component: Home,
         name: '工时',
+        roles:['master'],
         iconCls: 'fa fa-clock-o',
         children: [
-            {path: '/hours', component: hours, name: '工时记录'},
+            {path: '/hours', component: hours, roles:['master'],name: '工时记录',},
         ]
     },
 
@@ -71,9 +119,10 @@ let routes = [
         path: '/',
         component: Home,
         name: '部门管理',
+        roles:['master'],
         iconCls: 'fa fa-microchip',
         children: [
-            {path: '/department', component: department, name: '部门编辑'},
+            {path: '/department', component: department,roles:['master'], name: '部门编辑',  },
         ]
     },
 
@@ -81,45 +130,85 @@ let routes = [
         path: '/',
         component: Home,
         name: '人脸信息',
+        roles:['master','user'],
         iconCls: 'fa fa-camera',
         children: [
-            {path: '/face', component: face, name: '人脸信息管理'},
-            {path: '/face_update', component: update, name: '更新人脸信息'}
+            {path: '/face', component: face, name: '人脸信息管理',  roles:['master']},
+            {path: '/face_update', component: update, name: '更新人脸信息',roles:['master','user']}
         ]
     },
     {
         path: '/',
         component: Home,
         name: '排班信息',
+        roles:['master'],
         iconCls: 'fa fa-pie-chart',
         children: [
-            {path: '/shift', component: shift, name: '排班信息列表'},
+            {path: '/shift', component: shift,roles:['master'], name: '排班信息列表'},
         ]
     },
 
-
+];
+export const routes_user = [
     {
-        path: '/sign',
-        component: sign,
-        hidden: true,
-        name: '签到',
+        path: '/login',
+        component: Login,
+        name: '',
+        hidden: true
     },
     {
-      path:'/m',
-      component: Home,
-        hidden: true,
-        name:'',
-        children:[
-            {path:'/msg', component: msg, name:'消息列表'}
-        ]
+        path: '/404',
+        component: NotFound,
+        name: '',
+        hidden: true
     },
-
 
     {
         path: '*',
         hidden: true,
         redirect: {path: '/404'}
-    }
-];
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '用户管理',
+        roles:['master'],
+        iconCls: 'fa fa-user-circle',//图标样式class
+        children: [
+            {path: '/table', component: Table, name: '用户编辑'},//对一般职员隐藏
+        ]
+    },
+    {
+        path: '/sign',
+        component: sign,
+        hidden: true,
+        name: '签到',
+        roles:['user','master']
 
-export default routes;
+    },
+    {
+        path:'/',
+        hidden:true,
+        name:'',
+        component:Home,
+        children:[
+            {path:'/main',component: Main ,name:'主页'}
+        ]
+    },
+    {
+        path:'/m',
+        component: Home,
+        hidden: true,
+        name:'',
+        roles:['user','master'],
+        children:[
+            {path:'/msg',roles:['user','master'], component: msg, name:'消息列表'}
+        ]
+    }]
+//this.$router.options.routes = routes;
+//this.$router.addRoutes(routes);
+var role=localStorage.getItem("role")
+var routes = (role==='master')?routes_master:routes_user
+export default new Router({
+routes:routes
+})
