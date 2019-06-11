@@ -23,8 +23,7 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="primary" v-on:click="unreadMsg">只显示未读消息</el-button>
-            <el-button type="primary" v-on:click="getlist">显示全部消息</el-button>
+            <el-button type="primary" v-on:click="unreadMsg">{{this.button_text}}</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -49,6 +48,8 @@
     export default {
         data() {
             return {
+                button_text: '显示未读消息',
+                button_status: false,
                 contentFormVisible: false,
                 contentForm: {
                     id: 0,
@@ -133,25 +134,30 @@
             getlist() {
                 //向后台请求消息列表 getMsgList
                 //this.listLoading = true;
-                let para = {
-
-                };
+                let para = {};
                 getMsgList(para).then(res => {
                     this.msgList = res.data.data;
                 })
 
 
-
             },
             unreadMsg() {
-                let len = this.msgList.length;
-                let j = 0;
-                let newMsgList = [];
-                for (let i = 0; i < len; i++) {
-                    if (this.msgList[i].status === 'unread')
-                        newMsgList[j++] = this.msgList[i];
-                    return newMsgList;
+                if (this.button_status == false) {
+                    let len = this.msgList.length;
+                    let j = 0;
+                    let newMsgList = [];
+                    for (let i = 0; i < len; i++) {
+                        if (this.msgList[i].status === 'unread')
+                            newMsgList[j++] = this.msgList[i];
+                    }
+                    this.msgList = newMsgList;
+                    this.button_text = '显示所有消息'
+
+                } else {
+                    this.getlist();
+                    this.button_text = '显示未读消息'
                 }
+                this.button_status = !this.button_status
 
 
             },
