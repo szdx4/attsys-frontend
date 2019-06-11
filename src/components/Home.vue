@@ -211,11 +211,15 @@
 
             //退出登录
             logout: function () {
-                var _this = this;
+                let _this = this;
                 this.$confirm('确认退出吗?', '提示', {
                     //type: 'warning'
                 }).then(() => {
                     sessionStorage.removeItem('user');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('id');
+                    localStorage.removeItem('role');
+                    localStorage.removeItem('expired_at');
                     _this.$router.push('/login');
                 }).catch(() => {
 
