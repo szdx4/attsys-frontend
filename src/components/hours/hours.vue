@@ -27,7 +27,7 @@
             </el-table-column>
             <el-table-column prop="user.id" label="工号" align="center" min-width="150" sortable>
             </el-table-column>
-            <el-table-column prop="date" label="日期" align="center" min-width="200" :formatter="dateformatter" sortable>
+            <el-table-column prop="date" label="日期" align="center" min-width="200" :formatter="dateFormatter" sortable>
             </el-table-column>
             <el-table-column prop="hours" label="工作时长" align="center" min-width="180" sortable>
             </el-table-column>
@@ -91,36 +91,42 @@
             },
 
             //ok
-            getList() {//向后台获取工时列表
+            getList() {
+                //向后台获取工时列表
                 this.loading = true;
-                //ok
                 getHours().then((res) => {
-                    this.hoursList = res.data;
+                    this.hoursList = res.data.data;
                     this.loading = false;
                 });
             },
-            dateformatter(row) {
-                var t = new Date(row.date);
+            dateFormatter(row) {
+                let t = new Date(row.date);
                 return t.toLocaleDateString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
 
             },
             getUser() {
-                var start_at = this.start_at;
-                var end_at = this.end_at;
-                if ((start_at == '') && (end_at == ''))
-                    return this.getList();
+                let start_at = this.start_at;
+                let end_at = this.end_at;
+                if ((start_at === '') && (end_at === ''))
+                    this.getList();
                 else {
+                    let para = {
+                        start_at: start_at.toJSON(),
+                        end_at: end_at.toJSON()
+                    };
+                    getHours(para).then(res => {
+                        this.hoursList = res.data.data;
+                    })
 
-                    var len = this.hoursList.length;
-
-                    var newHourList = new Array();
-                    var j = 0;
-                    for (var i = 0; i < len; i++) {
-                        var date = new Date(Date.parse(this.hoursList[i].date.replace(/-/g, "/")))//字符串转日期格式
-                        if ((date >= start_at) && (date <= end_at))
-                            newHourList[j++] = this.hoursList[i];
-                    }
-                    return this.hoursList = newHourList;
+                    // let len = this.hoursList.length;
+                    // let newHourList = [];
+                    // let j = 0;
+                    // for (let i = 0; i < len; i++) {
+                    //     let date = new Date(Date.parse(this.hoursList[i].date.replace(/-/g, "/")));//字符串转日期格式
+                    //     if ((date >= start_at) && (date <= end_at))
+                    //         newHourList[j++] = this.hoursList[i];
+                    // }
+                    // this.hoursList = newHourList;
                 }
             },
 
