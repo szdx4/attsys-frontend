@@ -2,12 +2,12 @@
     <section>
         <!--工具条-->
         <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-            <el-form :inline="true" >
-                <el-form-item >
+            <el-form :inline="true">
+                <el-form-item>
                     <el-date-picker type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm"
                                     format="yyyy-MM-dd HH:mm" v-model="start_at" style="width: 100%;"></el-date-picker>
                 </el-form-item>
-                <el-form-item >
+                <el-form-item>
                     <el-date-picker type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm"
                                     format="yyyy-MM-dd HH:mm" v-model="end_at" style="width: 100%;"
                     ></el-date-picker>
@@ -54,11 +54,10 @@
                 listLoading: false,
                 sels: [],//列表选中列
 
-                start_at:'',
-                end_at:'',
+                start_at: '',
+                end_at: '',
 
-                hoursList: [
-                ],
+                hoursList: [],
 
 
             }
@@ -100,12 +99,12 @@
                     this.loading = false;
                 });
             },
-            dateformatter(row){
-               var t = new Date(row.date);
-               return t.toLocaleDateString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
+            dateformatter(row) {
+                var t = new Date(row.date);
+                return t.toLocaleDateString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
 
             },
-            getUser(){
+            getUser() {
                 var start_at = this.start_at;
                 var end_at = this.end_at;
                 if ((start_at == '') && (end_at == ''))
@@ -116,9 +115,9 @@
 
                     var newHourList = new Array();
                     var j = 0;
-                    for(var i = 0; i < len ; i++){
-                       var date = new Date(Date.parse(this.hoursList[i].date.replace(/-/g,"/")))//字符串转日期格式
-                        if((date>=start_at)&&(date<=end_at))
+                    for (var i = 0; i < len; i++) {
+                        var date = new Date(Date.parse(this.hoursList[i].date.replace(/-/g, "/")))//字符串转日期格式
+                        if ((date >= start_at) && (date <= end_at))
                             newHourList[j++] = this.hoursList[i];
                     }
                     return this.hoursList = newHourList;
@@ -132,6 +131,7 @@
 
         },
         mounted() {
+            this.verify();
             this.getList();
         }
     };

@@ -206,7 +206,7 @@
             },
             //编辑
             editSubmit: function () {
-                let para =  {
+                let para = {
                     name: this.editForm.name
                 };
                 let id = this.editForm.id;
@@ -252,6 +252,7 @@
             },
         },
         mounted() {
+            this.verify();
             this.getList();
         }
     }

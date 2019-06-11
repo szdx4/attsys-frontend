@@ -194,6 +194,7 @@
             },
         },
         mounted() {
+            this.verify();
             this.getList();
         }
     }

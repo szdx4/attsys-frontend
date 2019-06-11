@@ -69,9 +69,9 @@
                                 let middle_token = res.data.token.split('.')[1];
                                 let pre_json = Base64.decode(middle_token);
                                 let json = JSON.parse(pre_json);
-                                console.log('json  '+pre_json)
+                                console.log('json  ' + pre_json);
                                 localStorage.setItem('id', json.id);
-                                localStorage.setItem('role',json.role);
+                                localStorage.setItem('role', json.role);
 
                                 this.$router.push({path: '/main'});
                                 localStorage.setItem('expired_at', json.expired_at);

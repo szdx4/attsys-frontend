@@ -182,18 +182,18 @@
                 this.getUsers();
             },
             getuser() {
-                if(this.filters.id=='')
+                if (this.filters.id == '')
                     this.getUsers()
-                else{
-                let para = {};
-                let user_id = parseInt(this.filters.id);
-                console.log(user_id);
-                getUser(user_id, para).then((res) => {
-                    console.log(res);
-                    this.users = res.data;
+                else {
+                    let para = {};
+                    let user_id = parseInt(this.filters.id);
+                    console.log(user_id);
+                    getUser(user_id, para).then((res) => {
+                        console.log(res);
+                        this.users = res.data;
 
-                });
-            }
+                    });
+                }
 
             },
             //获取用户列表
@@ -300,6 +300,7 @@
             },
         },
         mounted() {
+            this.verify();
             this.getUsers();
         }
     }

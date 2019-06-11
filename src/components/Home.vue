@@ -241,6 +241,7 @@
             }
         },
         mounted() {
+            this.verify();
             var user = sessionStorage.getItem('user');
             if (user) {
                 user = JSON.parse(user);

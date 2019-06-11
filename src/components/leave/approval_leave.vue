@@ -23,9 +23,11 @@
             </el-table-column>
             <el-table-column prop="user.id" label="工号" align="center" min-width="120" sortable>
             </el-table-column>
-            <el-table-column prop="start_at" label="开始时间" align="center" min-width="180" :formatter="formatStart_at" sortable>
+            <el-table-column prop="start_at" label="开始时间" align="center" min-width="180" :formatter="formatStart_at"
+                             sortable>
             </el-table-column>
-            <el-table-column prop="end_at" label="结束时间" align="center" min-width="180" :formatter="formatEnd_at" sortable>
+            <el-table-column prop="end_at" label="结束时间" align="center" min-width="180" :formatter="formatEnd_at"
+                             sortable>
             </el-table-column>
             <el-table-column prop="status" label="状态" align="center" :formatter="statusFormatter" min-width="100"
                              sortable>
@@ -57,7 +59,7 @@
                     <el-form-item :label="statusForm.remark" auto-complete="off"></el-form-item>
                 </el-form-item>
                 <el-form-item label="审核" prop="status">
-                    <el-radio-group v-model="statusForm.status" >
+                    <el-radio-group v-model="statusForm.status">
                         <el-radio class="radio" label="pass">通过</el-radio>
                         <el-radio class="radio" label="reject">不通过</el-radio>
                         <el-radio class="radio" label="wait">暂不决定</el-radio>
@@ -82,26 +84,25 @@
                 filters: {
                     id: ''
                 },
-                user_id:'',//查询用的Orz
+                user_id: '',//查询用的Orz
 
                 total: 0,
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
                 editLoading: false,
-                leaveList: [
-                ],
+                leaveList: [],
                 statusFormVisible: false,
                 statusFormRules: {
                     status: [
-                        { required: true, message: '请选择审核意见', trigger: 'blur'}
+                        {required: true, message: '请选择审核意见', trigger: 'blur'}
                     ]
                 },
                 statusForm: {
                     id: 0,
-                    user:{
+                    user: {
                         id: 123,
-                        name:'王X'
+                        name: '王X'
                     },
                     start_at: '',
                     end_at: '',
@@ -140,18 +141,17 @@
             },
             //获取指定用户请假信息
             getUser() {
-                let para = {
-                };
+                let para = {};
                 let id = this.user_id;
                 getLeaveUser(id, para).then((res) => {
                     this.leaveList = res.data.data;
                 });
             },
-            formatStart_at(row){
+            formatStart_at(row) {
                 var t = new Date(row.start_at);
                 return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
-            formatEnd_at(row){
+            formatEnd_at(row) {
                 var t = new Date(row.end_at);
                 return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
@@ -168,8 +168,7 @@
 
             //向后台获取请假列表
             getList: function () {
-                let para = {
-                };
+                let para = {};
                 // this.loading = true;
                 getLeaveListPage(para).then((res) => {
                     // this.listloading = false;
@@ -188,7 +187,7 @@
                 this.statusFormVisible = true;
                 this.statusForm = Object.assign({}, row);
             },
-            handleDelet(row){//像后端发送销假请求
+            handleDelet(row) {//像后端发送销假请求
 
             },
 
@@ -198,7 +197,7 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             // this.editLoading = true;
                             let id = this.statusForm.id;
-                            let para ={
+                            let para = {
 
                                 status: this.statusForm.status
 
@@ -220,6 +219,7 @@
 
         },
         mounted() {
+            this.verify();
             this.getList();
         }
     };

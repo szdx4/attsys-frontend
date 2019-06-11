@@ -1,6 +1,6 @@
 <template>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-        <el-form :inline="true" >
+        <el-form :inline="true">
             <el-button type="primary" v-on:click="openCam">打开摄像头</el-button>
             <el-form-item>
                 <video id="video" width="500px" height="500px" autoplay="autoplay"></video>
@@ -18,7 +18,7 @@
         data() {
             return {
                 name: "user_update_face",
-                imageData:'',
+                imageData: '',
             };
         },
         methods: {
@@ -61,7 +61,7 @@
                 });
 
             },
-            update(){
+            update() {
                 let video = document.getElementById("video");
 
             },
@@ -76,6 +76,9 @@
 
 
         },
+        mounted() {
+            this.verify();
+        }
 
 
     }

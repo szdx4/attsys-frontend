@@ -10,9 +10,11 @@
             </el-table-column>
             <el-table-column prop="user.name" label="姓名" min-width="100" align="center" sortable>
             </el-table-column>
-            <el-table-column prop="start_at" label="开始时间" min-width="200" align="center" :formatter="formatStart_at" sortable>
+            <el-table-column prop="start_at" label="开始时间" min-width="200" align="center" :formatter="formatStart_at"
+                             sortable>
             </el-table-column>
-            <el-table-column prop="end_at" label="结束时间" min-width="200" align="center" :formatter="formatEnd_at" sortable>
+            <el-table-column prop="end_at" label="结束时间" min-width="200" align="center" :formatter="formatEnd_at"
+                             sortable>
             </el-table-column>
             <el-table-column prop="type" label="类型" min-width="100" align="center" sortable>
             </el-table-column>
@@ -27,8 +29,8 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-                <el-button type="primary" @click="handleAdd">添加指定员工排班</el-button>
-                <el-button type="primary" @click="handleAddDepartment">添加部门排班</el-button>
+            <el-button type="primary" @click="handleAdd">添加指定员工排班</el-button>
+            <el-button type="primary" @click="handleAddDepartment">添加部门排班</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -38,9 +40,9 @@
         <!--新增界面-->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-               <el-form-item label="员工id" prop="user.id">
-                   <el-input v-model="addForm.user.id" ></el-input>
-               </el-form-item>
+                <el-form-item label="员工id" prop="user.id">
+                    <el-input v-model="addForm.user.id"></el-input>
+                </el-form-item>
                 <el-form-item label="开始时间" prop="start_at">
                     <el-col :span="11">
                         <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
@@ -131,17 +133,17 @@
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
                 addFormRules: {
-                    "user.id":[
-                { required:true,  message: '请填写用户id', trigger: 'blur'},
-                ],
-                    start_at:[
-                        { type:'date', required: true, message:'请选择开始时间', trigger:'change'}
+                    "user.id": [
+                        {required: true, message: '请填写用户id', trigger: 'blur'},
                     ],
-                    end_at:[{
-                        type:'date',   required: true, message:'请选择结束时间', trigger:'blur'
+                    start_at: [
+                        {type: 'date', required: true, message: '请选择开始时间', trigger: 'change'}
+                    ],
+                    end_at: [{
+                        type: 'date', required: true, message: '请选择结束时间', trigger: 'blur'
                     }],
-                    type:[{
-                         required: true, message:'请选择排班类型', trigger:'blur'
+                    type: [{
+                        required: true, message: '请选择排班类型', trigger: 'blur'
                     }]
                 },
                 //新增界面数据
@@ -149,33 +151,33 @@
                     start_at: '',
                     end_at: '',
                     type: '',
-                    user:{
+                    user: {
                         id: '',
-                        name:'',
+                        name: '',
                     },
                 },
 
                 addDepartmentFormVisible: false,
                 addDepartmentloading: false,
                 addDepartmentFormRules: {
-                    department_id:[
-                        { required: true, message: '请填写部门id',trigger:'blur'}
+                    department_id: [
+                        {required: true, message: '请填写部门id', trigger: 'blur'}
                     ],
-                    start_at:[
-                        { required: true, message:'请选择开始时间', trigger:'blur'}
+                    start_at: [
+                        {required: true, message: '请选择开始时间', trigger: 'blur'}
                     ],
-                    end_at:[{
-                        required: true, message:'请选择结束时间', trigger:'blur'
+                    end_at: [{
+                        required: true, message: '请选择结束时间', trigger: 'blur'
                     }],
-                    type:[{
-                        required: true, message:'请选择排班类型', trigger:'blur'
+                    type: [{
+                        required: true, message: '请选择排班类型', trigger: 'blur'
                     }]
                 },
                 addDepartmentForm: {
                     start_at: '',
                     end_at: '',
                     type: '',
-                    department_id:'',
+                    department_id: '',
                 },
 
             }
@@ -207,14 +209,14 @@
                 }
 
             },
-            typeformatter(row){
-                if(row.type=='normal')
-                    return'正常';
-                else if(row.type=='allovertime')
-                    return'额外';
+            typeformatter(row) {
+                if (row.type == 'normal')
+                    return '正常';
+                else if (row.type == 'allovertime')
+                    return '额外';
                 else return '未知类型';
             },
-            statusformatter(){
+            statusformatter() {
 
             },
 
@@ -228,11 +230,11 @@
 
                 })
             },
-            formatStart_at(row){
+            formatStart_at(row) {
                 var t = new Date(row.start_at);
                 return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
-            formatEnd_at(row){
+            formatEnd_at(row) {
                 var t = new Date(row.end_at);
                 return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
@@ -251,9 +253,7 @@
                 }).then(() => {
                     // this.listLoading = true;
                     let id = row.id;
-                    let para = {
-
-                    };
+                    let para = {};
                     deletShift(id, para).then((res) => {
                         this.$message({
                             message: '删除成功',
@@ -337,6 +337,7 @@
             },
         },
         mounted() {
+            this.verify();
             this.getList();
         }
     }

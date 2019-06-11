@@ -14,19 +14,22 @@
                 </el-form>
             </el-col>
             <el-table :data="overtimeList" highlight-current-row v-loading="loading" style="width: 100%;">
-                <el-table-column prop="id"  align="center" min-width="100" label="序号" sortable>
+                <el-table-column prop="id" align="center" min-width="100" label="序号" sortable>
                 </el-table-column>
-                <el-table-column prop="user.name"  align="center" label="姓名" min-width="150" sortable>
+                <el-table-column prop="user.name" align="center" label="姓名" min-width="150" sortable>
                 </el-table-column>
-                <el-table-column prop="user.id"  align="center" label="工号" min-width="150" sortable>
+                <el-table-column prop="user.id" align="center" label="工号" min-width="150" sortable>
                 </el-table-column>
-                <el-table-column prop="start_at" align="center"  label="开始时间" min-width="180" sortable :formatter="formatStart_at">
+                <el-table-column prop="start_at" align="center" label="开始时间" min-width="180" sortable
+                                 :formatter="formatStart_at">
                 </el-table-column>
-                <el-table-column prop="end_at" align="center"  label="结束时间" min-width="180" sortable :formatter="formatEnd_at">
+                <el-table-column prop="end_at" align="center" label="结束时间" min-width="180" sortable
+                                 :formatter="formatEnd_at">
                 </el-table-column>
-                <el-table-column prop="remark" align="center"  label="完成状态" min-width="120" sortable>
+                <el-table-column prop="remark" align="center" label="完成状态" min-width="120" sortable>
                 </el-table-column>
-                <el-table-column prop="status"  align="center" label="状态" :formatter=formatStatus min-width="120" sortable>
+                <el-table-column prop="status" align="center" label="状态" :formatter=formatStatus min-width="120"
+                                 sortable>
                 </el-table-column>
                 <el-table-column label="操作" min-width="120" sortable>
                     <template scope="scope">
@@ -40,15 +43,15 @@
                 </el-pagination>
             </el-col>
 
-            <el-dialog title="审核" v-model="editFormVisible" :close-on-click-modal="false" >
+            <el-dialog title="审核" v-model="editFormVisible" :close-on-click-modal="false">
                 <el-form :model="editForm" label-width="80px" :rules="rules" ref="editForm">
-                <el-form-item label="审核" prop="status">
-                    <el-radio-group v-model="editForm.status"  >
-                    <el-radio class="radio" label="pass">通过</el-radio>
-                    <el-radio class="radio" label="reject">不通过</el-radio>
-                    <el-radio class="radio" label="wait">暂不决定</el-radio>
-                </el-radio-group>
-                </el-form-item>
+                    <el-form-item label="审核" prop="status">
+                        <el-radio-group v-model="editForm.status">
+                            <el-radio class="radio" label="pass">通过</el-radio>
+                            <el-radio class="radio" label="reject">不通过</el-radio>
+                            <el-radio class="radio" label="wait">暂不决定</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click.native="editFormVisible = false">取消</el-button>
@@ -71,19 +74,19 @@
                 },
                 total: 0,
                 page: 1,
-                user_id:'',//查询用
+                user_id: '',//查询用
                 listLoading: false,
                 sels: [],//列表选中列
                 loading: false,
                 overtimeList: [],
-                editLoading:false,
+                editLoading: false,
                 editFormVisible: false,
                 editForm: {
-                    status:'',
+                    status: '',
                 },
-                rules:{
+                rules: {
                     status: [
-                        { required: true, message: '请选择审核意见', trigger: 'blur'}
+                        {required: true, message: '请选择审核意见', trigger: 'blur'}
                     ]
                 },
 
@@ -120,9 +123,7 @@
             getUser() {
 
                 let id = this.user_id;
-                let para = {
-
-                };
+                let para = {};
                 getOvertimeUser(id, para).then((res) => {
                     //向后台发送请求，获取指定用户加班信息 this.user_id
                     this.overtimeList = res.data.data;
@@ -135,8 +136,7 @@
             },
             //获取列表
             getList: function () {
-                let para = {
-                };
+                let para = {};
                 // this.loading = true;
                 getOvertimeList(para).then((res) => {
                     //向后端请求列表
@@ -151,11 +151,11 @@
                 this.sels = sels;
             },
 
-            formatStart_at(row){
+            formatStart_at(row) {
                 var t = new Date(row.start_at);
                 return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
-            formatEnd_at(row){
+            formatEnd_at(row) {
                 var t = new Date(row.end_at);
                 return t.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai', hour12: false})
             },
@@ -165,8 +165,8 @@
                     return '等待审核';
                 else if (row.status == 'pass')
                     return '通过';
-                else if(row.status == 'reject')
-                return '拒绝';
+                else if (row.status == 'reject')
+                    return '拒绝';
                 else return '未知状态';
             },
             editSubmit: function () {
@@ -175,8 +175,7 @@
                 let para = {
                     status: this.editForm.status
                 };
-                OvertimeApproval(id, para).then(res =>
-                {
+                OvertimeApproval(id, para).then(res => {
                     this.$message({
                         message: '审批成功',
                         type: 'success'
@@ -187,12 +186,12 @@
                 })
 
 
-
             }
 
 
         },
         mounted() {
+            this.verify();
             this.getList();
         }
     };

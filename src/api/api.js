@@ -160,8 +160,6 @@ export const DeleteLeave = (id, params) => {
 };
 
 
-
-
 // **************************************************加班管理**************************************************
 
 // 获取加班列表
@@ -308,9 +306,9 @@ export const signFace = (id, params) => {
 
 //**************************************************消息管理**************************************************
 
-export const getMsgList = (id,params) =>{
+export const getMsgList = (id, params) => {
     return axios.get(`${base}/message`, {params: params});
 };
-export const getMsg = (id,params) =>{
+export const getMsg = (id, params) => {
     return axios.get(`${base}/message/${id}`, {params: params});
 };

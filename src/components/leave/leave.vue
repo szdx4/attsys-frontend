@@ -37,15 +37,15 @@
                     end_at: '',
                     remark: '',
                 },
-                rules:{
-                    start_at:[
-                        { required: true, message: '请选择开始时间', trigger: 'blur'}
+                rules: {
+                    start_at: [
+                        {required: true, message: '请选择开始时间', trigger: 'blur'}
                     ],
-                    end_at:[
-                        { required: true, message: '请选择结束时间', trigger: 'blur'}
+                    end_at: [
+                        {required: true, message: '请选择结束时间', trigger: 'blur'}
                     ],
-                    remark:[
-                        { required: true, message: '请填写请假原因', trigger: 'blur'}
+                    remark: [
+                        {required: true, message: '请填写请假原因', trigger: 'blur'}
                     ]
 
                 }
@@ -102,14 +102,16 @@
                             message: '错误！',
                             type: 'error'
                         });
-                    }
-                    else{
+                    } else {
                         this.$message({
                             message: '您的请假id是' + res.data.leave_id
                         })
                     }
                 });
             }
+        },
+        mounted() {
+            this.verify();
         }
     }
 

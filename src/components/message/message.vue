@@ -12,7 +12,7 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center" min-width="180" sortable>
             </el-table-column>
-            <el-table-column prop="status" label="状态" align="center" min-width="180" >
+            <el-table-column prop="status" label="状态" align="center" min-width="180">
             </el-table-column>
             <el-table-column label="查看具体内容" align="center" min-width="150">
                 <template scope="scope">
@@ -32,7 +32,7 @@
 
         <el-dialog title="消息" v-model="contentFormVisible" :close-on-click-modal="false" @close="closeDialog">
             <el-card class="box-card">
-                <div slot="header" class="clearfix" >
+                <div slot="header" class="clearfix">
                     <span style="font-size: 15px"> {{ contentForm.title }}</span>
                     <el-button style="float: right; padding: 3px 0" type="text">回复</el-button>
                 </div>
@@ -44,49 +44,49 @@
     </section>
 </template>
 <script type="text/ecmascript-6">
-    import {getMsg,getMsgList} from "../../api/api";
+    import {getMsg, getMsgList} from "../../api/api";
 
     export default {
         data() {
             return {
-                contentFormVisible:false,
-                contentForm:{
-                    id:0,
-                    from:{
-                        id:1,//用户id
-                        name:'',
+                contentFormVisible: false,
+                contentForm: {
+                    id: 0,
+                    from: {
+                        id: 1,//用户id
+                        name: '',
                     },
-                    to:{
-                        id:666,//
-                        name:'',
+                    to: {
+                        id: 666,//
+                        name: '',
                     },
-                    title:'',
-                    status:'',//unread /read
-                    content:'',
+                    title: '',
+                    status: '',//unread /read
+                    content: '',
                 },
-                msg:{
-                    id:0,
-                    from:{
-                        id:1,//用户id
-                        name:'',
+                msg: {
+                    id: 0,
+                    from: {
+                        id: 1,//用户id
+                        name: '',
                     },
-                    to:{
-                        id:666,//
-                        name:'',
+                    to: {
+                        id: 666,//
+                        name: '',
                     },
-                    title:'',
-                    status:'',//unread /read
+                    title: '',
+                    status: '',//unread /read
                 },
 
-                msgList: [ ],
+                msgList: [],
 
-                total:0,
-                page:1,
-                listLoading:false,
+                total: 0,
+                page: 1,
+                listLoading: false,
 
             }
         },
-        methods:{
+        methods: {
             // logout for other page
             logout: function () {
                 sessionStorage.removeItem('user');
@@ -117,30 +117,30 @@
                 this.page = val;
                 this.getList();
             },
-            handle(row){
+            handle(row) {
                 this.contentFormVisible = true;
-                this.contentForm=Object.assign({}, row);
-               // getMsg();//向后台发送请求，获取指定消息赋值给contentForm
+                this.contentForm = Object.assign({}, row);
+                // getMsg();//向后台发送请求，获取指定消息赋值给contentForm
 
             },
             selsChange: function (sels) {
                 this.sels = sels;
             },
-            closeDialog(){
+            closeDialog() {
                 this.getlist();
             },
 
-            getlist(){//向后台请求消息列表 getMsgList
+            getlist() {//向后台请求消息列表 getMsgList
                 //this.listLoading = true;
             },
-            unreadMsg(){
-                var len=this.msgList.length;
-                var j=0;
-                var newMsgList =  new Array();
-                for(var i=0;i<len;i++){
-                 if(this.msgList[i].status=='unread')
-                     newMsgList[j++]=this.msgList[i];
-                 return newMsgList;
+            unreadMsg() {
+                var len = this.msgList.length;
+                var j = 0;
+                var newMsgList = new Array();
+                for (var i = 0; i < len; i++) {
+                    if (this.msgList[i].status == 'unread')
+                        newMsgList[j++] = this.msgList[i];
+                    return newMsgList;
                 }
 
 
@@ -148,6 +148,7 @@
 
         },
         mounted() {
+            this.verify();
             this.getlist();
         }
     }
