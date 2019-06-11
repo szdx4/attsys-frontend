@@ -221,8 +221,7 @@ export const routes_user = [
 ];
 //this.$router.options.routes = routes;
 //this.$router.addRoutes(routes);
-var role = localStorage.getItem("role");
-console.log('role  ' + role);
+let role = localStorage.getItem("role");
 export const routes = (role === 'master') ? routes_master : routes_user;
 export default new Router({
     routes: routes

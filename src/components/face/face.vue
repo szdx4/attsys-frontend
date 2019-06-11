@@ -134,14 +134,22 @@
             },
 
             getfaceuser() {
-                let para = {};
-                let id = this.filters.id;
 
-                getFaceUser(id, para).then((res) => {
-                    //向后端发送 获得指定用户人脸信息
-                    this.facelist = res.data.data;
+                if (this.filters.id === '') {
+                    this.getList();
+                } else {
 
-                })
+                    let para = {};
+                    let id = this.filters.id;
+
+                    getFaceUser(id, para).then((res) => {
+                        //向后端发送 获得指定用户人脸信息
+                        let data = [0,];
+                        data[0] = res.data.data;
+                        this.facelist = data;
+
+                    })
+                }
             },
 
             getList() { //向后端请求排班列表

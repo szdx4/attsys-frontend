@@ -30,6 +30,8 @@
                     if (now_date > expired_date) {
                         this.$router.push({path: '/login'});
                         this.logout();
+                    } else {
+                        this.$router.push({path: '/main'});
                     }
 
                 }

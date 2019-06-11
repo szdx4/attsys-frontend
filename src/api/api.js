@@ -221,18 +221,12 @@ export const getFaceUser = (id, params) => {
 
 // 更新指定用户人脸信息
 export const editFaceUser = (id, params) => {
-    return instance.post(`/face/user/${id}`, {
-        headers: getHeaders(),
-        params: params
-    });
+    return instance.post(`/face/user/${id}`, params, {headers: getHeaders()});
 };
 
 // 审核人脸信息
 export const faceApproval = (id, params) => {
-    return instance.put(`/face/${id}`, {
-        headers: getHeaders(),
-        params: params
-    });
+    return instance.put(`/face/${id}`, params, {headers: getHeaders()});
 };
 // 获取人脸列表
 export const getFaceList = (id, params) => {

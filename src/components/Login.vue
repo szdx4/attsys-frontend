@@ -74,6 +74,7 @@
                                 localStorage.setItem('role', json.role);
 
                                 this.$router.push({path: '/main'});
+                                this.$router.push({path: '/main'});
                                 localStorage.setItem('expired_at', json.expired_at);
                                 localStorage.setItem('name', this.ruleForm2.account);
                                 localStorage.setItem('password',this.ruleForm2.checkPass);
