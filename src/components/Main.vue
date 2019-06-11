@@ -8,9 +8,9 @@
 
     export default {
         methods: {
+
             // logout for other page
             logout: function () {
-                console.log("signout");
                 sessionStorage.removeItem('user');
                 localStorage.removeItem('token');
                 localStorage.removeItem('id');
