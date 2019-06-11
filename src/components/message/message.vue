@@ -12,7 +12,7 @@
             </el-table-column>
             <el-table-column prop="title" label="标题" align="center" min-width="180" sortable>
             </el-table-column>
-            <el-table-column prop="status" label="状态" align="center" min-width="180">
+            <el-table-column prop="status" label="状态" align="center" :formatter="formatterStatus" min-width="180">
             </el-table-column>
             <el-table-column label="查看具体内容" align="center" min-width="150">
                 <template scope="scope">
@@ -124,6 +124,17 @@
                 // getMsg();//向后台发送请求，获取指定消息赋值给contentForm
 
             },
+            formatterStatus(row){
+                var St;
+                if(row.status==='unread')
+                    St='未读';
+                else if(row.status==='read')
+                    St='已读';
+                else St='未知状态';
+                return St;
+
+            },
+
             selsChange: function (sels) {
                 this.sels = sels;
             },
