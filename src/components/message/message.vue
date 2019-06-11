@@ -130,15 +130,25 @@
                 this.getlist();
             },
 
-            getlist() {//向后台请求消息列表 getMsgList
+            getlist() {
+                //向后台请求消息列表 getMsgList
                 //this.listLoading = true;
+                let para = {
+
+                };
+                getMsgList(para).then(res => {
+                    this.msgList = res.data.data;
+                })
+
+
+
             },
             unreadMsg() {
-                var len = this.msgList.length;
-                var j = 0;
-                var newMsgList = new Array();
-                for (var i = 0; i < len; i++) {
-                    if (this.msgList[i].status == 'unread')
+                let len = this.msgList.length;
+                let j = 0;
+                let newMsgList = [];
+                for (let i = 0; i < len; i++) {
+                    if (this.msgList[i].status === 'unread')
                         newMsgList[j++] = this.msgList[i];
                     return newMsgList;
                 }

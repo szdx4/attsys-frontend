@@ -304,11 +304,18 @@ export const signFace = (id, params) => {
     return instance.post(`/sign/face/user/${id}`, params, {headers: getHeaders()});
 };
 
-//**************************************************消息管理**************************************************
 
-export const getMsgList = (id, params) => {
-    return axios.get(`${base}/message`, {params: params});
+// **************************************************消息管理**************************************************
+
+export const getMsgList = params => {
+    return instance.get(`/message`, {
+        headers: getHeaders(),
+        params: params
+    });
 };
 export const getMsg = (id, params) => {
-    return axios.get(`${base}/message/${id}`, {params: params});
+    return instance.get(`/message/${id}`, {
+        headers: getHeaders(),
+        params: params
+    });
 };
