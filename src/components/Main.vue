@@ -32,6 +32,7 @@
                         this.logout();
                     } else {
                         this.$router.push({path: '/main'});
+
                     }
 
                 }
