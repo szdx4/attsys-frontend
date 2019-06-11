@@ -273,5 +273,5 @@ var role=localStorage.getItem("role")
 console.log('role  '+role)
 export const  routes = (role==='master')? routes_master : routes_user
 export default new Router({
-routes:common_router
+routes:routes
 })
