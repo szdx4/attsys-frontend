@@ -38,7 +38,7 @@
         <!--新增界面-->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
             <el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
-               <el-form-item label="员工id" prop="worker_id">
+               <el-form-item label="员工id" prop="user.id">
                    <el-input v-model="addForm.user.id" ></el-input>
                </el-form-item>
                 <el-form-item label="开始时间" prop="start_at">
@@ -71,7 +71,7 @@
         <!--新增部门排班界面-->
         <el-dialog title="新增" v-model="addDepartmentFormVisible" :close-on-click-modal="false">
             <el-form :model="addDepartmentForm" label-width="80px" :rules="addDepartmentFormRules" ref="addForm">
-                <el-form-item label="部门id" prop="id">
+                <el-form-item label="部门id" prop="department_id">
                     <el-input v-model="addDepartmentForm.department_id"></el-input>
                 </el-form-item>
                 <el-form-item label="开始时间" prop="start_at">
@@ -131,8 +131,8 @@
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
                 addFormRules: {
-                    worker_id :[
-                { required:true, type:'number', message: '请填写用户id', trigger: 'blur'},
+                    "user.id":[
+                { required:true,  message: '请填写用户id', trigger: 'blur'},
                 ],
                     start_at:[
                         { type:'date', required: true, message:'请选择开始时间', trigger:'change'}
@@ -158,8 +158,8 @@
                 addDepartmentFormVisible: false,
                 addDepartmentloading: false,
                 addDepartmentFormRules: {
-                    id :[
-                        { required: true, message: '请填写部门id',}
+                    department_id:[
+                        { required: true, message: '请填写部门id',trigger:'blur'}
                     ],
                     start_at:[
                         { required: true, message:'请选择开始时间', trigger:'blur'}

@@ -156,6 +156,9 @@
                 this.getUsers();
             },
             getuser() {
+                if(this.filters.id=='')
+                    this.getUsers()
+                else{}
                 let para = {};
                 let user_id = parseInt(this.filters.id);
                 console.log(user_id);
@@ -164,6 +167,7 @@
                     this.users = res.data;
 
                 });
+            }
 
             },
             //获取用户列表

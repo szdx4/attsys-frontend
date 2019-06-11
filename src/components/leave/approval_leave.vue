@@ -30,7 +30,7 @@
             <el-table-column prop="status" label="状态" align="center" :formatter="statusFormatter" min-width="100"
                              sortable>
             </el-table-column>
-            <el-table-column label="操作" align="center" min-width="100">
+            <el-table-column label="操作" align="center" min-width="180">
                 <template scope="scope">
                     <el-button size="small" @click="statusEdit(scope.$index, scope.row)">审核</el-button>
                     <el-button size="small" type="danger" @click="handleDelet( scope.row)">销假</el-button>
