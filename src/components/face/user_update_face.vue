@@ -1,6 +1,6 @@
 <template>
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
-        <el-form :inline="true" :model="filters">
+        <el-form :inline="true" >
             <el-button type="primary" v-on:click="openCam">打开摄像头</el-button>
             <el-form-item>
                 <video id="video" width="500px" height="500px" autoplay="autoplay"></video>
