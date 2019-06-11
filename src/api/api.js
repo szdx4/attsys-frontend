@@ -300,7 +300,7 @@ export const signQrcode = (id, params) => {
 // 人脸签到
 // face_img : base64
 export const signFace = (id, params) => {
-    return instance.post(`/sign/face/user/${id}`, params, {headers: getHeaders()});
+    return instance.post(`/sign/face/${id}`, params, {headers: getHeaders()});
 };
 
 

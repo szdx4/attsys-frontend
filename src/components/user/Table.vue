@@ -287,9 +287,10 @@
                                 password: this.addForm.password,
                                 department: parseInt(this.addForm.department)
                             };
-                            console.log(para);
+                            let status = false;
                             addUser(para).then((res) => {
                                 // this.addLoading = false;
+                                status = true;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
@@ -298,11 +299,9 @@
                                 this.addFormVisible = false;
                                 this.getUsers();
                             });
-                            console.log(res);
-                            if (res.data.status === 400) {
-                                console.log("error");
+                            if (!status) {
                                 this.$message({
-                                    message: '提交错误，请重试！',
+                                    message: '提交失败，请重试！',
                                     type: 'error'
                                 });
                                 this.$refs['addForm'].resetFields();

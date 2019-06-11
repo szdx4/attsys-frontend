@@ -1,15 +1,11 @@
 <template>
     <div class="container clearfix">
-        <div class="img-lists" slot="placeholder">
+        <div class="img-lists1" slot="placeholder">
+            <video id="video" width="256px" height="256px" autoplay="autoplay"></video>
+            <canvas id="canvas" width="256px" height="256px"></canvas>
+        </div>
             <el-button type="primary" v-on:click="openCam">打开摄像头</el-button>
-            <el-button type="primary" v-on:click="takePhoto">拍照</el-button>
-            <video id="video" width="500px" height="500px" autoplay="autoplay"></video>
-        </div>
-        <div class="img-lists">
-            <el-button type="primary" v-on:click="takePhoto">拍照</el-button>
-            <el-button type="primary" v-on:click="sign">使用照片</el-button><!--上传--->
-            <canvas id="canvas" width="500px" height="500px"></canvas>
-        </div>
+            <el-button type="primary" v-on:click="takePhoto">使用照片</el-button><!--上传--->
         <div class="img-qr" slot="placeholder">
             <img :src=this.$route.params.qrcode>
         </div>
@@ -56,8 +52,8 @@
             },
             openCam() {
                 let constraints = {
-                    video: {width: 500, height: 500},
-                    audio: true
+                    video: {width: 300, height: 300},
+                    audio: false
                 };
                 let video = document.getElementById("video");
                 let promise = navigator.mediaDevices.getUserMedia(constraints);
@@ -69,17 +65,40 @@
 
 
             },
-            sign() {//向后台发送人脸签到信息 signFace imageData为base64编码后的图片
-                //this.mediaStreamTrack.stop();
-            },
 
             takePhoto() {
                 let video = document.getElementById("video");
+                // video.pause();
                 let canvas = document.getElementById("canvas");
                 let ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, 500, 500);
+                ctx.drawImage(video, 0, 0, 300, 300);
                 this.imageData = canvas.toDataURL();
-                video.pause();
+
+                let para = {
+                    face: this.imageData
+                };
+                let id = localStorage.getItem('id');
+                let status = false;
+                signFace(id, para).then(res => {
+                    this.$message({
+                        message: '签到成功',
+                        type: 'success'
+                    });
+                    status = true;
+                    this.$router.push({path: '/main'});
+                    this.$router.go(0);
+
+
+                });
+                if (!status) {
+                    this.$message({
+                        message: '签到失败，请重试！',
+                        type: 'error'
+                    });
+
+                }
+
+
             },
 
 
@@ -98,10 +117,16 @@
         width: 100%;
     }
 
-    .img-lists {
+    .img-lists1 {
         float: left;
-        width: 500px;
-        height: 500px;
+        width: 256px;
+        height: 256px;
+    }
+
+    .img-lists2 {
+        float: right;
+        width: 256px;
+        height: 256px;
     }
 
     .img-qr {
