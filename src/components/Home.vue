@@ -108,7 +108,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+            <el-button type="primary" @click.native="editSubmit">提交</el-button>
         </div>
     </el-dialog>
 
@@ -118,8 +118,9 @@
 </template>
 
 <script>
-    import {getSignStatus, getSignQrcode, signQrcode, signFace} from '../api/api';
+    import {editPasswd,getSignStatus, getSignQrcode, signQrcode, signFace} from '../api/api';
     import {pic} from './user/picture'
+
 
     export default {
         data() {
@@ -198,6 +199,9 @@
 
             signSubmit: function () {
                 //先向后台请求签到状态
+
+            },
+            editSubmit(){//向后端发送修改密码请求
 
             },
 

@@ -40,6 +40,7 @@
 
         <!--工具条-->
         <el-col :span="24" class="toolbar">
+                <el-button type="primary" @click="handleBatchAdd">批量增加用户</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -87,12 +88,26 @@
                 <el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
+        <!--批量增加-->
+        <el-dialog title="批量增加" v-model="batchAddVisible" :close-on-click-modal="false">
+            <el-form :model="batchAddForm" label-width="80px"  ref="batchAddForm">
+                <el-upload :auto-upload="false" action="" :on-change="batchAdd" accept=".csv">
+                    <el-button type="primary"  slot="trigger">选择文件</el-button>
+                </el-upload>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="addFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="addSubmit" >提交</el-button>
+            </div>
+        </el-dialog>
     </section>
 </template>
 
 <script>
     import util from '../../common/js/util'
-    import {getUserList, getUser, removeUser, editUser, addUser} from '../../api/api';
+    import {getUserList, getUser, removeUser, editUser, addUser, batchAddUser} from '../../api/api';
+    import { Base64 } from 'js-base64';
 
     export default {
         data() {
@@ -139,7 +154,12 @@
                     name: '',
                     password: 0,
                     department: '',
-                }
+                },
+
+                batchAddVisible:false,
+                batchAddForm:{
+
+                },
 
             }
         },
@@ -182,7 +202,7 @@
                 this.getUsers();
             },
             getuser() {
-                if (this.filters.id == '')
+                if (this.filters.id === '')
                     this.getUsers()
                 else {
                     let para = {};
@@ -295,6 +315,21 @@
                     }
                 });
             },
+            //批量增加
+            handleBatchAdd(){
+              this.batchAddVisible = true;
+            },
+            batchAdd(_file) {
+                    var reader = new FileReader();
+                    var file = _file;
+                    console.log(file)
+                    console.log(reader.readAsText(file, 'utf-8'));
+                    var file_upload = Base64.encode( reader.readAsText(file, 'utf-8'));
+                    console.log(file_upload);
+
+            },
+
+
             selsChange: function (sels) {
                 this.sels = sels;
             },

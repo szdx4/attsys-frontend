@@ -78,6 +78,10 @@ export const editPasswd = (id, params) => {
     return instance.put(`/user/${id}`, params, {headers: getHeaders()});
 };
 
+export const batchAddUser = (id,params) =>{
+  return instance.post('user/batch',params,{headers:getHeaders()});
+};
+
 
 // **************************************************部门管理**************************************************
 
