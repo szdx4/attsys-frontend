@@ -23,6 +23,18 @@ const getHeaders = () => {
     }
 };
 
+export const requestStatusUser = () => {
+    return instance.get('/status/user', {
+        headers: getHeaders()
+    })
+}
+
+export const requestStatusSign = () => {
+    return instance.get('/status/sign', {
+        headers: getHeaders()
+    })
+}
+
 // **************************************************用户管理**************************************************
 
 // 登录

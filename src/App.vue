@@ -12,7 +12,7 @@ export default {
   components: {},
   methods: {
     // logout for other page
-    logout: function() {
+    logout: function () {
       sessionStorage.removeItem("user");
       localStorage.removeItem("token");
       localStorage.removeItem("id");

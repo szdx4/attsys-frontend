@@ -9,6 +9,11 @@ import Vuex from 'vuex'
 import {routes_master, routes_user} from './routes'
 import router from './routes'
 import 'font-awesome/css/font-awesome.min.css'
+import VueIconFont from 'vue-icon-font'
+
+Vue.use(VueIconFont)
+import '@/assets/font/iconfont.css'
+import '@/assets/font/iconfont.js'
 
 Vue.use(ElementUI);
 Vue.use(Vuex);

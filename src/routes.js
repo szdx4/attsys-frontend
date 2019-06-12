@@ -163,7 +163,15 @@ export const routes_manager = [
         name: '',
         hidden: true
     },
-
+    {
+        path: '/',
+        hidden: true,
+        name: '',
+        component: Home,
+        children: [
+            {path: '/main', component: Main, name: '主页'}
+        ]
+    },
     {
         path: '*',
         hidden: true,
@@ -249,7 +257,12 @@ export const routes_manager = [
 export const routes_user = [
     {
         path: '/',
-        redirect: 'main',
+        redirect: '/leave',
+        hidden: true
+    },
+    {
+        path: '/main',
+        redirect: '/leave',
         hidden: true
     },
     {
@@ -277,15 +290,6 @@ export const routes_user = [
         name: '',
         children: [
             {path: '/msg', component: msg, name: '消息列表'}
-        ]
-    },
-    {
-        path: '/',
-        hidden: true,
-        name: '',
-        component: Home,
-        children: [
-            {path: '/main', component: Main, name: '主页'}
         ]
     },
     {
