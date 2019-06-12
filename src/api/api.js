@@ -294,10 +294,9 @@ export const addShift = (id, params) => {
 };
 
 // 添加部门排班
-export const addDepartmentShift = params => {
-    return instance.get(`/shift/department`, {
-        headers: getHeaders(),
-        params: params
+export const addDepartmentShift = (id, params) => {
+    return instance.post(`/shift/department/`+id, params, {
+        headers: getHeaders()
     });
 };
 

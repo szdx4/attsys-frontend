@@ -179,65 +179,7 @@
         :model="addDepartmentForm"
         label-width="80px"
         :rules="addDepartmentFormRules"
-        ref="addForm"
-      >
-        <el-form-item label="部门id" prop="department_id">
-          <el-input v-model="addDepartmentForm.department_id"></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间" prop="start_at">
-          <el-col :span="11">
-            <el-date-picker
-              type="datetime"
-              placeholder="选择日期"
-              value-format="yyyy-MM-dd HH:mm"
-              format="yyyy-MM-dd HH:mm"
-              v-model="addDepartmentForm.start_at"
-              style="width: 100%;"
-            ></el-date-picker>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="结束时间" prop="end_at">
-          <el-col :span="11">
-            <el-date-picker
-              type="datetime"
-              placeholder="选择日期"
-              value-format="yyyy-MM-dd HH:mm"
-              format="yyyy-MM-dd HH:mm"
-              v-model="addDepartmentForm.end_at"
-              style="width: 100%;"
-            ></el-date-picker>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="排班类型" prop="type">
-          <el-radio-group v-model="addDepartmentForm.type">
-            <el-radio-button label="normal">正常</el-radio-button>
-            <el-radio-button label="allovertime">额外</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click.native="addDepartmentFormVisible = false"
-          >取消</el-button
-        >
-        <el-button
-          type="primary"
-          @click.native="addDepartmentSubmit"
-          :loading="addDepartmentloading"
-          >提交
-        </el-button>
-      </div>
-    </el-dialog>
-    <!--新增部门排班界面-->
-    <el-dialog
-      title="新增"
-      v-model="addDepartmentFormVisible"
-      :close-on-click-modal="false"
-    >
-      <el-form
-        :model="addDepartmentForm"
-        label-width="80px"
-        :rules="addDepartmentFormRules"
-        ref="addForm"
+        ref="addDepartmentForm"
       >
         <el-form-item label="部门id" prop="department_id">
           <el-input v-model="addDepartmentForm.department_id"></el-input>
@@ -712,7 +654,7 @@ export default {
       });
     },
     addDepartmentSubmit: function () {
-      this.$refs.addForm.validate((valid) => {
+      this.$refs.addDepartmentForm.validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
             // loading 开始
@@ -724,7 +666,6 @@ export default {
               start_at: this.addDepartmentForm.start_at.toJSON(),
               end_at: this.addDepartmentForm.end_at.toJSON(),
               type: this.addDepartmentForm.type
-
             };
             addDepartmentShift(id, para).then((res) => {
               // loading 结束
