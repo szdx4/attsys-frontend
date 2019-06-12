@@ -241,21 +241,29 @@
             },
 
             getList() { //向后端请求排班列表
+                this.loading = true;
+
                 let para = {};
                 getShiftList(para).then((res) => {
                     this.shiftList = res.data.data;
 
                 });
+                this.loading = false;
             },
             //删除
             handleDel: function (row) {//向后端发送删除信息 row.id
                 this.$confirm('确认删除该记录吗?', '提示', {
                     type: 'warning'
-                }).then(() => {
-                    // this.listLoading = true;
+                }).then(() => {]
+                    // loading 开始
+                    this.listLoading = true;
+
                     let id = row.id;
                     let para = {};
                     deletShift(id, para).then((res) => {
+                        // loading 结束
+                        this.listLoading = false;
+
                         this.$message({
                             message: '删除成功',
                             type: 'success'
@@ -263,6 +271,9 @@
                         this.getList();
                     });
                 }).catch(err => {
+                    // loading 结束
+                    this.listLoading = false;
+
                     let msg = err.response.data.message;
                     this.$message({
                         message: '删除失败，错误信息：' + err.response.data.message,
@@ -286,7 +297,7 @@
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            // this.addLoading = true;
+                            this.addLoading = true;
                             let id = this.addForm.user.id;
                             let para = {
                                 start_at: this.addForm.start_at.toJSON(),
@@ -296,7 +307,7 @@
                             };
                             addShift(id, para).then((res) => {
                                 //向后端发送新增部门信息
-                                // this.addLoading = false;
+                                this.addLoading = false;
 
                                 this.$message({
                                     message: '提交成功',
@@ -307,7 +318,8 @@
                                 this.getList();
                             }).catch(err => {
                                 //向后端发送新增部门信息
-                                // this.addLoading = false;
+                                this.addLoading = false;
+
                                 let msg = err.response.data.message
                                 this.$message({
                                     message: '提交失败，错误信息：' + msg,
@@ -325,7 +337,9 @@
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            // this.addDepartmentloading = true;
+                            // loading 开始
+                            this.addDepartmentloading = true;
+
                             let id = this.addDepartmentForm.department_id
 
                             let para = {
@@ -335,6 +349,9 @@
 
                             };
                             addDepartmentShift(id, para).then((res) => {
+                                // loading 结束
+                                this.addDepartmentloading = false;
+
                                 //向后端发送新增部门信息
                                 this.$message({
                                     message: '提交成功',
@@ -344,6 +361,9 @@
                                 this.addDepartmentFormVisible = false;
                                 this.getList();
                             }).catch(err => {
+                                // loading 结束
+                                this.addDepartmentloading = false;
+
                                 //向后端发送新增部门信息
                                 let msg = err.response.data.message
                                 this.$message({

@@ -136,11 +136,13 @@
             //获取列表
             getList: function () {
                 let para = {};
-                // this.loading = true;
+                this.loading = true;
+
                 getOvertimeList(para).then((res) => {
                     //向后端请求列表
                     this.overtimeList = res.data.data;
                 });
+                this.loading = false;
             },
             handleCurrentChange(val) {
                 this.page = val;

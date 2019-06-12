@@ -168,9 +168,11 @@
             //向后台获取请假列表
             getList: function () {
                 let para = {};
-                // this.loading = true;
+                this.loading = true;
+
                 getLeaveListPage(para).then((res) => {
-                    // this.listloading = false;
+                    this.loading = false;
+
                     this.total = res.data.total;
                     this.leaveList = res.data.data;
                 });
@@ -194,7 +196,9 @@
                 this.$refs.statusForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            // this.editLoading = true;
+                            // 确认提交，开始 loading
+                            this.editLoading = true;
+
                             let id = this.statusForm.id;
                             let para = {
 
@@ -202,7 +206,9 @@
 
                             };
                             LeaveRequestApproval(id, para).then((res) => {
-                                // this.editLoading = false;
+                                // 接收到响应，结束loading
+                                this.editLoading = false;
+
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
@@ -211,6 +217,9 @@
                                 this.statusFormVisible = false;
                                 this.getList();
                             }).catch(err => {
+                                // 接收到响应，结束loading
+                                this.editLoading = false;
+
                                 console.log(err);
                                 let status = err.response.status;
                                 let msg = err.response.data.message;

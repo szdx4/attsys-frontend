@@ -150,13 +150,15 @@
             },
 
             getlist() {
-                //向后台请求消息列表 getMsgList
-                //this.listLoading = true;
+                // 向后台请求消息列表 getMsgList
+                this.listLoading = true;
+
                 let para = {};
                 getMsgList(para).then(res => {
+                    this.listLoading = false;
+
                     this.msgList = res.data.data;
                 })
-
 
             },
             unreadMsg() {
