@@ -308,6 +308,12 @@ export const deletShift = (id, params) => {
     });
 };
 
+export const editShift = (id,params) =>{
+    return instance.put(`/shift/${id}`, {
+        headers: getHeaders(),
+        params: params
+    });
+};
 
 // **************************************************签到管理**************************************************
 

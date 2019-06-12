@@ -1,5 +1,21 @@
 <template>
     <section>
+        <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+            <el-form :inline="true">
+                <el-form-item>
+                    <el-date-picker type="datetime" placeholder="开始时间" value-format="yyyy-MM-dd HH:mm"
+                                    format="yyyy-MM-dd HH:mm" v-model="start_at" style="width: 100%;"></el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-date-picker type="datetime" placeholder="结束时间" value-format="yyyy-MM-dd HH:mm"
+                                    format="yyyy-MM-dd HH:mm" v-model="end_at" style="width: 100%;"
+                    ></el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" v-on:click="getUser">查询</el-button>
+                </el-form-item>
+            </el-form>
+        </el-col>
 
         <!--列表-->
         <el-table :data="shiftList" highlight-current-row v-loading="listLoading" @selection-change="selsChange"
@@ -20,8 +36,9 @@
             </el-table-column>
             <el-table-column prop="status" label="状态" min-width="180" align="center" sortable>
             </el-table-column>
-            <el-table-column label="操作" width="150">
+            <el-table-column label="操作"  align="center" width="180">
                 <template scope="scope">
+                    <el-button type="primary" size="small" @click="handleEdit">修改</el-button>
                     <el-button type="danger" size="small" @click="handleDel(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -103,13 +120,43 @@
                 </el-button>
             </div>
         </el-dialog>
+        <!--编辑排班界面-->
+        <el-dialog title="修改" v-model="editFormVisible" :close-on-click-modal="false">
+            <el-form :model="editForm" label-width="80px" :rules="editFormFormRules" ref="addForm">
+                <el-form-item label="开始时间" prop="start_at">
+                    <el-col :span="11">
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="editForm.start_at"
+                                        style="width: 100%;"></el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="结束时间" prop="end_at">
+                    <el-col :span="11">
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="editForm.end_at"
+                                        style="width: 100%;"></el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="修改类型" prop="effect">
+                    <el-radio-group v-model="editForm.effect">
+                        <el-radio-button label="temp">临时修改</el-radio-button>
+                        <el-radio-button label="all temp">永久修改</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="addDepartmentFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="addDepartmentSubmit" :loading="addDepartmentloading">提交
+                </el-button>
+            </div>
+        </el-dialog>
 
     </section>
 </template>
 
 <script>
     import {getDepartmentList, addDepartment, deletDepartment, editDepartment, getDepartment} from '../../api/api'
-    import {getShiftList, addShift, deletShift, addDepartmentShift} from "../../api/api";
+    import {getShiftList, addShift, deletShift, editShift,addDepartmentShift} from "../../api/api";
 
     export default {
         data() {
@@ -119,16 +166,31 @@
                 },
                 shiftList: [],
                 total: 0,
+                start_at: '',
+                end_at: '',
+                editFormVisible:false,
+                editForm:{
+                    start_at:'',
+                    end_at:'',
+                    effect:'',
+                },
+                editFormFormRules:{
+                    start_at: [
+                        {type: 'date', required: true, message: '请选择开始时间', trigger: 'change'}
+                    ],
+                    end_at: [{
+                        type: 'date', required: true, message: '请选择结束时间', trigger: 'blur'
+                    }],
+                    effect: [{
+                        required: true, message: '请选择修改类型', trigger: 'blur'
+                    }]
+                },
+
                 page: 1,
                 listLoading: false,
                 sels: [],//列表选中列
 
                 //编辑界面数据
-                editForm: {
-                    id: 0,
-                    name: '',
-                    manager: 1
-                },
 
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,
@@ -220,6 +282,10 @@
             statusformatter() {
 
             },
+            handleEdit(row){
+                this.editFormVisible=true;
+                this.editForm = Object.assign({}, row);
+            },
 
             handleCurrentChange(val) {
                 this.page = val;
@@ -249,6 +315,25 @@
 
                 });
                 this.loading = false;
+            },
+            getUser(){
+                var start_at = this.start_at;
+                var end_at = this.end_at;
+                if ((start_at == '') && (end_at == ''))
+                    return this.getList();
+                else {
+
+                    var len = this.shiftList.length;
+
+                    var newshiftList = new Array();
+                    var j = 0;
+                    for(var i = 0; i < len ; i++){
+                        var date = new Date(Date.parse(this.shiftList[i].start_at.replace(/-/g,"/")))//字符串转日期格式
+                        if((date>=start_at)&&(date<=end_at))
+                            newshiftList[j++] = this.shiftList[i];
+                    }
+                }
+                return  newshiftList;
             },
             //删除
             handleDel: function (row) {//向后端发送删除信息 row.id
