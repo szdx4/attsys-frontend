@@ -168,8 +168,10 @@
                 total: 0,
                 start_at: '',
                 end_at: '',
+                allshiftVisible:localStorage.getItem('role') === 'master' ,
                 editFormVisible:false,
                 editForm:{
+                    id:'',
                     start_at:'',
                     end_at:'',
                     effect:'',
@@ -322,18 +324,18 @@
                 if ((start_at == '') && (end_at == ''))
                     return this.getList();
                 else {
-
                     var len = this.shiftList.length;
-
                     var newshiftList = new Array();
                     var j = 0;
                     for(var i = 0; i < len ; i++){
-                        var date = new Date(Date.parse(this.shiftList[i].start_at.replace(/-/g,"/")))//字符串转日期格式
+                        var date = new Date(Date.parse(this.shiftList[i].start_at))//字符串转日期格式
                         if((date>=start_at)&&(date<=end_at))
-                            newshiftList[j++] = this.shiftList[i];
+                            newshiftList[j] = this.shiftList[i];
+                            j++;
                     }
                 }
-                return  newshiftList;
+                this.shiftList= newshiftList;
+                return this.shiftList;
             },
             //删除
             handleDel: function (row) {//向后端发送删除信息 row.id
@@ -411,6 +413,43 @@
                                     type: 'error'
                                 });
                                 this.$refs['addForm'].resetFields();
+                                // this.addFormVisible = false;
+                                // this.getList();
+                            });
+                        });
+                    }
+                });
+            },
+            editSubmit: function () {
+                this.$refs.editForm.validate((valid) => {
+                    if (valid) {
+                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            let id = this.editForm.id;
+                            let para = {
+                                start_at: this.editForm.start_at.toJSON(),
+                                end_at: this.editForm.end_at.toJSON(),
+                                effect: this.editForm.effect
+
+                            };
+                            editShift(id, para).then((res) => {
+                                //向后端发送新增部门信息
+
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                this.$refs['editForm'].resetFields();
+                                this.editFormVisible = false;
+                                this.getList();
+                            }).catch(err => {
+                                //向后端发送新增部门信息
+
+                                let msg = err.response.data.message
+                                this.$message({
+                                    message: '提交失败，错误信息：' + msg,
+                                    type: 'error'
+                                });
+                                this.$refs['editForm'].resetFields();
                                 // this.addFormVisible = false;
                                 // this.getList();
                             });
