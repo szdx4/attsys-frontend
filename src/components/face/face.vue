@@ -72,9 +72,6 @@
                 listLoading: false,
                 sels: [],//列表选中列
                 pictureFormVisible: false,
-                editFormVisible: false,//编辑界面是否显示
-                editLoading: false,
-
                 pictureForm: {
                     info: '',
                 },
@@ -82,7 +79,6 @@
                 //编辑界面数据
 
                 approvalFormVisible: false,//审核界面是否显示
-                addLoading: false,
                 approvalFormRules: {
                     status: [
                         {required: true, message: '请选择状态', trigger: 'blur'}
@@ -141,14 +137,16 @@
 
                     let para = {};
                     let id = this.filters.id;
-
+                    this.listLoading = true;
                     getFaceUser(id, para).then((res) => {
                         //向后端发送 获得指定用户人脸信息
+                        this.listLoading = false;
                         let data = [0,];
                         data[0] = res.data.data;
                         this.facelist = data;
 
                     }).catch(err => {
+                        this.listLoading = false;
                         let status = err.response.status;
                         let msg = err.response.data.message;
                         this.$message({
@@ -162,11 +160,13 @@
 
             getList() { //向后端请求排班列表
                 let para = {};
-                //this.listLoading = true;
+                this.listLoading = true;
                 getFaceList(para).then((res) => {
+                    this.listLoading = false;
                     this.facelist = res.data.data;
 
                 }).catch(err => {
+                    this.listLoading = false;
                     let status = err.response.status;
                     let msg = err.response.data.message;
                     this.$message({
@@ -179,15 +179,8 @@
             //显示审核页面
             handleApproval: function (row) {
                 this.approvalForm = Object.assign({}, row);
-                console.log("hahahha");
                 this.approvalSubmit();
             },
-            //显示编辑更新界面
-            handleEdit: function (index, row) {
-                this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
-            },
-
 
             showPicture(row) {
                 this.pictureFormVisible = true;

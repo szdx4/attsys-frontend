@@ -93,11 +93,12 @@
             //ok
             getList() {
                 //向后台获取工时列表
-                this.loading = true;
+                this.listLoading = true;
                 getHours().then((res) => {
+                    this.listLoading = false;
                     this.hoursList = res.data.data;
-                    this.loading = false;
                 }).catch(err => {
+                    this.listLoading = false;
                     let status = err.response.status;
                     let msg = err.response.data.message;
                     this.$message({

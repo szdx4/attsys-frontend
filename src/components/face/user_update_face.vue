@@ -75,7 +75,7 @@
                 };
                 let id = localStorage.getItem('id');
                 editFaceUser(id, para).then(res => {
-                    this.$router.push({path: '/face'});
+                    // this.$router.push({path: '/face'});
                     this.$router.go(0);
                     this.$message({
                         message: '更新成功！',
