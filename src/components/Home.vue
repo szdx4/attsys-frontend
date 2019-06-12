@@ -159,7 +159,7 @@
         },
         methods: {
             onSubmit() {
-                console.log('submit!');
+                // console.log('submit!');
             },
             jumpSign: function () {
                 //加一个函数获取sign_id
@@ -240,6 +240,13 @@
                 let para = {};
                 getSignQrcode(para).then((res) => {//向后端请求二维码，每1min重新获取一次
 
+                }).catch((err) => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '二维码请求失败，错误信息：' + msg,
+                        type: 'error'
+                    });
                 });
 
             },

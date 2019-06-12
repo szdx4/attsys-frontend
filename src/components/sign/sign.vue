@@ -5,7 +5,7 @@
             <canvas id="canvas" width="256px" height="256px"></canvas>
         </div>
             <el-button type="primary" v-on:click="openCam">打开摄像头</el-button>
-            <el-button type="primary" v-on:click="takePhoto">使用照片</el-button><!--上传--->
+            <el-button type="primary" v-on:click="takePhoto">使用照片</el-button><!--上传-->
         <div class="img-qr" slot="placeholder">
             <img :src=this.$route.params.qrcode>
         </div>
@@ -60,7 +60,7 @@
                 promise.then(function (MediaStream) {
                     video.srcObject = MediaStream;
                     video.play();
-                    console.log(video);
+                    // console.log(video);
                 });
 
 
@@ -77,26 +77,25 @@
                 let para = {
                     face: this.imageData
                 };
-                let id = localStorage.getItem('id');
-                let status = false;
-                signFace(id, para).then(res => {
+                signFace(para).then(res => {
                     this.$message({
                         message: '签到成功',
                         type: 'success'
                     });
-                    status = true;
+                    this.$router.push({path: '/main'});
+                    this.$router.go(0);
+                }).catch(err => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '签到失败，错误信息：' + msg,
+                        type: 'error'
+                    });
                     this.$router.push({path: '/main'});
                     this.$router.go(0);
 
-
                 });
-                if (!status) {
-                    this.$message({
-                        message: '签到失败，请重试！',
-                        type: 'error'
-                    });
 
-                }
 
 
             },
