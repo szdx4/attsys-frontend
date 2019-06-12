@@ -38,7 +38,7 @@
             </el-table-column>
             <el-table-column label="操作"  align="center" width="180">
                 <template scope="scope">
-                    <el-button type="primary" size="small" @click="handleEdit">编辑</el-button>
+                    <el-button type="primary" size="small" @click="handleEdit">修改</el-button>
                     <el-button type="danger" size="small" @click="handleDel(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -121,7 +121,7 @@
             </div>
         </el-dialog>
         <!--编辑排班界面-->
-        <el-dialog title="新增" v-model="editFormVisible" :close-on-click-modal="false">
+        <el-dialog title="修改" v-model="editFormVisible" :close-on-click-modal="false">
             <el-form :model="editForm" label-width="80px" :rules="editFormFormRules" ref="addForm">
                 <el-form-item label="开始时间" prop="start_at">
                     <el-col :span="11">
