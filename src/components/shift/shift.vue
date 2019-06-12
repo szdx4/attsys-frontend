@@ -48,6 +48,7 @@
         <el-col :span="24" class="toolbar">
             <el-button type="primary" @click="handleAdd">添加指定员工排班</el-button>
             <el-button type="primary" @click="handleAddDepartment">添加部门排班</el-button>
+            <el-button type="primary" :hidden="allshiftVisible" @click="">添加全单位排班</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -120,6 +121,70 @@
                 </el-button>
             </div>
         </el-dialog>
+        <!--新增部门排班界面-->
+        <el-dialog title="新增" v-model="addDepartmentFormVisible" :close-on-click-modal="false">
+            <el-form :model="addDepartmentForm" label-width="80px" :rules="addDepartmentFormRules" ref="addForm">
+                <el-form-item label="部门id" prop="department_id">
+                    <el-input v-model="addDepartmentForm.department_id"></el-input>
+                </el-form-item>
+                <el-form-item label="开始时间" prop="start_at">
+                    <el-col :span="11">
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.start_at"
+                                        style="width: 100%;"></el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="结束时间" prop="end_at">
+                    <el-col :span="11">
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="addDepartmentForm.end_at"
+                                        style="width: 100%;"></el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="排班类型" prop="type">
+                    <el-radio-group v-model="addDepartmentForm.type">
+                        <el-radio-button label="normal">正常</el-radio-button>
+                        <el-radio-button label="allovertime">额外</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="addDepartmentFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="addDepartmentSubmit" :loading="addDepartmentloading">提交
+                </el-button>
+            </div>
+        </el-dialog>
+
+        <!--新增全单位排班界面-->
+        <el-dialog title="新增" v-model="allshiftFormVisible" :close-on-click-modal="false">
+            <el-form :model="allshiftForm" label-width="80px" :rules="allshiftFormRules" ref="addForm">
+                <el-form-item label="开始时间" prop="start_at">
+                    <el-col :span="11">
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="allshiftForm.start_at"
+                                        style="width: 100%;"></el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="结束时间" prop="end_at">
+                    <el-col :span="11">
+                        <el-date-picker type="datetime" placeholder="选择日期" value-format="yyyy-MM-dd HH:mm"
+                                        format="yyyy-MM-dd HH:mm" v-model="allshiftForm.end_at"
+                                        style="width: 100%;"></el-date-picker>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="排班类型" prop="type">
+                    <el-radio-group v-model="allshiftForm.type">
+                        <el-radio-button label="normal">正常</el-radio-button>
+                        <el-radio-button label="allovertime">额外</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="allshiftFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="addDepartmentSubmit" >提交
+                </el-button>
+            </div>
+        </el-dialog>
         <!--编辑排班界面-->
         <el-dialog title="修改" v-model="editFormVisible" :close-on-click-modal="false">
             <el-form :model="editForm" label-width="80px" :rules="editFormFormRules" ref="addForm">
@@ -146,7 +211,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="addDepartmentFormVisible = false">取消</el-button>
-                <el-button type="primary" @click.native="addDepartmentSubmit" :loading="addDepartmentloading">提交
+                <el-button type="primary" @click.native="editSubmit" >提交
                 </el-button>
             </div>
         </el-dialog>
@@ -169,6 +234,7 @@
                 start_at: '',
                 end_at: '',
                 allshiftVisible:localStorage.getItem('role') === 'master' ,
+                allshiftFormVisible:false,
                 editFormVisible:false,
                 editForm:{
                     id:'',
@@ -244,6 +310,11 @@
                     type: '',
                     department_id: '',
                 },
+                allshiftForm:{
+                    start_at: '',
+                    end_at: '',
+                    type: '',
+                }
 
             }
         },
@@ -377,6 +448,9 @@
 
             handleAddDepartment: function () {
                 this.addDepartmentFormVisible = true;
+            },
+            handleAddall:function(){
+              this.allshiftFormVisible=true;
             },
 
             //新增
