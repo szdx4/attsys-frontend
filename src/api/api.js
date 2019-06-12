@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const instance = axios.create({
     baseURL: 'https://attsys.koder.me/',
-    timeout: 5000,
+    timeout: 30000,
     headers: {
         // 'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
         'Content-Type': 'application/json'
@@ -262,10 +262,7 @@ export const getShiftList = params => {
 
 // 添加排班
 export const addShift = (id, params) => {
-    return instance.post(`/shift/user/${id}`, {
-        headers: getHeaders(),
-        params: params
-    });
+    return instance.post(`/shift/user/${id}`, params, {headers: getHeaders()});
 };
 
 // 添加部门排班
@@ -312,8 +309,8 @@ export const signQrcode = (id, params) => {
 
 // 人脸签到
 // face_img : base64
-export const signFace = (id, params) => {
-    return instance.post(`/sign/face/${id}`, params, {headers: getHeaders()});
+export const signFace = params => {
+    return instance.post(`/sign/face`, params, {headers: getHeaders()});
 };
 
 

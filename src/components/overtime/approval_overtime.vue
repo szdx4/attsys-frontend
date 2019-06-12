@@ -116,9 +116,7 @@
                         this.$router.push({path: '/login'});
                         this.logout();
                     }
-
                 }
-
             },
 
             getUser() {
@@ -194,11 +192,7 @@
                     this.editFormVisible = false;
                     this.getList();
                 })
-
-
             }
-
-
         },
         mounted() {
             this.verify();

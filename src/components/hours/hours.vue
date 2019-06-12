@@ -93,10 +93,19 @@
             //ok
             getList() {
                 //向后台获取工时列表
-                this.loading = true;
+                this.listLoading = true;
                 getHours().then((res) => {
+                    this.listLoading = false;
                     this.hoursList = res.data.data;
-                    this.loading = false;
+                }).catch(err => {
+                    this.listLoading = false;
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '获取列表失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+
                 });
             },
             dateFormatter(row) {
@@ -116,17 +125,16 @@
                     };
                     getHours(para).then(res => {
                         this.hoursList = res.data.data;
-                    })
+                    }).catch(err => {
+                        let status = err.response.status;
+                        let msg = err.response.data.message;
+                        this.$message({
+                            message: '获取信息失败，错误信息：' + msg,
+                            type: 'error'
+                        });
 
-                    // let len = this.hoursList.length;
-                    // let newHourList = [];
-                    // let j = 0;
-                    // for (let i = 0; i < len; i++) {
-                    //     let date = new Date(Date.parse(this.hoursList[i].date.replace(/-/g, "/")));//字符串转日期格式
-                    //     if ((date >= start_at) && (date <= end_at))
-                    //         newHourList[j++] = this.hoursList[i];
-                    // }
-                    // this.hoursList = newHourList;
+                    });
+
                 }
             },
 

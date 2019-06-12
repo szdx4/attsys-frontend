@@ -74,23 +74,22 @@
                     info: this.imageData
                 };
                 let id = localStorage.getItem('id');
-                let status = false;
                 editFaceUser(id, para).then(res => {
-                    status = true;
-                    this.$router.push({path: '/face'});
+                    // this.$router.push({path: '/face'});
                     this.$router.go(0);
-                });
-                if (!status) {
                     this.$message({
                         message: '更新成功！',
                         type: 'success'
                     });
-                } else {
+                }).catch(err => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
                     this.$message({
-                        message: '更新失败, 请重试！',
+                        message: '编辑失败，错误信息：' + msg,
                         type: 'error'
                     });
-                }
+
+                });
 
 
             },

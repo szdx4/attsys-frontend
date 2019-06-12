@@ -153,17 +153,39 @@
             getdepartment() {
                 let para = {};
                 let id = this.filters.id;
+                this.listLoading = true;
                 getDepartment(id, para).then((res) => {
+                    this.listLoading = false;
                     this.departments = res.data.data;
 
-                })
+                }).catch(err => {
+                    this.listLoading = false
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '获取信息失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+
+                });
             },
 
             getList() {
                 //向后端请求部门列表
                 let para = {};
+                this.listLoading = true;
                 getDepartmentList(para).then((res) => {
+                    this.listLoading = false;
                     this.departments = res.data.data;
+                }).catch(err => {
+                    this.listLoading = false;
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '获取列表失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+
                 });
             },
             //删除
@@ -181,6 +203,14 @@
                             type: 'success'
                         });
                         this.getList();
+                    }).catch(err => {
+                        this.listLoading = false;
+                        let status = err.response.status;
+                        let msg = err.response.data.message;
+                        this.$message({
+                            message: '删除失败，错误信息：' + msg,
+                            type: 'error'
+                        });
                     });
                 })
             },
@@ -210,8 +240,9 @@
                     name: this.editForm.name
                 };
                 let id = this.editForm.id;
-                console.log(para);
+                this.editLoading = true;
                 editDepartment(id, para).then((res) => {
+                    this.editLoading = false;
                     this.$message({
                         message: '提交成功',
                         type: 'success'
@@ -219,6 +250,19 @@
                     this.$refs['editForm'].resetFields();
                     this.editFormVisible = false;
                     this.getList();
+
+                }).catch(err => {
+                    this.editLoading = false;
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '提交失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+                    this.$refs['editForm'].resetFields();
+                    this.editFormVisible = false;
+                    this.getList();
+
                 });
 
             },
@@ -227,13 +271,13 @@
                 this.$refs.addForm.validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
-                            // this.addLoading = true;
+                            this.addLoading = true;
 
                             let para = {
                                 name: this.addForm.name
                             };
                             addDepartment(para).then((res) => { //向后端发送新增部门信息
-                                // this.addLoading = false;
+                                this.addLoading = false;
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
@@ -241,6 +285,18 @@
                                 this.$refs['addForm'].resetFields();
                                 this.addFormVisible = false;
                                 this.getList();
+                            }).catch(err => {
+                                this.addLoading = false;
+                                let status = err.response.status;
+                                let msg = err.response.data.message;
+                                this.$message({
+                                    message: '提交失败，错误信息：' + msg,
+                                    type: 'error'
+                                });
+                                this.$refs['addForm'].resetFields();
+                                this.addFormVisible = false;
+                                this.getList();
+
                             });
                         });
                     }

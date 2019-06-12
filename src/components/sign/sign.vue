@@ -46,9 +46,7 @@
                         this.$router.push({path: '/login'});
                         this.logout();
                     }
-
                 }
-
             },
             openCam() {
                 let constraints = {
@@ -93,20 +91,12 @@
                     });
                     this.$router.push({path: '/main'});
                     this.$router.go(0);
-
                 });
-
-
-
             },
-
-
         },
         mounted() {
             this.verify();
         }
-
-
     }
 
 </script>
