@@ -12,6 +12,9 @@
         <el-form-item>
           <el-button type="primary" @click="handleAdd">新增</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleBatchAdd">批量增加新增</el-button>
+        </el-form-item>
       </el-form>
     </el-col>
 
@@ -158,6 +161,27 @@
         >
       </div>
     </el-dialog>
+
+    <!--批量新增界面-->
+    <el-dialog
+            title="批量新增"
+            v-model="batchAddVisible"
+            :close-on-click-modal="false"
+    >
+      <!--文件按钮-->
+      <input type="file" id="upload"><br>
+      <pre id="content"></pre>>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="batchAddVisible = false">取消</el-button>
+        <el-button
+                type="primary"
+                @click.native="batchAddSubmit"
+                :loading="addLoading"
+        >提交</el-button>
+      </div>
+    </el-dialog>
+
   </section>
 </template>
 
@@ -193,7 +217,8 @@ export default {
         hours: 0
       },
 
-      addFormVisible: false,//新增界面是否显示
+      addFormVisible: false, // 新增界面是否显示
+
       addLoading: false,
       addFormRules: {
         name: [
@@ -214,7 +239,7 @@ export default {
 
       batchAddVisible: false,
       batchAddForm: {
-
+        data: ''
       },
 
     }
@@ -340,6 +365,10 @@ export default {
         addr: ''
       };
     },
+    // 显示批量增加界面
+    handleBatchAdd() {
+      this.batchAddVisible = true;
+    },
     //编辑
     editSubmit: function () {
       this.$refs.editForm.validate((valid) => {
@@ -416,19 +445,64 @@ export default {
       });
     },
     //批量增加
-    handleBatchAdd() {
-      this.batchAddVisible = true;
-    },
-    batchAdd(_file) {
-      var reader = new FileReader();
-      var file = _file;
-      console.log(file)
-      console.log(reader.readAsText(file, 'utf-8'));
-      var file_upload = Base64.encode(reader.readAsText(file, 'utf-8'));
-      console.log(file_upload);
+    batchAddSubmit: function() {
+      let csv = '';
+      window.onload = () => {
+        var getContents = (fileInput, callback) => {
+          if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
+            var file = fileInput.files[0];
+            if (window.FileReader) {
+              var reader = new FileReader();
+              reader.onloadend = function (evt) {
+                if (evt.target.readyState == FileReader.DONE) {
+                  callback(evt.target.result);
+                }
+              };
+              reader.readAsText(file, 'utf-8');
+            }
+          }
+        };
+        document.getElementById('upload').onchange = function () {
+          var content = document.getElementById('content');
 
-    },
+          getContents(this, function (str) {
+            // 转成 base64 编码
+            console.log(str)
+            csv = btoa(str);
+          });
+        };
+      };
 
+      // 提交确认
+      this.$confirm('确认提交吗？', '提示', {}).then(() => {
+        this.addLoading = true;
+        let para = {
+          batch: csv
+        };
+        console.log(csv)
+        batchAddUser(para).then((res) => {
+          this.addLoading = false;
+          this.$message({
+            message: '提交成功',
+            type: 'success'
+          });
+          // this.$refs['addForm'].resetFields();
+          this.batchAddVisible = false;
+          this.getUsers();
+        }).catch((err) => {
+          this.addLoading = false;
+          let status = err.response.status;
+          let msg = err.response.data.message;
+          this.$message({
+            message: '提交失败，错误信息：' + msg,
+            type: 'error'
+          });
+          // this.$refs['addForm'].resetFields();
+          this.batchAddVisible = false;
+          this.getUsers();
+        });
+      });
+    },
 
     selsChange: function (sels) {
       this.sels = sels;

@@ -49,6 +49,12 @@ export const addUser = params => {
     // return id
 };
 
+// 批量添加用户
+// batch: 批量用户信息
+export const batchAddUser = params => {
+    return instance.post(`user/batch`, params, {headers: getHeaders()});
+};
+
 // 编辑用户
 // name: 姓名
 // department: 部门
@@ -79,9 +85,9 @@ export const editPasswd = (id, params) => {
     return instance.put(`/user/${id}/password`, params, {headers: getHeaders()});
 };
 
-export const batchAddUser = (id,params) =>{
-  return instance.post('user/batch',params,{headers:getHeaders()});
-};
+// export const batchAddUser = (id,params) =>{
+//   return instance.post('user/batch',params,{headers:getHeaders()});
+// };
 
 
 // **************************************************部门管理**************************************************
