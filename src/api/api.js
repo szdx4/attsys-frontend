@@ -35,6 +35,15 @@ export const requestStatusSign = () => {
     })
 }
 
+export const requestStatusUserHours = (user_id, start_at, end_at) => {
+    return instance.get('/status/hours/'+user_id, {
+        start_at: start_at,
+        end_at: end_at
+    }, {
+        headers: getHeaders()
+    })
+}
+
 // **************************************************用户管理**************************************************
 
 // 登录

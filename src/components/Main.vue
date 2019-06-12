@@ -72,12 +72,42 @@
         </div>
       </div>
     </el-col>
+    <el-col :span="24" class="toolbar">
+      <el-form :inline="true">
+        <el-form-item>
+          <el-input v-model="userHoursForm.id" placeholder="用户 ID"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-date-picker
+            type="datetime"
+            placeholder="选择起始时间"
+            value-format="yyyy-MM-dd HH:mm"
+            format="yyyy-MM-dd HH:mm"
+            v-model="userHoursForm.start_at"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-date-picker
+            type="datetime"
+            placeholder="选择结束时间"
+            value-format="yyyy-MM-dd HH:mm"
+            format="yyyy-MM-dd HH:mm"
+            v-model="userHoursForm.end_at"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" v-on:click="getUserHours"
+            >查询用户工时</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-col>
   </el-row>
 </template>
 
 <script>
 import countTo from 'vue-count-to'
-import { requestStatusUser, requestStatusSign } from "@/api/api";
+import { requestStatusUser, requestStatusSign, requestStatusUserHours } from "@/api/api";
 export default {
   components: { countTo },
   methods: {
@@ -117,6 +147,22 @@ export default {
         this.latedCount = res.data.lated
         this.leavedCount = res.data.leaved
       })
+    },
+    getUserHours() {
+      let user_id = this.userHoursForm.id
+      let start_at = this.userHoursForm.start_at.toJSON()
+      let end_at = this.userHoursForm.end_at.toJSON()
+      requestStatusUserHours(user_id, start_at, end_at).then(res => {
+        this.$message({
+          message: '工作时间：' + res.data.shift_hour + ' 小时，加班时间：' + res.data.overtime_hour + ' 小时',
+          type: 'success'
+        })
+      }).catch(err => {
+        this.$message({
+          message: '查询失败，错误代码：' + err.response.status,
+          type: 'error'
+        })
+      })
     }
   },
   mounted() {
@@ -128,7 +174,12 @@ export default {
       usersCount: 0,
       signedCount: 0,
       latedCount: 0,
-      leavedCount: 0
+      leavedCount: 0,
+      userHoursForm: {
+        id: '',
+        start_at: '',
+        end_at: ''
+      }
     }
   }
 }
