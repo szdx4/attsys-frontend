@@ -353,7 +353,7 @@ export default {
               hours: parseInt(this.editForm.hours)
             };
             let id = this.editForm.id;
-            console.log(para);
+            // console.log(para);
             editUser(id, para).then((res) => {
               this.editLoading = false;
               this.$message({

@@ -87,7 +87,7 @@ export default {
                 let middle_token = res.data.token.split(".")[1];
                 let pre_json = Base64.decode(middle_token);
                 let json = JSON.parse(pre_json);
-                console.log("json  " + pre_json);
+                // console.log("json  " + pre_json);
                 localStorage.setItem("id", json.id);
                 localStorage.setItem("role", json.role);
 

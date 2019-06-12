@@ -60,7 +60,7 @@
                 promise.then(function (MediaStream) {
                     video.srcObject = MediaStream;
                     video.play();
-                    console.log(video);
+                    // console.log(video);
                 });
 
 

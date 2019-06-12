@@ -159,7 +159,7 @@
         },
         methods: {
             onSubmit() {
-                console.log('submit!');
+                // console.log('submit!');
             },
             jumpSign: function () {
                 //加一个函数获取sign_id
