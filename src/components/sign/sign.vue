@@ -88,8 +88,6 @@ export default {
           message: '签到成功',
           type: 'success'
         });
-        this.$router.push({ path: '/main' });
-        this.$router.go(0);
       }).catch(err => {
         let status = err.response.status;
         let msg = err.response.data.message;
@@ -97,8 +95,6 @@ export default {
           message: '签到失败，错误信息：' + msg,
           type: 'error'
         });
-        this.$router.push({ path: '/main' });
-        this.$router.go(0);
       });
     },
 
