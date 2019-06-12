@@ -48,7 +48,7 @@
         <el-col :span="24" class="toolbar">
             <el-button type="primary" @click="handleAdd">添加指定员工排班</el-button>
             <el-button type="primary" @click="handleAddDepartment">添加部门排班</el-button>
-            <el-button type="primary" :hidden="allshiftVisible" @click="">添加全单位排班</el-button>
+            <el-button type="primary" :hidden="allshiftVisible" @click="handleAddall">添加全单位排班</el-button>
             <el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="20"
                            :total="total" style="float:right;">
             </el-pagination>
@@ -221,7 +221,7 @@
 
 <script>
     import {getDepartmentList, addDepartment, deletDepartment, editDepartment, getDepartment} from '../../api/api'
-    import {getShiftList, addShift, deletShift, editShift,addDepartmentShift} from "../../api/api";
+    import {getShiftList, addShift, deletShift, editShift,addDepartmentShift,Allshift} from "../../api/api";
 
     export default {
         data() {
@@ -314,7 +314,19 @@
                     start_at: '',
                     end_at: '',
                     type: '',
-                }
+                },
+                allshiftFormRules:{
+                    start_at: [
+                        {type: 'date', required: true, message: '请选择开始时间', trigger: 'change'}
+                    ],
+                    end_at: [{
+                        type: 'date', required: true, message: '请选择结束时间', trigger: 'blur'
+                    }],
+                    type: [{
+                        required: true, message: '请选择排班类型', trigger: 'blur'
+                    }]
+                },
+
 
             }
         },
@@ -494,6 +506,7 @@
                     }
                 });
             },
+
             editSubmit: function () {
                 this.$refs.editForm.validate((valid) => {
                     if (valid) {
@@ -569,6 +582,45 @@
                                     type: 'error'
                                 });
                                 this.addDepartmentFormVisible = false;
+                                this.getList();
+                            });
+                        });
+                    }
+                });
+            },
+            addshiftSubmit: function () {
+                this.$refs.allshiftForm.validate((valid) => {
+                    if (valid) {
+                        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+                            // loading 开始
+                                let id='';
+                            let para = {
+                                start_at: this.add.allshiftForm.start_at.toJSON(),
+                                end_at: this.allshiftForm.end_at.toJSON(),
+                                type: this.allshiftForm.type
+
+                            };
+                            Allshift(id, para).then((res) => {
+                                // loading 结束
+
+                                //向后端发送新增部门信息
+                                this.$message({
+                                    message: '提交成功',
+                                    type: 'success'
+                                });
+                                this.$refs['allshiftForm'].resetFields();
+                                this.allshiftFormVisible = false;
+                                this.getList();
+                            }).catch(err => {
+                                // loading 结束
+
+                                //向后端发送新增部门信息
+                                let msg = err.response.data.message
+                                this.$message({
+                                    message: '提交失败，错误信息：' + msg,
+                                    type: 'error'
+                                });
+                                this.allshiftFormVisible = false;
                                 this.getList();
                             });
                         });
