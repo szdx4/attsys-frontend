@@ -82,12 +82,7 @@ export default {
           })
             .then(res => {
               this.logining = false;
-              if (res.status !== 200) {
-                this.$message({
-                  message: "用户名或密码错误",
-                  type: "error"
-                });
-              } else {
+
                 localStorage.setItem("token", res.data.token);
                 let middle_token = res.data.token.split(".")[1];
                 let pre_json = Base64.decode(middle_token);
@@ -102,13 +97,19 @@ export default {
                 localStorage.setItem("name", this.ruleForm2.account);
                 localStorage.setItem("password", this.ruleForm2.checkPass);
                 this.$router.go(0);
-              }
+              
             })
             .catch(err => {
-              console.log(err);
+              this.logining = false;
+              let status = err.response.status;
+              let msg = err.response.data.message;
+              this.$message({
+                  message: '登陆请求失败，错误信息：' + msg,
+                  type: 'error'
+              });
             });
         } else {
-          console.log("error submit!!");
+          this.logining = false;
           return false;
         }
       });

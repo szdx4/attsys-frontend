@@ -269,8 +269,15 @@ export default {
           let data = [0,];
           data[0] = res.data.data;
           this.users = data
+        }).catch((err) => {
+          this.listLoading = false;
+          let status = err.response.status;
+          let msg = err.response.data.message;
+          this.$message({
+            message: '获取用户信息，错误信息：' + msg,
+            type: 'error'
+          });
         });
-        this.listLoading = false;
       }
 
     },
@@ -281,6 +288,14 @@ export default {
         this.users = res.data.data;
         this.listLoading = false;
 
+      }).catch((err) => {
+        this.listLoading = false;
+        let status = err.response.status;
+        let msg = err.response.data.message;
+        this.$message({
+          message: '获取用户列表失败，错误信息：' + msg,
+          type: 'error'
+        });
       });
     },
     //删除
@@ -288,19 +303,25 @@ export default {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
       }).then(() => {
-        // this.listLoading = true;
+        this.listLoading = true;
         let id = row.id;
         let para = {};
         removeUser(id, para).then((res) => {
-          // this.listLoading = false;
+          this.listLoading = false;
           this.$message({
             message: '删除成功',
             type: 'success'
           });
           this.getUsers();
+        }).catch((err) => {
+          this.listLoading = false;
+          let status = err.response.status;
+          let msg = err.response.data.message;
+          this.$message({
+              message: '删除失败，错误信息：' + msg,
+              type: 'error'
+          });
         });
-      }).catch(() => {
-
       });
     },
     //显示编辑界面
@@ -324,7 +345,7 @@ export default {
       this.$refs.editForm.validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            // this.editLoading = true;
+            this.editLoading = true;
             let para = {
               name: this.editForm.name,
               department: this.editForm.department.id,
@@ -334,10 +355,21 @@ export default {
             let id = this.editForm.id;
             console.log(para);
             editUser(id, para).then((res) => {
-              // this.editLoading = false;
+              this.editLoading = false;
               this.$message({
                 message: '提交成功',
                 type: 'success'
+              });
+              this.$refs['editForm'].resetFields();
+              this.editFormVisible = false;
+              this.getUsers();
+            }).catch((err) => {
+              this.editLoading = false;
+              let status = err.response.status;
+              let msg = err.response.data.message;
+              this.$message({
+                  message: '提交失败，错误信息：' + msg,
+                  type: 'error'
               });
               this.$refs['editForm'].resetFields();
               this.editFormVisible = false;
@@ -352,16 +384,14 @@ export default {
       this.$refs.addForm.validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            // this.addLoading = true;
+            this.addLoading = true;
             let para = {
               name: this.addForm.name,
               password: this.addForm.password,
               department: parseInt(this.addForm.department)
             };
-            let status = false;
             addUser(para).then((res) => {
-              // this.addLoading = false;
-              status = true;
+              this.addLoading = false;
               this.$message({
                 message: '提交成功',
                 type: 'success'
@@ -369,19 +399,18 @@ export default {
               this.$refs['addForm'].resetFields();
               this.addFormVisible = false;
               this.getUsers();
-            }).catch(err => {
-              console.log(err.response.status);
-              console.log(err.response.data.message);
-            });
-            if (!status) {
+            }).catch((err) => {
+              this.addLoading = false;
+              let status = err.response.status;
+              let msg = err.response.data.message;
               this.$message({
-                message: '提交失败，请重试！',
-                type: 'error'
+                  message: '提交失败，错误信息：' + msg,
+                  type: 'error'
               });
               this.$refs['addForm'].resetFields();
               this.addFormVisible = false;
               this.getUsers();
-            }
+            });
           });
         }
       });
