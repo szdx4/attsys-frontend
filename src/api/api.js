@@ -241,10 +241,23 @@ export const getFaceList = (id, params) => {
 
 // 获取排班列表
 export const getShiftList = params => {
-    return instance.get(`/shift`, {
-        headers: getHeaders(),
-        params: params
-    });
+    if (localStorage.getItem('role') == 'manager') {
+        let user_id = localStorage.get('id')
+        return instance.get('/user/'+user_id).then(res => {
+            params.push({
+                department_id: res.data.department_id
+            })
+            instance.get('/shift', {
+                headers: getHeaders(),
+                params: params
+            })
+        })
+    } else {
+        return instance.get(`/shift`, {
+            headers: getHeaders(),
+            params: params
+        });
+    }
 };
 
 // 添加排班
