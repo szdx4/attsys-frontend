@@ -164,10 +164,11 @@
                         {required: true, message: '请填写部门id', trigger: 'blur'}
                     ],
                     start_at: [
-                        {required: true, message: '请选择开始时间', trigger: 'blur'}
+                        {type: 'date', required: true, message: '请选择开始时间', trigger: 'blur'}
                     ],
-                    end_at: [{
-                        required: true, message: '请选择结束时间', trigger: 'blur'
+                    end_at: [
+                        {
+                        type: 'date', required: true, message: '请选择结束时间', trigger: 'blur'
                     }],
                     type: [{
                         required: true, message: '请选择排班类型', trigger: 'blur'
