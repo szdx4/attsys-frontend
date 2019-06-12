@@ -312,17 +312,10 @@ export const getSignStatus = (id, params) => {
 };
 
 // 获取二维码
-export const getSignQrcode = params => {
+export const getSignQrcode = () => {
     return instance.get(`/sign/qrcode`, {
-        headers: getHeaders(),
-        params: params
+        headers: getHeaders()
     });
-};
-
-// 二维码签到
-// token
-export const signQrcode = (id, params) => {
-    return instance.post(`/sign/qrcode/user/${id}`, params, {headers: getHeaders()});
 };
 
 // 人脸签到

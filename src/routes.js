@@ -22,7 +22,7 @@ Vue.use(Router);
 export const routes_master = [
     {
         path: '/',
-        redirect: 'main',
+        redirect: '/main',
         hidden: true
     },
     {
@@ -148,7 +148,7 @@ export const routes_master = [
 export const routes_manager = [
     {
         path: '/',
-        redirect: 'main',
+        redirect: '/main',
         hidden: true
     },
     {
