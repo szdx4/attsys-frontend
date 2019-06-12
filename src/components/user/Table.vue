@@ -13,7 +13,9 @@
           <el-button type="primary" @click="handleAdd">新增</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleBatchAdd">批量增加新增</el-button>
+          <el-button type="primary" @click="handleBatchAdd"
+            >批量增加新增</el-button
+          >
         </el-form-item>
       </el-form>
     </el-col>
@@ -164,30 +166,30 @@
 
     <!--批量新增界面-->
     <el-dialog
-            title="批量新增"
-            v-model="batchAddVisible"
-            :close-on-click-modal="false"
+      title="批量新增"
+      v-model="batchAddVisible"
+      :close-on-click-modal="false"
     >
       <!--文件按钮-->
-      <input type="file" id="upload"><br>
-      <pre id="content"></pre>>
+      <input type="file" id="upload" />
 
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="batchAddVisible = false">取消</el-button>
         <el-button
-                type="primary"
-                @click.native="batchAddSubmit"
-                :loading="addLoading"
-        >提交</el-button>
+          type="primary"
+          @click.native="batchAddSubmit"
+          :loading="addLoading"
+          >提交</el-button
+        >
       </div>
     </el-dialog>
-
   </section>
 </template>
 
 <script>
 import util from '../../common/js/util'
-import { getUserList, getUser, removeUser, editUser, addUser } from '../../api/api';
+import { getUserList, getUser, removeUser, editUser, addUser, batchAddUser } from '../../api/api'
+import { Base64 } from 'js-base64'
 
 export default {
   data() {
@@ -235,6 +237,15 @@ export default {
         name: '',
         password: 0,
         department: '',
+      },
+
+      batchAddFormRules: {
+        upload: [
+          { required: true, message: '请选择一个文件', trigger: 'blur' }
+        ]
+      },
+      batchAddForm: {
+        upload: ''
       },
 
       batchAddVisible: false,
@@ -343,8 +354,8 @@ export default {
           let status = err.response.status;
           let msg = err.response.data.message;
           this.$message({
-              message: '删除失败，错误信息：' + msg,
-              type: 'error'
+            message: '删除失败，错误信息：' + msg,
+            type: 'error'
           });
         });
       });
@@ -397,8 +408,8 @@ export default {
               let status = err.response.status;
               let msg = err.response.data.message;
               this.$message({
-                  message: '提交失败，错误信息：' + msg,
-                  type: 'error'
+                message: '提交失败，错误信息：' + msg,
+                type: 'error'
               });
               this.$refs['editForm'].resetFields();
               this.editFormVisible = false;
@@ -433,8 +444,8 @@ export default {
               let status = err.response.status;
               let msg = err.response.data.message;
               this.$message({
-                  message: '提交失败，错误信息：' + msg,
-                  type: 'error'
+                message: '提交失败，错误信息：' + msg,
+                type: 'error'
               });
               this.$refs['addForm'].resetFields();
               this.addFormVisible = false;
@@ -445,63 +456,60 @@ export default {
       });
     },
     //批量增加
-    batchAddSubmit: function() {
-      let csv = '';
-      window.onload = () => {
-        var getContents = (fileInput, callback) => {
-          if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
-            var file = fileInput.files[0];
-            if (window.FileReader) {
-              var reader = new FileReader();
-              reader.onloadend = function (evt) {
-                if (evt.target.readyState == FileReader.DONE) {
-                  callback(evt.target.result);
-                }
-              };
-              reader.readAsText(file, 'utf-8');
+    batchAddSubmit: function () {
+      const fileInput = document.getElementById('upload')
+      if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
+        var file = fileInput.files[0]
+        this.$confirm('确认提交吗？', '提示', {}).then(() => {
+          if (window.FileReader) {
+            this.addLoading = true
+            var reader = new FileReader()
+            reader.readAsText(file, 'utf-8')
+            reader.onloadend = (evt) => {
+              if (evt.target.readyState == FileReader.DONE) {
+                var csvBase64 = Base64.encode(evt.target.result)
+                batchAddUser({
+                  batch: csvBase64
+                }).then(res => {
+                  this.addLoading = false
+                  this.batchAddVisible = false
+                  let successCount = res.data.filter((item) => {
+                    return item.status == 201
+                  }).length
+                  let failCount = res.data.filter((item) => {
+                    return item.status != 201
+                  }).length
+                  this.$message({
+                    message: '提交成功，其中 ' + successCount + ' 条成功，' + failCount + ' 条失败',
+                    type: 'success'
+                  })
+                  this.getUsers()
+                }).catch(err => {
+                  this.addLoading = false
+                  let status = err.response.status
+                  let msg = err.response.data.message
+                  this.$message({
+                    message: '提交失败，错误信息：' + msg,
+                    type: 'error'
+                  })
+                  this.batchAddVisible = false
+                  this.getUsers()
+                })
+              }
             }
+          } else {
+            this.$message({
+              message: '此浏览器不支持',
+              type: 'error'
+            })
           }
-        };
-        document.getElementById('upload').onchange = function () {
-          var content = document.getElementById('content');
-
-          getContents(this, function (str) {
-            // 转成 base64 编码
-            console.log(str)
-            csv = btoa(str);
-          });
-        };
-      };
-
-      // 提交确认
-      this.$confirm('确认提交吗？', '提示', {}).then(() => {
-        this.addLoading = true;
-        let para = {
-          batch: csv
-        };
-        console.log(csv)
-        batchAddUser(para).then((res) => {
-          this.addLoading = false;
-          this.$message({
-            message: '提交成功',
-            type: 'success'
-          });
-          // this.$refs['addForm'].resetFields();
-          this.batchAddVisible = false;
-          this.getUsers();
-        }).catch((err) => {
-          this.addLoading = false;
-          let status = err.response.status;
-          let msg = err.response.data.message;
-          this.$message({
-            message: '提交失败，错误信息：' + msg,
-            type: 'error'
-          });
-          // this.$refs['addForm'].resetFields();
-          this.batchAddVisible = false;
-          this.getUsers();
-        });
-      });
+        })
+      } else {
+        this.$message({
+          message: '请选择正确的文件',
+          type: 'error'
+        })
+      }
     },
 
     selsChange: function (sels) {
