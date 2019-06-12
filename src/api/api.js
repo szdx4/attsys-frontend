@@ -315,10 +315,9 @@ export const editShift = (id,params) =>{
     });
 };
 //全单位排班
-export const Allshift= (id,params) =>{
-    return instance.post(`/shift/all`, {
-        headers: getHeaders(),
-        params: params
+export const Allshift= (params) =>{
+    return instance.post(`/shift/all`, params, {
+        headers: getHeaders()
     });
 };
 
