@@ -217,13 +217,11 @@
                     if (valid) {
                         // 提交确认
                         this.$confirm('确认提交吗？', '提交', {}).then(() => {
-                            console.log("====================");
                             let para = {
                                 old_password: this.editForm.old_password,
                                 new_password: this.editForm.new_password
                             };
                             let id = localStorage.getItem('id');
-                            console.log("8888888888888888888888888");
                             editPasswd(id, para).then((res) => {
                                 // 响应成功
                                 this.$message({
