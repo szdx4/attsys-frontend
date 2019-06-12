@@ -62,7 +62,6 @@
                     <el-radio-group v-model="statusForm.status">
                         <el-radio class="radio" label="pass">通过</el-radio>
                         <el-radio class="radio" label="reject">不通过</el-radio>
-                        <el-radio class="radio" label="wait">暂不决定</el-radio>
                     </el-radio-group>
                 </el-form-item>
             </el-form>
@@ -207,6 +206,17 @@
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
+                                });
+                                this.$refs['statusForm'].resetFields();
+                                this.statusFormVisible = false;
+                                this.getList();
+                            }).catch(err => {
+                                console.log(err);
+                                let status = err.response.status;
+                                let msg = err.response.data.message;
+                                this.$message({
+                                    message: '请假失败，错误信息：' + msg,
+                                    type: 'error'
                                 });
                                 this.$refs['statusForm'].resetFields();
                                 this.statusFormVisible = false;

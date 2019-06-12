@@ -261,8 +261,13 @@
                         });
                         this.getList();
                     });
-                }).catch(() => {
-
+                }).catch(err => {
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '删除失败，错误信息：' + err.response.data.message,
+                        type: 'error'
+                    });
+                    this.getList();
                 });
             },
             //显示新增界面
@@ -299,6 +304,17 @@
                                 this.$refs['addForm'].resetFields();
                                 this.addFormVisible = false;
                                 this.getList();
+                            }).catch(err => {
+                                //向后端发送新增部门信息
+                                // this.addLoading = false;
+                                let msg = err.response.data.message
+                                this.$message({
+                                    message: '提交失败，错误信息：' + msg,
+                                    type: 'error'
+                                });
+                                this.$refs['addForm'].resetFields();
+                                // this.addFormVisible = false;
+                                // this.getList();
                             });
                         });
                     }
@@ -319,12 +335,20 @@
                             };
                             addDepartmentShift(id, para).then((res) => {
                                 //向后端发送新增部门信息
-
                                 this.$message({
                                     message: '提交成功',
                                     type: 'success'
                                 });
                                 this.$refs['addDepartmentForm'].resetFields();
+                                this.addDepartmentFormVisible = false;
+                                this.getList();
+                            }).catch(err => {
+                                //向后端发送新增部门信息
+                                let msg = err.response.data.message
+                                this.$message({
+                                    message: '提交失败，错误信息：' + msg,
+                                    type: 'error'
+                                });
                                 this.addDepartmentFormVisible = false;
                                 this.getList();
                             });

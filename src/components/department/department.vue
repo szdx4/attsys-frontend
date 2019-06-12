@@ -219,7 +219,6 @@
                     this.$refs['editForm'].resetFields();
                     this.editFormVisible = false;
                     this.getList();
-
                 });
 
             },
