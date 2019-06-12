@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import {getFaceUser, editFaceUser, faceApproval, getFaceList} from "../../api/api";
+    import {getFaceUser, faceApproval, getFaceList} from "../../api/api";
 
     let Base64 = require('js-base64').Base64;
 
@@ -148,7 +148,15 @@
                         data[0] = res.data.data;
                         this.facelist = data;
 
-                    })
+                    }).catch(err => {
+                        let status = err.response.status;
+                        let msg = err.response.data.message;
+                        this.$message({
+                            message: '获取信息失败，错误信息：' + msg,
+                            type: 'error'
+                        });
+
+                    });
                 }
             },
 
@@ -157,6 +165,14 @@
                 //this.listLoading = true;
                 getFaceList(para).then((res) => {
                     this.facelist = res.data.data;
+
+                }).catch(err => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '获取列表失败，错误信息：' + msg,
+                        type: 'error'
+                    });
 
                 });
             },
@@ -194,7 +210,17 @@
                     });
                     this.$refs['approvalForm'].resetFields();
                     this.getList();
-                })
+                }).catch(err => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '提交失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+                    this.$refs['approvalForm'].resetFields();
+                    this.getList();
+
+                });
             },
 
             selsChange: function (sels) {

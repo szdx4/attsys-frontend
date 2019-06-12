@@ -156,7 +156,15 @@
                 getDepartment(id, para).then((res) => {
                     this.departments = res.data.data;
 
-                })
+                }).catch(err => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '获取信息失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+
+                });
             },
 
             getList() {
@@ -164,6 +172,14 @@
                 let para = {};
                 getDepartmentList(para).then((res) => {
                     this.departments = res.data.data;
+                }).catch(err => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '获取列表失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+
                 });
             },
             //删除
@@ -181,6 +197,13 @@
                             type: 'success'
                         });
                         this.getList();
+                    }).catch(err => {
+                        let status = err.response.status;
+                        let msg = err.response.data.message;
+                        this.$message({
+                            message: '删除失败，错误信息：' + msg,
+                            type: 'error'
+                        });
                     });
                 })
             },
@@ -220,6 +243,17 @@
                     this.editFormVisible = false;
                     this.getList();
 
+                }).catch(err => {
+                    let status = err.response.status;
+                    let msg = err.response.data.message;
+                    this.$message({
+                        message: '提交失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+                    this.$refs['editForm'].resetFields();
+                    this.editFormVisible = false;
+                    this.getList();
+
                 });
 
             },
@@ -242,6 +276,17 @@
                                 this.$refs['addForm'].resetFields();
                                 this.addFormVisible = false;
                                 this.getList();
+                            }).catch(err => {
+                                let status = err.response.status;
+                                let msg = err.response.data.message;
+                                this.$message({
+                                    message: '提交失败，错误信息：' + msg,
+                                    type: 'error'
+                                });
+                                this.$refs['addForm'].resetFields();
+                                this.addFormVisible = false;
+                                this.getList();
+
                             });
                         });
                     }
