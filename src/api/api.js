@@ -309,9 +309,8 @@ export const deletShift = (id, params) => {
 };
 //修改排班
 export const editShift = (id,params) =>{
-    return instance.put(`/shift/${id}`, {
-        headers: getHeaders(),
-        params: params
+    return instance.put(`/shift/${id}`, params, {
+        headers: getHeaders()
     });
 };
 //全单位排班

@@ -83,7 +83,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="180">
         <template scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit"
+          <el-button type="primary" size="small" @click="handleEdit(scope.row)"
             >修改</el-button
           >
           <el-button type="danger" size="small" @click="handleDel(scope.row)"
@@ -345,8 +345,8 @@
       <el-form
         :model="editForm"
         label-width="80px"
-        :rules="editFormFormRules"
-        ref="addForm"
+        :rules="editFormRules"
+        ref="editForm"
       >
         <el-form-item label="开始时间" prop="start_at">
           <el-col :span="11">
@@ -380,9 +380,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click.native="addDepartmentFormVisible = false"
-          >取消</el-button
-        >
+        <el-button @click.native="editFormVisible = false">取消</el-button>
         <el-button type="primary" @click.native="editSubmit">提交 </el-button>
       </div>
     </el-dialog>
@@ -686,7 +684,6 @@ export default {
               start_at: this.editForm.start_at.toJSON(),
               end_at: this.editForm.end_at.toJSON(),
               effect: this.editForm.effect
-
             };
             editShift(id, para).then((res) => {
               //向后端发送新增部门信息
