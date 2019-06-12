@@ -254,7 +254,7 @@
             handleDel: function (row) {//向后端发送删除信息 row.id
                 this.$confirm('确认删除该记录吗?', '提示', {
                     type: 'warning'
-                }).then(() => {]
+                }).then(() => {
                     // loading 开始
                     this.listLoading = true;
 
