@@ -184,6 +184,15 @@
                     this.$refs['editForm'].resetFields();
                     this.editFormVisible = false;
                     this.getList();
+                }).catch(err => {
+                    msg = err.response.data.message
+                    this.$message({
+                        message: '审批失败，错误信息：' + msg,
+                        type: 'error'
+                    });
+                    this.$refs['editForm'].resetFields();
+                    this.editFormVisible = false;
+                    this.getList();
                 })
 
 

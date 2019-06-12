@@ -110,9 +110,7 @@
                         this.$router.push({path: '/login'});
                         this.logout();
                     }
-
                 }
-
             },
             handleCurrentChange(val) {
                 this.page = val;
@@ -121,16 +119,25 @@
             handle(row) {
                 this.contentFormVisible = true;
                 this.contentForm = Object.assign({}, row);
-                // getMsg();//向后台发送请求，获取指定消息赋值给contentForm
+                let id = row.id;
+                let para = {};
+
+                getMsg(id, para).then(
+                    res => {
+                        // this.contentFormVisible = false;
+                        this.getlist();
+                    }
+                );//向后台发送请求，获取指定消息赋值给contentForm
+
 
             },
-            formatterStatus(row){
+            formatterStatus(row) {
                 var St;
-                if(row.status==='unread')
-                    St='未读';
-                else if(row.status==='read')
-                    St='已读';
-                else St='未知状态';
+                if (row.status === 'unread')
+                    St = '未读';
+                else if (row.status === 'read')
+                    St = '已读';
+                else St = '未知状态';
                 return St;
 
             },

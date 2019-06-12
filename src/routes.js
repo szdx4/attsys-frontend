@@ -42,7 +42,7 @@ export const routes_master = [
         path: '/',
         component: Home,
         name: '用户管理',
-        roles: ['master'],
+        roles: ['manager', 'master'],
         iconCls: 'fa fa-user-circle',//图标样式class
         children: [
             {path: '/table', component: Table, name: '用户编辑'},//对一般职员隐藏
@@ -53,16 +53,15 @@ export const routes_master = [
         component: sign,
         hidden: true,
         name: '签到',
-        roles: ['user', 'master']
+        roles: ['manager', 'master']
     },
     {
         path: '/m',
         component: Home,
         hidden: true,
         name: '',
-        roles: ['user', 'master'],
         children: [
-            {path: '/msg', roles: ['user', 'master'], component: msg, name: '消息列表'}
+            {path: '/msg', component: msg, name: '消息列表'}
         ]
     },
     {
@@ -78,11 +77,11 @@ export const routes_master = [
         path: '/',
         component: Home,
         name: '请假',
-        roles: ['master', 'user'],
+        roles: ['user', 'manager', 'master'],
         iconCls: 'fa fa-id-card-o',
         children: [
             {path: '/leave', component: leave, name: '请假申请', roles: ['user'],},
-            {path: '/approval', component: approval_leave, name: '请假审批', roles: ['master'],},
+            {path: '/approval', component: approval_leave, name: '请假审批', roles: ['manager', 'master'],},
         ]
     },
     {
@@ -90,19 +89,19 @@ export const routes_master = [
         component: Home,
         name: '加班',
         iconCls: 'fa fa-coffee',
-        roles: ['master', 'user'],
+        roles: ['manager', 'master'],
         children: [
-            {path: '/overtime_list', component: overtime_list, roles: ['master'], name: '加班申请列表',},
+            {path: '/overtime_list', component: overtime_list, roles: ['manager', 'master'], name: '加班申请列表',},
         ]
     },
     {
         path: '/',
         component: Home,
         name: '工时',
-        roles: ['master'],
+        roles: ['user', 'manager', 'master'],
         iconCls: 'fa fa-clock-o',
         children: [
-            {path: '/hours', component: hours, roles: ['master'], name: '工时记录',},
+            {path: '/hours', component: hours, name: '工时记录',},
         ]
     },
 
@@ -121,11 +120,11 @@ export const routes_master = [
         path: '/',
         component: Home,
         name: '人脸信息',
-        roles: ['master', 'user'],
+        roles: ['user', 'manager', 'master'],
         iconCls: 'fa fa-camera',
         children: [
             {path: '/face', component: face, name: '人脸信息管理', roles: ['master']},
-            {path: '/face_update', component: update, name: '更新人脸信息', roles: ['master', 'user']}
+            {path: '/face_update', component: update, name: '更新人脸信息', roles: ['user', 'manager']}
         ]
     },
     {
@@ -140,6 +139,103 @@ export const routes_master = [
     },
 
 ];
+
+export const routes_manager = [
+    {
+        path: '/login',
+        component: Login,
+        name: '',
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: NotFound,
+        name: '',
+        hidden: true
+    },
+
+    {
+        path: '*',
+        hidden: true,
+        redirect: {path: '/404'}
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '用户管理',
+        roles: ['manager', 'master'],
+        iconCls: 'fa fa-user-circle',//图标样式class
+        children: [
+            {path: '/table', component: Table, name: '用户编辑'},//对一般职员隐藏
+        ]
+    },
+    {
+        path: '/sign',
+        component: sign,
+        hidden: true,
+        name: '签到',
+        roles: ['manager', 'master']
+    },
+    {
+        path: '/m',
+        component: Home,
+        hidden: true,
+        name: '',
+        children: [
+            {path: '/msg', component: msg, name: '消息列表'}
+        ]
+    },
+    {
+        path: '/',
+        hidden: true,
+        name: '',
+        component: Home,
+        children: [
+            {path: '/main', component: Main, name: '主页'}
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '请假',
+        roles: ['user', 'manager', 'master'],
+        iconCls: 'fa fa-id-card-o',
+        children: [
+            {path: '/approval', component: approval_leave, name: '请假审批', roles: ['manager', 'master'],},
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '加班',
+        iconCls: 'fa fa-coffee',
+        roles: ['manager', 'master'],
+        children: [
+            {path: '/overtime_list', component: overtime_list, roles: ['manager', 'master'], name: '加班申请列表',},
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '工时',
+        roles: ['user', 'manager', 'master'],
+        iconCls: 'fa fa-clock-o',
+        children: [
+            {path: '/hours', component: hours, name: '工时记录',},
+        ]
+    },
+    {
+        path: '/',
+        component: Home,
+        name: '排班信息',
+        roles: ['master'],
+        iconCls: 'fa fa-pie-chart',
+        children: [
+            {path: '/shift', component: shift, roles: ['master'], name: '排班信息列表'},
+        ]
+    },
+];
+
 export const routes_user = [
     {
         path: '/login',
@@ -160,20 +256,12 @@ export const routes_user = [
         redirect: {path: '/404'}
     },
     {
-        path: '/sign',
-        component: sign,
-        hidden: true,
-        name: '签到',
-        roles: ['user', 'master']
-    },
-    {
         path: '/m',
         component: Home,
         hidden: true,
         name: '',
-        roles: ['user', 'master'],
         children: [
-            {path: 'msg', roles: ['user', 'master'], component: msg, name: '消息列表'}
+            {path: '/msg', component: msg, name: '消息列表'}
         ]
     },
     {
@@ -189,40 +277,47 @@ export const routes_user = [
         path: '/',
         component: Home,
         name: '请假',
-        roles: ['master', 'user'],
+        roles: ['user', 'manager', 'master'],
         iconCls: 'fa fa-id-card-o',
         children: [
-            {path: '/leave', component: leave, name: '请假申请', roles: ['user'],},
+            {path: '/leave', component: leave, name: '请假申请', roles: ['user'],}
         ]
     },
     {
         path: '/',
         component: Home,
         name: '工时',
-        roles: ['master'],
+        roles: ['user', 'manager', 'master'],
         iconCls: 'fa fa-clock-o',
         children: [
-            {path: '/hours', component: hours, roles: ['master'], name: '工时记录',},
+            {path: '/hours', component: hours, name: '工时记录',},
         ]
     },
-
-
     {
         path: '/',
         component: Home,
         name: '人脸信息',
-        roles: ['master', 'user'],
+        roles: ['user', 'manager', 'master'],
         iconCls: 'fa fa-camera',
         children: [
-            {path: '/face_update', component: update, name: '更新人脸信息', roles: ['master', 'user']}
+            {path: '/face_update', component: update, name: '更新人脸信息', roles: ['user', 'manager']}
         ]
     },
 
 ];
+
 //this.$router.options.routes = routes;
 //this.$router.addRoutes(routes);
 let role = localStorage.getItem("role");
-export const routes = (role === 'master') ? routes_master : routes_user;
+export const routes = ((role) => {
+    if (role == 'master') {
+        return routes_master;
+    } else if (role == 'manager') {
+        return routes_manager;
+    } else {
+        return routes_user;
+    }
+})(role);
 export default new Router({
     routes: routes
 })

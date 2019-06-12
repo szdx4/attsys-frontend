@@ -97,17 +97,21 @@
                 };
                 console.log(leave_info);
                 LeaveRequest(user_id, leave_info).then((res) => {
-                    if (res.status !== 201) {
+                    this.$message({
+                        message: '您的请假id是' + res.data.leave_id,
+                        type: "success"
+                    })
+                }).catch(err => {
+                        console.log(err);
+                        let status = err.response.status;
+                        let msg = err.response.data.message;
                         this.$message({
-                            message: '错误！',
+                            message: '请假失败，错误信息：' + msg,
                             type: 'error'
                         });
-                    } else {
-                        this.$message({
-                            message: '您的请假id是' + res.data.leave_id
-                        })
+                        this.$refs['form'].resetFields();
                     }
-                });
+                );
             }
         },
         mounted() {
