@@ -21,6 +21,11 @@ Vue.use(Router);
 
 export const routes_master = [
     {
+        path: '/',
+        redirect: 'main',
+        hidden: true
+    },
+    {
         path: '/login',
         component: Login,
         name: '',
@@ -142,6 +147,11 @@ export const routes_master = [
 
 export const routes_manager = [
     {
+        path: '/',
+        redirect: 'main',
+        hidden: true
+    },
+    {
         path: '/login',
         component: Login,
         name: '',
@@ -237,6 +247,11 @@ export const routes_manager = [
 ];
 
 export const routes_user = [
+    {
+        path: '/',
+        redirect: 'main',
+        hidden: true
+    },
     {
         path: '/login',
         component: Login,
