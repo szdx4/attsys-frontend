@@ -133,17 +133,25 @@
                 sysUserName: '',
                 sysUserAvatar: '',
                 editFormVisible: false,
-
                 signFormVisible: false,
                 qrcode: '',
 
                 sign_id: '',
                 pic: pic,
                 editForm: {
-                    old_password: '',
-                    new_password: '',
+                    old_password: "",
+                    new_password: ""
                 },
-
+                editForm2: {
+                    old_password: [
+                        { required: true, message: "密码不能为空", trigger: "blur" },
+                        { min: 4, max: 10, message: "密码长度应大于4位", trigger: "blur" }
+                    ],
+                    new_password: [
+                        { required: true, message: "密码不能为空", trigger: "blur" },
+                        { min: 4, max: 10, message: "密码长度应大于4位", trigger: "blur" }
+                    ],
+                },
 
                 form: {
                     name: '',
@@ -203,8 +211,41 @@
                 //先向后台请求签到状态
 
             },
-            editSubmit() {//向后端发送修改密码请求
-
+            editSubmit: function() {
+                //向后端发送修改密码请求
+                this.$refs.editForm.validate((valid) => {
+                    if (valid) {
+                        // 提交确认
+                        this.$confirm('确认提交吗？', '提交', {}).then(() => {
+                            console.log("====================");
+                            let para = {
+                                old_password: this.editForm.old_password,
+                                new_password: this.editForm.new_password
+                            };
+                            let id = localStorage.getItem('id');
+                            console.log("8888888888888888888888888");
+                            editPasswd(id, para).then((res) => {
+                                // 响应成功
+                                this.$message({
+                                    message: '修改密码成功',
+                                    type: 'success'
+                                });
+                                this.$refs['editForm'].resetFields();
+                                this.editFormVisible = false;
+                            }).catch(err => {
+                                // 响应错误
+                                let status = err.response.status;
+                                let msg = err.response.data.message;
+                                this.$message({
+                                    message: '修改密码失败，错误信息：' + msg,
+                                    type: 'error'
+                                });
+                                this.$refs['editForm'].resetFields();
+                                // this.editFormVisible = false;
+                            });
+                        });
+                    }
+                });
             },
 
             openCam() {//获取摄像头
@@ -226,7 +267,6 @@
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, 500, 500);
             },
-
 
             sign: function () {
                 this.signFormVisible = true;

@@ -76,7 +76,7 @@ export const removeUser = (id, params) => {
 
 //修改密码
 export const editPasswd = (id, params) => {
-    return instance.put(`/user/${id}`, params, {headers: getHeaders()});
+    return instance.put(`/user/${id}/password`, params, {headers: getHeaders()});
 };
 
 export const batchAddUser = (id,params) =>{
