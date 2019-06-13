@@ -1,45 +1,45 @@
 <template>
   <div id="app">
     <transition name="fade" mode="out-in">
-      <router-view></router-view>
+      <router-view />
     </transition>
   </div>
 </template>
 
 <script>
 export default {
-  name: "app",
+  name: 'App',
   components: {},
+  mounted() {
+    this.verify()
+  },
   methods: {
     // logout for other page
-    logout: function () {
-      sessionStorage.removeItem("user");
-      localStorage.removeItem("token");
-      localStorage.removeItem("id");
-      localStorage.removeItem("role");
-      localStorage.removeItem("expired_at");
-      this.$router.push("/login");
+    logout: function() {
+      sessionStorage.removeItem('user')
+      localStorage.removeItem('token')
+      localStorage.removeItem('id')
+      localStorage.removeItem('role')
+      localStorage.removeItem('expired_at')
+      this.$router.push('/login')
     },
 
     verify() {
-      let token = localStorage.getItem("token");
+      const token = localStorage.getItem('token')
       if (!token) {
-        this.$router.push({ path: "/login" });
+        this.$router.push({ path: '/login' })
       } else {
-        let expired_at = localStorage.getItem("expired_at");
-        let expired_date = new Date(expired_at);
-        let now_date = new Date();
+        const expired_at = localStorage.getItem('expired_at')
+        const expired_date = new Date(expired_at)
+        const now_date = new Date()
         if (now_date > expired_date) {
-          this.$router.push({ path: "/login" });
-          this.logout();
+          this.$router.push({ path: '/login' })
+          this.logout()
         }
       }
     }
-  },
-  mounted() {
-    this.verify();
   }
-};
+}
 </script>
 
 <style lang="scss">

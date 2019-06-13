@@ -3,7 +3,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
-          <icon name="team" class="card-panel-icon"></icon>
+          <icon name="team" class="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
@@ -21,7 +21,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <icon name="check-circle" class="card-panel-icon"></icon>
+          <icon name="check-circle" class="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
@@ -39,7 +39,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
-          <icon name="frown" class="card-panel-icon"></icon>
+          <icon name="frown" class="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
@@ -57,7 +57,7 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
-          <icon name="info-circle" class="card-panel-icon"></icon>
+          <icon name="info-circle" class="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
@@ -75,30 +75,31 @@
     <el-col :span="24" class="toolbar">
       <el-form :inline="true">
         <el-form-item>
-          <el-input v-model="userHoursForm.id" placeholder="用户 ID"></el-input>
+          <el-input v-model="userHoursForm.id" placeholder="用户 ID" />
         </el-form-item>
         <el-form-item>
           <el-date-picker
+            v-model="userHoursForm.start_at"
             type="datetime"
             placeholder="选择起始时间"
             value-format="yyyy-MM-dd HH:mm"
             format="yyyy-MM-dd HH:mm"
-            v-model="userHoursForm.start_at"
-          ></el-date-picker>
+          />
         </el-form-item>
         <el-form-item>
           <el-date-picker
+            v-model="userHoursForm.end_at"
             type="datetime"
             placeholder="选择结束时间"
             value-format="yyyy-MM-dd HH:mm"
             format="yyyy-MM-dd HH:mm"
-            v-model="userHoursForm.end_at"
-          ></el-date-picker>
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" v-on:click="getUserHours"
-            >查询用户工时</el-button
-          >
+          <el-button
+            type="primary"
+            @click="getUserHours"
+          >查询用户工时</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -107,31 +108,48 @@
 
 <script>
 import countTo from 'vue-count-to'
-import { requestStatusUser, requestStatusSign, requestStatusUserHours } from "@/api/api";
+import { requestStatusUser, requestStatusSign, requestStatusUserHours } from '@/api/api'
 export default {
   components: { countTo },
+  data() {
+    return {
+      usersCount: 0,
+      signedCount: 0,
+      latedCount: 0,
+      leavedCount: 0,
+      userHoursForm: {
+        id: '',
+        start_at: '',
+        end_at: ''
+      }
+    }
+  },
+  mounted() {
+    this.verify()
+    this.getData()
+  },
   methods: {
-    logout: function () {
-      sessionStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.removeItem('id');
-      localStorage.removeItem('role');
-      localStorage.removeItem('expired_at');
-      this.$router.push('/login');
+    logout: function() {
+      sessionStorage.removeItem('user')
+      localStorage.removeItem('token')
+      localStorage.removeItem('id')
+      localStorage.removeItem('role')
+      localStorage.removeItem('expired_at')
+      this.$router.push('/login')
     },
     verify() {
-      let token = localStorage.getItem('token');
+      const token = localStorage.getItem('token')
       if (!token) {
-        this.$router.push({ path: '/login' });
+        this.$router.push({ path: '/login' })
       } else {
-        let expired_at = localStorage.getItem('expired_at');
-        let expired_date = new Date(expired_at);
-        let now_date = new Date();
+        const expired_at = localStorage.getItem('expired_at')
+        const expired_date = new Date(expired_at)
+        const now_date = new Date()
         if (now_date > expired_date) {
-          this.$router.push({ path: '/login' });
-          this.logout();
+          this.$router.push({ path: '/login' })
+          this.logout()
         } else {
-          this.$router.push({ path: '/main' });
+          this.$router.push({ path: '/main' })
         }
       }
     },
@@ -149,9 +167,9 @@ export default {
       })
     },
     getUserHours() {
-      let user_id = this.userHoursForm.id
-      let start_at = this.userHoursForm.start_at.toJSON()
-      let end_at = this.userHoursForm.end_at.toJSON()
+      const user_id = this.userHoursForm.id
+      const start_at = this.userHoursForm.start_at.toJSON()
+      const end_at = this.userHoursForm.end_at.toJSON()
       requestStatusUserHours(user_id, start_at, end_at).then(res => {
         this.$message({
           message: '工作时间：' + res.data.shift_hour + ' 小时，加班时间：' + res.data.overtime_hour + ' 小时',
@@ -163,23 +181,6 @@ export default {
           type: 'error'
         })
       })
-    }
-  },
-  mounted() {
-    this.verify()
-    this.getData()
-  },
-  data() {
-    return {
-      usersCount: 0,
-      signedCount: 0,
-      latedCount: 0,
-      leavedCount: 0,
-      userHoursForm: {
-        id: '',
-        start_at: '',
-        end_at: ''
-      }
     }
   }
 }

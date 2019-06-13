@@ -4,47 +4,46 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.id" placeholder="id"></el-input>
+          <el-input v-model="filters.id" placeholder="id" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" v-on:click="getuser">查询</el-button>
+          <el-button type="primary" @click="getuser">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleAdd">新增</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleBatchAdd"
-            >批量增加新增</el-button
-          >
+          <el-button
+            type="primary"
+            @click="handleBatchAdd"
+          >批量增加新增</el-button>
         </el-form-item>
       </el-form>
     </el-col>
 
     <!--列表-->
     <el-table
+      v-loading="listLoading"
       :data="users"
       highlight-current-row
-      v-loading="listLoading"
-      @selection-change="selsChange"
       style="width: 100%;"
+      @selection-change="selsChange"
     >
-      <el-table-column type="selection" width="55"> </el-table-column>
+      <el-table-column type="selection" width="55" />
       <el-table-column
         prop="id"
         label="id"
         min-width="150"
         align="center"
         sortable
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="name"
         label="姓名"
         min-width="150"
         align="center"
         sortable
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="role"
         label="职务"
@@ -52,32 +51,32 @@
         align="center"
         :formatter="formatPosition"
         sortable
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="department.id"
         label="部门"
         min-width="150"
         align="center"
         sortable
-      >
-      </el-table-column>
+      />
       <el-table-column
         prop="hours"
         label="工时"
         min-width="150"
         align="center"
         sortable
-      >
-      </el-table-column>
+      />
       <el-table-column label="操作" width="150" align="center">
         <template scope="scope">
-          <el-button size="small" @click="handleEdit(scope.row)"
-            >编辑</el-button
-          >
-          <el-button type="danger" size="small" @click="handleDel(scope.row)"
-            >删除</el-button
-          >
+          <el-button
+            size="small"
+            @click="handleEdit(scope.row)"
+          >编辑</el-button>
+          <el-button
+            type="danger"
+            size="small"
+            @click="handleDel(scope.row)"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -86,28 +85,27 @@
     <el-col :span="24" class="toolbar">
       <el-pagination
         layout="prev, pager, next"
-        @current-change="handleCurrentChange"
         :page-size="20"
         :total="total"
         style="float:right;"
-      >
-      </el-pagination>
+        @current-change="handleCurrentChange"
+      />
     </el-col>
 
     <!--编辑界面-->
     <el-dialog
-      title="编辑"
       v-model="editFormVisible"
+      title="编辑"
       :close-on-click-modal="false"
     >
       <el-form
+        ref="editForm"
         :model="editForm"
         label-width="80px"
         :rules="editFormRules"
-        ref="editForm"
       >
         <el-form-item label="姓名" prop="name">
-          <el-input v-model="editForm.name" auto-complete="off"></el-input>
+          <el-input v-model="editForm.name" auto-complete="off" />
         </el-form-item>
         <el-form-item label="职务">
           <el-radio-group v-model="editForm.role">
@@ -117,70 +115,67 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="工时">
-          <el-input v-model="editForm.hours" auto-complete="off"></el-input>
+          <el-input v-model="editForm.hours" auto-complete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="editFormVisible = false">取消</el-button>
         <el-button
           type="primary"
-          @click.native="editSubmit"
           :loading="editLoading"
-          >提交</el-button
-        >
+          @click.native="editSubmit"
+        >提交</el-button>
       </div>
     </el-dialog>
 
     <!--新增界面-->
     <el-dialog
-      title="新增"
       v-model="addFormVisible"
+      title="新增"
       :close-on-click-modal="false"
     >
       <el-form
+        ref="addForm"
         :model="addForm"
         label-width="80px"
         :rules="addFormRules"
-        ref="addForm"
       >
         <el-form-item label="姓名" prop="name">
-          <el-input v-model="addForm.name" auto-complete="off"></el-input>
+          <el-input v-model="addForm.name" auto-complete="off" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="addForm.password" auto-complete="off"></el-input>
+          <el-input v-model="addForm.password" auto-complete="off" />
         </el-form-item>
         <el-form-item label="部门" prop="department">
-          <el-input v-model="addForm.department" auto-complete="off"></el-input>
+          <el-input v-model="addForm.department" auto-complete="off" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="addFormVisible = false">取消</el-button>
         <el-button
           type="primary"
-          @click.native="addSubmit"
           :loading="addLoading"
-          >提交</el-button
-        >
+          @click.native="addSubmit"
+        >提交</el-button>
       </div>
     </el-dialog>
 
     <!--批量新增界面-->
     <el-dialog
-      title="批量新增"
       v-model="batchAddVisible"
+      title="批量新增"
       :close-on-click-modal="false"
     >
       <!--文件按钮-->
-      <input type="file" id="upload" />
+      <input id="upload" type="file">
 
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="batchAddVisible = false">取消</el-button>
         <el-button
           type="primary"
-          @click.native="batchAddSubmit"
           :loading="addLoading"
-          >提交</el-button
-        >
+          @click.native="batchAddSubmit"
+        >提交</el-button>
       </div>
     </el-dialog>
   </section>
@@ -201,16 +196,16 @@ export default {
       total: 0,
       page: 1,
       listLoading: false,
-      sels: [],//列表选中列
+      sels: [], // 列表选中列
 
-      editFormVisible: false,//编辑界面是否显示
+      editFormVisible: false, // 编辑界面是否显示
       editLoading: false,
       editFormRules: {
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' }
         ]
       },
-      //编辑界面数据
+      // 编辑界面数据
       editForm: {
         id: 0,
         name: '',
@@ -232,11 +227,11 @@ export default {
           { min: 4, max: 10, message: '密码长度应大于4位', trigger: 'blur' }
         ]
       },
-      //新增界面数据
+      // 新增界面数据
       addForm: {
         name: '',
         password: 0,
-        department: '',
+        department: ''
       },
 
       batchAddFormRules: {
@@ -251,212 +246,206 @@ export default {
       batchAddVisible: false,
       batchAddForm: {
         data: ''
-      },
+      }
 
     }
   },
+  mounted() {
+    this.verify()
+    this.getUsers()
+  },
   methods: {
     // logout for other page
-    logout: function () {
-      sessionStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.removeItem('id');
-      localStorage.removeItem('role');
-      localStorage.removeItem('expired_at');
-      this.$router.push('/login');
+    logout: function() {
+      sessionStorage.removeItem('user')
+      localStorage.removeItem('token')
+      localStorage.removeItem('id')
+      localStorage.removeItem('role')
+      localStorage.removeItem('expired_at')
+      this.$router.push('/login')
     },
 
     verify() {
-      let token = localStorage.getItem('token');
+      const token = localStorage.getItem('token')
       if (!token) {
-        this.$router.push({ path: '/login' });
+        this.$router.push({ path: '/login' })
       } else {
-        let expired_at = localStorage.getItem('expired_at');
-        let expired_date = new Date(expired_at);
-        let now_date = new Date();
+        const expired_at = localStorage.getItem('expired_at')
+        const expired_date = new Date(expired_at)
+        const now_date = new Date()
         if (now_date > expired_date) {
-          this.$router.push({ path: '/login' });
-          this.logout();
+          this.$router.push({ path: '/login' })
+          this.logout()
         }
-
       }
-
     },
-    formatPosition: function (row, column) {
-      if (row.role === 'manager')
-        return '主管';
-      else if (row.role === 'master')
-        return '经理';
-      else return '员工';
+    formatPosition: function(row, column) {
+      if (row.role === 'manager') { return '主管' } else if (row.role === 'master') { return '经理' } else return '员工'
     },
     handleCurrentChange(val) {
-      this.page = val;
-      this.getUsers();
+      this.page = val
+      this.getUsers()
     },
     getuser() {
-      if (this.filters.id === '')
-        this.getUsers();
-      else {
-        let para = {};
-        let user_id = parseInt(this.filters.id);
-        this.listLoading = true;
+      if (this.filters.id === '') { this.getUsers() } else {
+        const para = {}
+        const user_id = parseInt(this.filters.id)
+        this.listLoading = true
         getUser(user_id, para).then((res) => {
-          this.listLoading = false;
-          let data = [0,];
-          data[0] = res.data.data;
+          this.listLoading = false
+          const data = [0]
+          data[0] = res.data.data
           this.users = data
         }).catch((err) => {
-          this.listLoading = false;
-          let status = err.response.status;
-          let msg = err.response.data.message;
+          this.listLoading = false
+          const status = err.response.status
+          const msg = err.response.data.message
           this.$message({
             message: '获取用户信息，错误信息：' + msg,
             type: 'error'
-          });
-        });
+          })
+        })
       }
-
     },
-    //获取用户列表
+    // 获取用户列表
     getUsers() {
-      this.listLoading = true;
+      this.listLoading = true
       getUserList().then((res) => {
-        this.users = res.data.data;
-        this.listLoading = false;
-
+        this.users = res.data.data
+        this.listLoading = false
       }).catch((err) => {
-        this.listLoading = false;
-        let status = err.response.status;
-        let msg = err.response.data.message;
+        this.listLoading = false
+        const status = err.response.status
+        const msg = err.response.data.message
         this.$message({
           message: '获取用户列表失败，错误信息：' + msg,
           type: 'error'
-        });
-      });
+        })
+      })
     },
-    //删除
-    handleDel: function (row) {
+    // 删除
+    handleDel: function(row) {
       this.$confirm('确认删除该记录吗?', '提示', {
         type: 'warning'
       }).then(() => {
-        this.listLoading = true;
-        let id = row.id;
-        let para = {};
+        this.listLoading = true
+        const id = row.id
+        const para = {}
         removeUser(id, para).then((res) => {
-          this.listLoading = false;
+          this.listLoading = false
           this.$message({
             message: '删除成功',
             type: 'success'
-          });
-          this.getUsers();
+          })
+          this.getUsers()
         }).catch((err) => {
-          this.listLoading = false;
-          let status = err.response.status;
-          let msg = err.response.data.message;
+          this.listLoading = false
+          const status = err.response.status
+          const msg = err.response.data.message
           this.$message({
             message: '删除失败，错误信息：' + msg,
             type: 'error'
-          });
-        });
-      });
+          })
+        })
+      })
     },
-    //显示编辑界面
-    handleEdit: function (row) {
-      this.editFormVisible = true;
-      this.editForm = Object.assign({}, row);
+    // 显示编辑界面
+    handleEdit: function(row) {
+      this.editFormVisible = true
+      this.editForm = Object.assign({}, row)
     },
-    //显示新增界面
-    handleAdd: function () {
-      this.addFormVisible = true;
+    // 显示新增界面
+    handleAdd: function() {
+      this.addFormVisible = true
       this.addForm = {
         name: '',
         sex: -1,
         age: 0,
         role: '',
         addr: ''
-      };
+      }
     },
     // 显示批量增加界面
     handleBatchAdd() {
-      this.batchAddVisible = true;
+      this.batchAddVisible = true
     },
-    //编辑
-    editSubmit: function () {
+    // 编辑
+    editSubmit: function() {
       this.$refs.editForm.validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            this.editLoading = true;
-            let para = {
+            this.editLoading = true
+            const para = {
               name: this.editForm.name,
               department: this.editForm.department.id,
               role: this.editForm.role,
               hours: parseInt(this.editForm.hours)
-            };
-            let id = this.editForm.id;
+            }
+            const id = this.editForm.id
             // console.log(para);
             editUser(id, para).then((res) => {
-              this.editLoading = false;
+              this.editLoading = false
               this.$message({
                 message: '提交成功',
                 type: 'success'
-              });
-              this.$refs['editForm'].resetFields();
-              this.editFormVisible = false;
-              this.getUsers();
+              })
+              this.$refs['editForm'].resetFields()
+              this.editFormVisible = false
+              this.getUsers()
             }).catch((err) => {
-              this.editLoading = false;
-              let status = err.response.status;
-              let msg = err.response.data.message;
+              this.editLoading = false
+              const status = err.response.status
+              const msg = err.response.data.message
               this.$message({
                 message: '提交失败，错误信息：' + msg,
                 type: 'error'
-              });
-              this.$refs['editForm'].resetFields();
-              this.editFormVisible = false;
-              this.getUsers();
-            });
-          });
+              })
+              this.$refs['editForm'].resetFields()
+              this.editFormVisible = false
+              this.getUsers()
+            })
+          })
         }
-      });
+      })
     },
-    //新增
-    addSubmit: function () {
+    // 新增
+    addSubmit: function() {
       this.$refs.addForm.validate((valid) => {
         if (valid) {
           this.$confirm('确认提交吗？', '提示', {}).then(() => {
-            this.addLoading = true;
-            let para = {
+            this.addLoading = true
+            const para = {
               name: this.addForm.name,
               password: this.addForm.password,
               department: parseInt(this.addForm.department)
-            };
+            }
             addUser(para).then((res) => {
-              this.addLoading = false;
+              this.addLoading = false
               this.$message({
                 message: '提交成功',
                 type: 'success'
-              });
-              this.$refs['addForm'].resetFields();
-              this.addFormVisible = false;
-              this.getUsers();
+              })
+              this.$refs['addForm'].resetFields()
+              this.addFormVisible = false
+              this.getUsers()
             }).catch((err) => {
-              this.addLoading = false;
-              let status = err.response.status;
-              let msg = err.response.data.message;
+              this.addLoading = false
+              const status = err.response.status
+              const msg = err.response.data.message
               this.$message({
                 message: '提交失败，错误信息：' + msg,
                 type: 'error'
-              });
-              this.$refs['addForm'].resetFields();
-              this.addFormVisible = false;
-              this.getUsers();
-            });
-          });
+              })
+              this.$refs['addForm'].resetFields()
+              this.addFormVisible = false
+              this.getUsers()
+            })
+          })
         }
-      });
+      })
     },
-    //批量增加
-    batchAddSubmit: function () {
+    // 批量增加
+    batchAddSubmit: function() {
       const fileInput = document.getElementById('upload')
       if (fileInput.files && fileInput.files.length > 0 && fileInput.files[0].size > 0) {
         var file = fileInput.files[0]
@@ -473,10 +462,10 @@ export default {
                 }).then(res => {
                   this.addLoading = false
                   this.batchAddVisible = false
-                  let successCount = res.data.filter((item) => {
+                  const successCount = res.data.filter((item) => {
                     return item.status == 201
                   }).length
-                  let failCount = res.data.filter((item) => {
+                  const failCount = res.data.filter((item) => {
                     return item.status != 201
                   }).length
                   this.$message({
@@ -486,8 +475,8 @@ export default {
                   this.getUsers()
                 }).catch(err => {
                   this.addLoading = false
-                  let status = err.response.status
-                  let msg = err.response.data.message
+                  const status = err.response.status
+                  const msg = err.response.data.message
                   this.$message({
                     message: '提交失败，错误信息：' + msg,
                     type: 'error'
@@ -512,13 +501,9 @@ export default {
       }
     },
 
-    selsChange: function (sels) {
-      this.sels = sels;
-    },
-  },
-  mounted() {
-    this.verify();
-    this.getUsers();
+    selsChange: function(sels) {
+      this.sels = sels
+    }
   }
 }
 
